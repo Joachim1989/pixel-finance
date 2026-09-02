@@ -1051,10 +1051,10 @@
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Situation</label>
             <div class="grid grid-cols-2 gap-3">
-              <button onclick="selectObCouple(false)" id="ob-btn-single" class="p-3 rounded-xl border border-sky-500 bg-sky-950/40 text-white font-bold text-xs">
+              <button onclick="selectObCouple(false)" id="ob-btn-single" class="p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs">
                 Célibataire
               </button>
-              <button onclick="selectObCouple(true)" id="ob-btn-couple" class="p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs">
+              <button onclick="selectObCouple(true)" id="ob-btn-couple" class="p-3 rounded-xl border border-sky-500 bg-sky-950/40 text-white font-bold text-xs">
                 En Couple
               </button>
             </div>
@@ -1062,11 +1062,11 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="text-slate-400 font-semibold block mb-1">Votre Âge</label>
-              <input type="number" id="ob-input-age1" value="35" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+              <input type="number" id="ob-input-age1" value="37" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
             </div>
-            <div id="ob-partner-age-box" class="hidden">
+            <div id="ob-partner-age-box">
               <label class="text-slate-400 font-semibold block mb-1">Âge Partenaire</label>
-              <input type="number" id="ob-input-age2" value="33" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+              <input type="number" id="ob-input-age2" value="32" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
             </div>
           </div>
         </div>
@@ -1082,26 +1082,26 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="text-slate-400 font-semibold block mb-1">Comptes & Épargne (€)</label>
-              <input type="number" id="ob-input-cash" value="30000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+              <input type="number" id="ob-input-cash" value="178383" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
             </div>
             <div>
               <label class="text-slate-400 font-semibold block mb-1">Matelas Sécurité (€)</label>
-              <input type="number" id="ob-input-matelas" value="15000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+              <input type="number" id="ob-input-matelas" value="30000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
             </div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="text-slate-400 font-semibold block mb-1">Bourse / ETF (€)</label>
-              <input type="number" id="ob-input-bourse" value="50000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+              <input type="number" id="ob-input-bourse" value="185000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
             </div>
             <div>
               <label class="text-slate-400 font-semibold block mb-1">Crypto & Autres (€)</label>
-              <input type="number" id="ob-input-crypto" value="5000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+              <input type="number" id="ob-input-crypto" value="24000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
             </div>
           </div>
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Immobilier Net de Crédit (€)</label>
-            <input type="number" id="ob-input-immo" value="0" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+            <input type="number" id="ob-input-immo" value="45000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
           </div>
           <div class="p-3 rounded-xl bg-sky-950/40 border border-sky-800 text-center">
             <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Patrimoine Total Calculé :</span>
@@ -1119,11 +1119,11 @@
         <div class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Revenus Nets Mensuels du Foyer (€/m)</label>
-            <input type="number" id="ob-input-income" value="4500" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+            <input type="number" id="ob-input-income" value="5860" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
           </div>
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Montant Épargné et Investi par Mois (€/m)</label>
-            <input type="number" id="ob-input-savings" value="1500" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-purple-300 font-mono font-bold focus:outline-none focus:border-purple-500">
+            <input type="number" id="ob-input-savings" value="4235" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-purple-300 font-mono font-bold focus:outline-none focus:border-purple-500">
           </div>
           <div class="p-3 rounded-xl bg-purple-950/40 border border-purple-800 flex justify-between items-center">
             <span class="text-xs text-slate-300 font-semibold">Taux d'effort calculé :</span>
@@ -1141,11 +1141,11 @@
         <div class="space-y-3 text-xs">
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Âge Cible pour arrêter de travailler</label>
-            <input type="number" id="ob-input-target-age" value="50" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-sky-400 font-mono font-bold focus:outline-none focus:border-sky-500">
+            <input type="number" id="ob-input-target-age" value="53" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-sky-400 font-mono font-bold focus:outline-none focus:border-sky-500">
           </div>
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Rente Nette Mensuelle Souhaitée (€/m)</label>
-            <input type="number" id="ob-input-target-income" value="3000" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-500">
+            <input type="number" id="ob-input-target-income" value="3500" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-500">
           </div>
           <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-2">
             <span class="text-[11px] text-slate-400 block font-semibold">Format de la rente :</span>
@@ -1273,42 +1273,42 @@
       }
     };
 
-    // --- DEFAULT STATE ---
+        // --- DEFAULT STATE : SCENARIO JOACHIM & PAULINE (FIRE 2042) ---
     const defaultState = {
       planId: "plan_default",
-      planName: "Mon Plan Principal",
+      planName: "Scénario Joachim & Pauline (FIRE 2042)",
       country: "BE",
       isCouple: true,
       hasCompletedOnboarding: false,
       inflationMode: "without",
-      p1: { name: "Joachim", currentAge: 36, pensionAge: 67, pensionNet: 1800, lumpSumNet: 120000 },
-      p2: { name: "Pauline", currentAge: 33, pensionAge: 67, pensionNet: 1600, lumpSumNet: 100000 },
+      p1: { name: "Joachim", currentAge: 37, pensionAge: 67, pensionNet: 1800, lumpSumNet: 170000 },
+      p2: { name: "Pauline", currentAge: 32, pensionAge: 67, pensionNet: 1200, lumpSumNet: 100000 },
       assets: {
-        cash: 35000,
+        cash: 178383,
         bourse: 185000,
-        crypto: 8000,
+        crypto: 24000,
         immo: 45000,
-        emergencyFund: 25000,
+        emergencyFund: 30000,
         dcaMonths: 24,
         envelopes: {
-          pea: { balance: 65000, contributed: 45000, firstPaymentYear: 2020 },
-          av: { balance: 35000, contributed: 30000, firstPaymentYear: 2018 },
-          cto: { balance: 85000, contributed: 70000 }
+          pea: { balance: 85000, contributed: 65000, firstPaymentYear: 2020 },
+          av: { balance: 40000, contributed: 35000, firstPaymentYear: 2018 },
+          cto: { balance: 60000, contributed: 50000 }
         }
       },
       cashflow: {
-        monthlySavings: 2200,
+        monthlySavings: 4235,
         targetIncomeNet: 3500,
-        targetFireAge: 52
+        targetFireAge: 53
       },
       rates: {
-        bourse: 0.075,
+        bourse: 0.070,
         cash: 0.02,
-        crypto: 0.08,
-        immo: 0.04
+        crypto: 0.06,
+        immo: 0.035
       },
       macro: {
-        lifeExpectancy: 90,
+        lifeExpectancy: 95,
         swr: 0.036,
         ter: 0.0021,
         inflation: 0.02,
@@ -1316,20 +1316,25 @@
       },
       budget: {
         incomes: [
-          { name: "Salaire 1", amount: 3200 },
-          { name: "Salaire 2", amount: 2600 }
+          { name: "Salaire Net Joachim (Cadre)", amount: 3500 },
+          { name: "Salaire Net Pauline (Employée)", amount: 2360 }
         ],
         expenses: [
-          { name: "Prêt Logement", category: "Logement & Prêts", amount: 1450, essential: true },
+          { name: "Prêt Maison (Fin 10/2043)", category: "Logement & Prêts", amount: 1321, essential: true },
+          { name: "Prêt Appartement (Fin 08/2035)", category: "Logement & Prêts", amount: 303, essential: true },
           { name: "Alimentation & Courses", category: "Alimentation & Vie", amount: 750, essential: true },
           { name: "Transports & Voitures", category: "Transports", amount: 450, essential: true },
-          { name: "Assurances & Factures", category: "Santé & Assurances", amount: 350, essential: true },
-          { name: "Loisirs & Vacances", category: "Loisirs & Sorties", amount: 600, essential: false }
+          { name: "Santé, Assurances & Énergie", category: "Santé & Assurances", amount: 400, essential: true },
+          { name: "Loisirs & Sorties", category: "Loisirs & Sorties", amount: 600, essential: false }
         ]
       },
       events: [
-        { id: 1, title: "Déploiement DCA Cash", year: 2026, type: "cashflow_plus", amount: 400, durationMonths: 24, active: true },
-        { id: 2, title: "Fin Prêt Immobilier", year: 2043, type: "cashflow_plus", amount: 1450, durationMonths: 0, active: true }
+        { id: 1, title: "Déploiement DCA Cash Excédentaire (148k€)", year: 2026, type: "cashflow_plus", amount: 6182, durationMonths: 24, active: true },
+        { id: 2, title: "Fin Prêt Appartement (+303 €/m)", year: 2035, type: "cashflow_plus", amount: 303, durationMonths: 0, active: true },
+        { id: 3, title: "Arrêt Conjoint FIRE (Joachim 53a / Pauline 48a)", year: 2042, type: "cashflow_plus", amount: 0, durationMonths: 0, active: true },
+        { id: 4, title: "Fin Prêt Maison (+1 321 €/m)", year: 2043, type: "cashflow_plus", amount: 1321, durationMonths: 0, active: true },
+        { id: 5, title: "Pension Joachim (67a : 1 800€/m) + Assurance Groupe (170k€)", year: 2056, type: "lump_plus", amount: 170000, durationMonths: 0, active: true },
+        { id: 6, title: "Pension Pauline (67a : 1 200€/m) + Assurance Groupe (100k€)", year: 2061, type: "lump_plus", amount: 100000, durationMonths: 0, active: true }
       ]
     };
 
@@ -2631,16 +2636,23 @@
       triggerConfetti();
     }
 
-    function skipOnboardingWithDemo() {
+        function skipOnboardingWithDemo() {
+      appState = JSON.parse(JSON.stringify(defaultState));
       appState.hasCompletedOnboarding = true;
       closeOnboardingScreen();
       saveCurrentPlan();
+      if (document.getElementById('country-selector')) {
+        document.getElementById('country-selector').value = appState.country || 'BE';
+      }
       renderOverviewCharts();
       renderBudgetView();
       renderEnvelopesView();
       updateSimulatorView();
       renderTimelineEvents();
-      showToast("Mode Démo chargé.", "info");
+      updateHeaderProfile();
+      updatePlansDropdown();
+      showToast("🎯 Scénario Joachim & Pauline (FIRE 2042) chargé avec succès !", "success");
+      triggerConfetti();
     }
 
     // --- MODAL SAVES ---

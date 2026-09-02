@@ -79,7 +79,7 @@
 
   <!-- HEADER -->
   <header class="bg-[#0A0F1D]/95 backdrop-blur-md border-b border-[#1B263B] sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Brand & Plan Name (Left) -->
       <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-max">
@@ -146,7 +146,7 @@
         </select>
 
         <!-- Plans Dropdown -->
-        <select id="plans-dropdown" onchange="onPlanDropdownChange(this.value)" class="bg-[#05070E] border border-amber-500/40 text-amber-300 text-[11px] sm:text-xs rounded-xl px-2 sm:px-2.5 py-1.5 sm:py-2 font-bold focus:outline-none focus:border-amber-400 cursor-pointer max-w-[100px] sm:max-w-[130px] truncate">
+        <select id="plans-dropdown" onchange="onPlanDropdownChange(this.value)" class="bg-[#05070E] border border-amber-500/50 hover:border-amber-400 text-amber-300 text-[11px] sm:text-xs rounded-xl px-2.5 py-1.5 sm:py-2 font-bold focus:outline-none focus:border-amber-400 cursor-pointer min-w-[130px] sm:min-w-[155px] max-w-[210px] truncate shadow-sm transition">
           <option value="default">📂 Mes Plans</option>
         </select>
 
@@ -286,12 +286,12 @@
 
           <!-- Jalon 1: Coast FIRE -->
           <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
-            <div class="flex justify-between items-start">
-              <div>
+            <div class="flex justify-between items-start gap-3">
+              <div class="flex-1 min-w-0">
                 <span class="font-bold text-xs text-white block">Jalon 1 : Coast FIRE</span>
-                <span class="text-[11px] text-slate-400">Capital suffisant pour que les intérêts composés terminent le travail sans plus rien épargner.</span>
+                <span class="text-[11px] text-slate-400 leading-snug">Capital suffisant pour que les intérêts composés terminent le travail sans plus rien épargner.</span>
               </div>
-              <span class="font-mono text-sm font-bold text-sky-400" id="dash-coast-pct">0 %</span>
+              <span class="font-mono text-sm font-bold text-sky-400 whitespace-nowrap shrink-0 pl-1" id="dash-coast-pct">0 %</span>
             </div>
             <div class="w-full bg-[#1B263B] h-2.5 rounded-full overflow-hidden">
               <div id="dash-coast-bar" class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
@@ -304,12 +304,12 @@
 
           <!-- Jalon 2: Full FIRE -->
           <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
-            <div class="flex justify-between items-start">
-              <div>
+            <div class="flex justify-between items-start gap-3">
+              <div class="flex-1 min-w-0">
                 <span class="font-bold text-xs text-white block">Jalon 2 : Indépendance Totale (Full FIRE)</span>
-                <span class="text-[11px] text-slate-400">Capital requis à la date de départ pour générer votre rente à vie.</span>
+                <span class="text-[11px] text-slate-400 leading-snug">Capital requis à la date de départ pour générer votre rente à vie.</span>
               </div>
-              <span class="font-mono text-sm font-bold text-emerald-400" id="dash-fire-pct">0 %</span>
+              <span class="font-mono text-sm font-bold text-emerald-400 whitespace-nowrap shrink-0 pl-1" id="dash-fire-pct">0 %</span>
             </div>
             <div class="w-full bg-[#1B263B] h-3 rounded-full overflow-hidden">
               <div id="dash-fire-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
@@ -2079,7 +2079,8 @@
             if (pill) { pill.className = "px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800 text-[10px] font-bold"; pill.innerText = "DÉFICITAIRE"; }
           } else {
             const margeReal = simReal.capFireReal - simReal.safeTarget;
-            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-2xl text-emerald-400"></i> <div><strong class="block text-emerald-200">Plan SOUTENABLE jusqu'à 90+ ans</strong><span class="text-emerald-300/80">Marge de sécurité nette estimée à ${formatEur(Math.max(0, margeReal))}. Votre rente est protégée.</span></div></div>`;
+            const margeText = (margeReal > 1000) ? `Marge de sécurité nette estimée à +${formatEur(margeReal)}.` : `Objectif de capital atteint (rente pérenne).`;
+            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-2xl text-emerald-400"></i> <div><strong class="block text-emerald-200">Plan SOUTENABLE jusqu'à 90+ ans</strong><span class="text-emerald-300/80">${margeText} Votre rente est protégée contre l'inflation et les chocs de marché.</span></div></div>`;
             vDash.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-5";
             vDash.innerHTML = bannerHtml;
             vSim.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-4";

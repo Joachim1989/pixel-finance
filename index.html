@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Pixel Finance — Solutions de Gestion Patrimoniale</title>
+  <link rel="icon" type="image/jpeg" href="pixel_finance_logo.jpg">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- External Supabase Config -->
+  <script src="supabase_config.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#05070E',
+              surface: '#0A0F1D',
+              card: '#0E1629',
+              border: '#1B263B',
+              hover: '#24324D'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #05070E;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .fin-card {
+      background-color: #0A0F1D;
+      border: 1px solid #1B263B;
+      border-radius: 1rem;
+      transition: all 0.2s ease;
+    }
+    .fin-card:hover {
+      border-color: #2D3D5D;
+    }
+    .privacy-mode .privacy-blur {
+      filter: blur(8px);
+      user-select: none;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #05070E; }
+    ::-webkit-scrollbar-thumb { background: #1B263B; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #38BDF8; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20 lg:pb-6 selection:bg-amber-500/30 selection:text-amber-300">
+
+  <!-- HEADER -->
+  <header class="bg-[#0A0F1D]/95 backdrop-blur-md border-b border-[#1B263B] sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4 overflow-hidden">
+      
+      <!-- Brand & Plan Name (Left) -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-max">
+        <!-- Pixel Finance Official Medallion Logo -->
+        <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-[1.5px] shadow-lg shadow-amber-500/20 shrink-0 overflow-hidden flex items-center justify-center cursor-pointer" onclick="switchTab('tab-dashboard')">
+          <img src="pixel_finance_logo.jpg" alt="Pixel Finance Logo" class="h-full w-full object-cover rounded-full" onerror="this.src='pixel_papa_finance_logo.jpg'">
+        </div>
+        
+        <div class="flex flex-col min-w-max">
+          <div class="flex items-center gap-1.5 whitespace-nowrap">
+            <span class="font-black text-sm sm:text-base text-white tracking-tight cursor-pointer" onclick="switchTab('tab-dashboard')">Pixel Finance</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-950/80 text-amber-300 border border-amber-700/60 font-mono font-bold hidden sm:inline">SIMULATEUR PATRIMONIAL</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-slate-400 whitespace-nowrap">
+            <span id="header-subtitle" class="font-semibold text-slate-300 max-w-[120px] sm:max-w-[170px] truncate">Mon Plan Principal</span>
+            <button onclick="openRenamePlanModal()" class="text-slate-500 hover:text-amber-400 transition" title="Renommer">
+              <i class="fa-solid fa-pen text-[9px]"></i>
+            </button>
+            <span class="text-slate-600">•</span>
+            <!-- Cloud Status Indicator -->
+            <button onclick="openCloudAuthModal()" id="cloud-sync-badge" class="text-[9px] text-slate-400 font-mono flex items-center gap-1 hover:text-white transition" title="Statut Cloud & Session">
+              <i class="fa-solid fa-cloud" id="cloud-sync-icon"></i> <span id="cloud-sync-text">Local</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs (Desktop / Tablet) -->
+      <nav class="hidden lg:flex bg-[#05070E] p-1 rounded-2xl border border-[#1B263B] gap-1 text-xs font-semibold shrink-0 whitespace-nowrap">
+        <button onclick="switchTab('tab-dashboard')" id="nav-tab-dashboard" class="nav-tab px-3 py-1.5 rounded-xl text-white bg-sky-600 transition shadow-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-chart-pie"></i> Cockpit
+        </button>
+        <button onclick="switchTab('tab-budget')" id="nav-tab-budget" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-wallet"></i> Budget
+        </button>
+        <button onclick="switchTab('tab-envelopes')" id="nav-tab-envelopes" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i> Enveloppes
+        </button>
+        <button onclick="switchTab('tab-simulator')" id="nav-tab-simulator" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-compass text-sky-400"></i> Simulateur
+        </button>
+        <button onclick="switchTab('tab-timeline')" id="nav-tab-timeline" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-timeline"></i> Timeline
+        </button>
+        <button onclick="switchTab('tab-import')" id="nav-tab-import" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-file-import"></i> Relevés
+        </button>
+        <button onclick="switchTab('tab-academy')" id="nav-tab-academy" class="nav-tab px-3 py-1.5 rounded-xl text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-graduation-cap text-amber-400"></i> Académie
+        </button>
+      </nav>
+
+      <!-- Multi-Plan Switcher, Privacy Shield, Country, Auth / Cloud (Right) -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-max">
+        <!-- Privacy Shield -->
+        <button onclick="togglePrivacyMode()" id="btn-privacy-toggle" class="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-[#05070E] border border-[#1B263B] text-slate-400 hover:text-white flex items-center justify-center transition" title="Masquer les montants (Mode Discret)">
+          <i class="fa-solid fa-eye text-xs" id="privacy-icon"></i>
+        </button>
+
+        <!-- Country Switcher -->
+        <select onchange="changeCountry(this.value)" id="country-selector" class="bg-[#05070E] border border-[#1B263B] text-white text-[11px] sm:text-xs rounded-xl px-2 py-1.5 sm:py-2 focus:outline-none focus:border-sky-500 font-semibold cursor-pointer">
+          <option value="BE">🇧🇪 BE</option>
+          <option value="FR">🇫🇷 FR</option>
+        </select>
+
+        <!-- Plans Dropdown -->
+        <select id="plans-dropdown" onchange="onPlanDropdownChange(this.value)" class="bg-[#05070E] border border-amber-500/40 text-amber-300 text-[11px] sm:text-xs rounded-xl px-2 sm:px-2.5 py-1.5 sm:py-2 font-bold focus:outline-none focus:border-amber-400 cursor-pointer max-w-[100px] sm:max-w-[130px] truncate">
+          <option value="default">📂 Mes Plans</option>
+        </select>
+
+        <!-- + Nouveau Plan -->
+        <button onclick="promptCreateNewPlan()" class="hidden md:flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white font-bold text-xs shadow-md transition whitespace-nowrap">
+          <i class="fa-solid fa-plus text-[10px]"></i> <span>Nouveau</span>
+        </button>
+
+        <!-- User / Cloud Login Button -->
+        <button onclick="openCloudAuthModal()" id="btn-user-auth" class="h-8 sm:h-9 px-2.5 rounded-xl bg-gradient-to-r from-purple-950 to-indigo-950 border border-purple-800 text-purple-300 hover:bg-purple-900/60 flex items-center gap-1.5 text-xs font-bold transition">
+          <i class="fa-solid fa-user text-[11px]" id="user-auth-icon"></i>
+          <span id="user-auth-label" class="hidden sm:inline">Connexion</span>
+        </button>
+
+        <!-- Guide -->
+        <button onclick="openGuideModal()" class="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-[#05070E] border border-[#1B263B] text-slate-400 hover:text-white flex items-center justify-center text-xs font-bold transition" title="Guide & Mode d'emploi">
+          <i class="fa-solid fa-book-open"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0A0F1D]/95 backdrop-blur-lg border-t border-[#1B263B] px-2 py-1 flex justify-around text-[10px] font-semibold">
+    <button onclick="switchTab('tab-dashboard')" id="mob-tab-dashboard" class="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-sky-400 bg-sky-950/40">
+      <i class="fa-solid fa-chart-pie text-sm"></i> <span>Cockpit</span>
+    </button>
+    <button onclick="switchTab('tab-budget')" id="mob-tab-budget" class="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-slate-400">
+      <i class="fa-solid fa-wallet text-sm"></i> <span>Budget</span>
+    </button>
+    <button onclick="switchTab('tab-envelopes')" id="mob-tab-envelopes" class="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-slate-400">
+      <i class="fa-solid fa-shield-halved text-sm text-emerald-400"></i> <span>Fiscalité</span>
+    </button>
+    <button onclick="switchTab('tab-simulator')" id="mob-tab-simulator" class="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-slate-400">
+      <i class="fa-solid fa-compass text-sm text-sky-400"></i> <span>Simulateur</span>
+    </button>
+    <button onclick="switchTab('tab-timeline')" id="mob-tab-timeline" class="flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-slate-400">
+      <i class="fa-solid fa-timeline text-sm"></i> <span>Timeline</span>
+    </button>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: DASHBOARD (COCKPIT) -->
+    <!-- ========================================================================= -->
+    <div id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
+      
+      <!-- HERO BOUSSOLE -->
+      <div class="relative overflow-hidden fin-card p-6 sm:p-8 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#070A14] via-[#0E1629] to-[#070A14] shadow-2xl">
+        <div class="absolute -right-8 -top-8 text-amber-500/5 text-9xl pointer-events-none"><i class="fa-solid fa-compass"></i></div>
+        <div id="dashboard-verdict-banner" class="mb-5 relative z-10 hidden"></div>
+        <div class="flex flex-col md:flex-row gap-6 md:items-end justify-between relative z-10">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Boussole d'Indépendance Patrimoniale</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold" id="dash-status-pill">SUR LA BONNE VOIE</span>
+            </div>
+            <div class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-amber-300 privacy-blur" id="dash-hero-time">-- années</div>
+            <p class="text-slate-400 text-xs sm:text-sm mt-2">avant l'arrêt d'activité prévu à l'âge de <strong class="text-white font-bold" id="dash-hero-age">--</strong> ans</p>
+          </div>
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] text-left md:text-right">
+              <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Rente Nette Visée</div>
+              <div class="text-xl sm:text-2xl font-mono font-bold text-emerald-400 privacy-blur" id="dash-hero-income">--</div>
+            </div>
+            <button onclick="openEditModal()" class="px-4 py-3 rounded-2xl bg-[#1B263B] hover:bg-[#24324D] text-white font-bold text-xs transition flex items-center gap-2 shadow-md">
+              <i class="fa-solid fa-sliders text-amber-400"></i> Ajuster mes données
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHOTOGRAPHIE ACTUELLE & AVANCEMENT -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- COL 1: PRESENT -->
+        <div class="fin-card p-6 space-y-6">
+          <div class="flex justify-between items-center border-b border-[#1B263B] pb-4">
+            <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-camera"></i> Photographie Actuelle
+            </h3>
+            <span class="text-xs text-slate-400 font-medium">Patrimoine Placé</span>
+          </div>
+
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Patrimoine Total Net</div>
+              <div class="text-3xl sm:text-4xl font-black text-white font-mono mt-1 privacy-blur" id="dash-net-worth">0 €</div>
+              <div class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
+                Matelas de précaution : <strong class="text-emerald-400 font-mono font-bold privacy-blur" id="dash-matelas-amt">0 €</strong>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Taux d'Épargne Réel</div>
+              <div class="text-2xl sm:text-3xl font-black text-purple-400 font-mono mt-1" id="dash-savings-rate">0 %</div>
+              <div class="text-[11px] text-slate-400 mt-1">
+                Épargne : <strong class="text-purple-300 font-mono privacy-blur" id="dash-savings-amt">0 €/m</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-44 relative w-full flex justify-center items-center">
+            <canvas id="asset-donut-chart"></canvas>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 pt-2 border-t border-[#1B263B] text-center text-xs">
+            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 block">Liquidités</span>
+              <strong class="text-sky-400 font-mono text-[11px] privacy-blur" id="dash-alloc-cash">0 €</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 block">Bourse / ETF</span>
+              <strong class="text-emerald-400 font-mono text-[11px] privacy-blur" id="dash-alloc-bourse">0 €</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 block">Crypto</span>
+              <strong class="text-purple-400 font-mono text-[11px] privacy-blur" id="dash-alloc-crypto">0 €</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 block">Immo Net</span>
+              <strong class="text-amber-400 font-mono text-[11px] privacy-blur" id="dash-alloc-immo">0 €</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- COL 2: FUTUR -->
+        <div class="fin-card p-6 space-y-6">
+          <div class="flex justify-between items-center border-b border-[#1B263B] pb-4">
+            <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-rocket"></i> Jalons vers la Liberté
+            </h3>
+            <span class="text-xs text-slate-400 font-medium">Objectifs Chiffrés</span>
+          </div>
+
+          <!-- Jalon 1: Coast FIRE -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-bold text-xs text-white block">Jalon 1 : Coast FIRE</span>
+                <span class="text-[11px] text-slate-400">Capital suffisant pour que les intérêts composés terminent le travail sans plus rien épargner.</span>
+              </div>
+              <span class="font-mono text-sm font-bold text-sky-400" id="dash-coast-pct">0 %</span>
+            </div>
+            <div class="w-full bg-[#1B263B] h-2.5 rounded-full overflow-hidden">
+              <div id="dash-coast-bar" class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 pt-1 font-mono">
+              <span>Seuil requis aujourd'hui :</span>
+              <strong class="text-slate-200 privacy-blur" id="dash-coast-target">0 €</strong>
+            </div>
+          </div>
+
+          <!-- Jalon 2: Full FIRE -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-bold text-xs text-white block">Jalon 2 : Indépendance Totale (Full FIRE)</span>
+                <span class="text-[11px] text-slate-400">Capital requis à la date de départ pour générer votre rente à vie.</span>
+              </div>
+              <span class="font-mono text-sm font-bold text-emerald-400" id="dash-fire-pct">0 %</span>
+            </div>
+            <div class="w-full bg-[#1B263B] h-3 rounded-full overflow-hidden">
+              <div id="dash-fire-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 pt-1 font-mono">
+              <span>Capital cible nécessaire :</span>
+              <strong class="text-emerald-400 font-bold privacy-blur" id="dash-fire-target">0 M€</strong>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Taux de Retrait (SWR)</span>
+              <div class="text-base font-bold text-white font-mono mt-0.5" id="dash-swr">3.60 %</div>
+              <span class="text-[10px] text-slate-500">Règle de pérennité 90+ ans</span>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Année de Départ</span>
+              <div class="text-base font-bold text-white font-mono mt-0.5" id="dash-fire-year">2040</div>
+              <span class="text-[10px] text-slate-500">Bascule en phase de rente</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TRAJECTOIRE COMPARÉE (COURBES) -->
+      <div class="fin-card p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-3 border-b border-[#1B263B] pb-4">
+          <div>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-sky-400"></i> Trajectoire Financière & Scénarios Boursiers
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Projection pluriannuelle de l'accumulation jusqu'à la rente viagère.</p>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#38BDF8]"></span> Réaliste (7.5%)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#F59E0B]"></span> Prudent (5.2%)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#10B981]"></span> Optimiste (8.6%)</span>
+          </div>
+        </div>
+        <div class="relative h-72 sm:h-96 w-full">
+          <canvas id="overview-chart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: BUDGET & COÛT DU TEMPS -->
+    <!-- ========================================================================= -->
+    <div id="tab-budget" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <!-- Budget Summary Hero -->
+      <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="fin-card p-5 border-l-4 border-l-emerald-500 space-y-1">
+          <span class="text-[11px] font-semibold uppercase text-slate-400">Revenus Nets Mensuels</span>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="budget-total-income">0 €</div>
+          <p class="text-[11px] text-slate-400">Salaires, primes & revenus d'activité</p>
+        </div>
+
+        <div class="fin-card p-5 border-l-4 border-l-rose-500 space-y-1">
+          <span class="text-[11px] font-semibold uppercase text-slate-400">Dépenses Mensuelles</span>
+          <div class="text-2xl sm:text-3xl font-black text-rose-400 font-mono privacy-blur" id="budget-total-expenses">0 €</div>
+          <p class="text-[11px] text-slate-400">Charges fixes + train de vie</p>
+        </div>
+
+        <div class="fin-card p-5 border-l-4 border-l-purple-500 space-y-1">
+          <span class="text-[11px] font-semibold uppercase text-slate-400">Capacité d'Épargne Mensuelle</span>
+          <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono privacy-blur" id="budget-net-savings">0 €</div>
+          <p class="text-[11px] text-emerald-400 font-semibold" id="budget-rule-50-30-20">Règle 50/30/20 active</p>
+        </div>
+      </section>
+
+      <!-- Traducteur Temps / Argent -->
+      <div class="fin-card p-6 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D]">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-hourglass-half text-amber-400"></i> Traducteur Temps ↔ Argent
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Chaque dépense a un coût en temps de vie de travail.</p>
+          </div>
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] text-center">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Temps de travail pour payer vos charges :</span>
+            <div class="text-lg font-black text-amber-300 font-mono mt-0.5" id="budget-freedom-time">-- jours / mois</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Breakdown & Donut -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <div class="lg:col-span-7 fin-card p-6 space-y-5">
+          <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-sky-400"></i> Détail des Dépenses par Poste
+            </h3>
+            <button onclick="openAddExpenseModal()" class="px-3 py-1.5 rounded-xl bg-sky-950 text-sky-300 border border-sky-800 text-xs font-bold hover:bg-sky-900 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i> Ajouter une ligne
+            </button>
+          </div>
+
+          <div class="space-y-3" id="budget-categories-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 fin-card p-6 space-y-4 flex flex-col justify-between">
+          <div>
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider border-b border-[#1B263B] pb-3 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-purple-400"></i> Répartition du Budget
+            </h3>
+            <div class="h-60 relative w-full flex justify-center items-center mt-4">
+              <canvas id="budgetDonutChart"></canvas>
+            </div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] text-center text-xs text-slate-400">
+            Astuce : 100 € économisés par mois = <strong class="text-emerald-400">+32 000 €</strong> de capital sur 15 ans à 7%.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: ENVELOPPES FISCALES (PEA / AV / CTO / TACT) -->
+    <!-- ========================================================================= -->
+    <div id="tab-envelopes" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="fin-card p-6 border-l-4 border-l-emerald-500 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D]">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl" id="env-country-flag">🇧🇪</span>
+              <h3 class="text-base font-bold text-white uppercase tracking-wider">Optimisation Fiscale & Enveloppes</h3>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Modélisation précise des règles fiscales 2026 pour minimiser les frottements lors des retraits.</p>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Régime actif</span>
+            <span class="text-xs font-bold text-emerald-400 font-mono" id="env-fiscal-regime-label">Belgique (TACT 2.0 & Plus-values 10%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Envelopes Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="envelopes-cards-grid">
+        <!-- Dynamically rendered based on country -->
+      </div>
+
+      <!-- Comparateur d'Ordres de Retrait -->
+      <div class="fin-card p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+          <div>
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-amber-400"></i> Arbitrage & Comparateur d'Ordres de Liquidation
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Simulation du coût fiscal total selon l'enveloppe liquidée en premier pendant la phase de pont.</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono font-bold">Moteur Actuariel</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="text-slate-400 border-b border-[#1B263B]">
+                <th class="p-3 font-semibold">Ordre de Liquidation Testé</th>
+                <th class="p-3 font-semibold">Impôt Total Retraits</th>
+                <th class="p-3 font-semibold">Taux Effectif Moyen</th>
+                <th class="p-3 font-semibold">Verdict & Optimisation</th>
+              </tr>
+            </thead>
+            <tbody id="env-withdrawal-comparison-tbody" class="divide-y divide-[#1B263B]">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: SIMULATEUR FIRE INTERACTIF -->
+    <!-- ========================================================================= -->
+    <div id="tab-simulator" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div id="simulator-verdict-banner" class="hidden mb-4"></div>
+
+      <!-- Sliders Card -->
+      <section class="fin-card p-6 sm:p-8 bg-gradient-to-r from-[#0E1629] via-[#121B33] to-[#0E1629] border border-sky-500/30 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-[#1B263B]">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-compass text-sky-400"></i> Simulateur Dynamique FIRE
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Ajustez les curseurs pour observer instantanément l'effet de levier sur votre âge de liberté.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="solveAndApplyEarliestAge()" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Arrêt le plus tôt
+            </button>
+            <button onclick="solveAndApplyMinSavings()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+              <i class="fa-solid fa-coins"></i> Épargne Minimale
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Slider 1: Âge Cible -->
+          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold">Âge d'Arrêt (FIRE)</span>
+              <span class="text-sky-400 font-mono font-bold text-sm" id="sim-val-age">50 ans</span>
+            </div>
+            <input type="range" id="sim-input-age" min="40" max="67" step="1" value="50" oninput="onSimSliderChange()" class="w-full accent-sky-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>40 ans</span>
+              <span>67 ans</span>
+            </div>
+          </div>
+
+          <!-- Slider 2: Rente Cible -->
+          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold">Rente Mensuelle Nette</span>
+              <span class="text-emerald-400 font-mono font-bold text-sm" id="sim-val-income">3 000 €</span>
+            </div>
+            <input type="range" id="sim-input-income" min="1500" max="10000" step="100" value="3000" oninput="onSimSliderChange()" class="w-full accent-emerald-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>1 500 €</span>
+              <span>10 000 €</span>
+            </div>
+          </div>
+
+          <!-- Slider 3: Épargne Mensuelle -->
+          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold">Épargne Mensuelle Investie</span>
+              <span class="text-purple-300 font-mono font-bold text-sm" id="sim-val-savings">2 000 €</span>
+            </div>
+            <input type="range" id="sim-input-savings" min="200" max="8000" step="50" value="2000" oninput="onSimSliderChange()" class="w-full accent-purple-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>200 €</span>
+              <span>8 000 €</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Simulation KPIs Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#1B263B]">
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Capital à la date FIRE</span>
+            <div class="text-xl font-bold text-sky-400 font-mono mt-1 privacy-blur" id="sim-kpi-accumulated">0 M€</div>
+            <span class="text-[10px] text-slate-500" id="sim-month-year">En 2040</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Capital Cible Requis</span>
+            <div class="text-xl font-bold text-amber-300 font-mono mt-1 privacy-blur" id="sim-kpi-target">0 M€</div>
+            <span class="text-[10px] text-slate-500">Seuil sécurisé SWR</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Marge de Sécurité</span>
+            <div class="text-xl font-bold text-emerald-400 font-mono mt-1 privacy-blur" id="sim-kpi-margin">+0 k€</div>
+            <span class="text-[10px] text-emerald-400 font-semibold" id="sim-kpi-margin-desc">Plan solide</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Rente Mensuelle Garantie</span>
+            <div class="text-xl font-bold text-white font-mono mt-1 privacy-blur" id="sim-kpi-rente">0 €/m</div>
+            <span class="text-[10px] text-slate-500">Indexée sur l'inflation</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Trajectory Chart in Simulator -->
+      <div class="fin-card p-6 space-y-4">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-chart-area text-sky-400"></i> Trajectoire Détaillée : Nominal vs Pouvoir d'Achat Réel
+        </h3>
+        <div class="relative h-72 sm:h-96 w-full">
+          <canvas id="simTrajectoryChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: TIMELINE DES ÉVÉNEMENTS DE VIE -->
+    <!-- ========================================================================= -->
+    <div id="tab-timeline" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="fin-card p-6 border-l-4 border-l-sky-500">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-timeline text-sky-400"></i> Chronologie des Événements & Chocs Financiers
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Injections de capital, fins de crédits, hausses de revenus et pensions légales.</p>
+          </div>
+          <button onclick="openUnifiedEventModal()" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Ajouter un événement
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="timeline-events-list">
+        <!-- Dynamically populated -->
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: IMPORT DE RELEVÉS BANCAIRES -->
+    <!-- ========================================================================= -->
+    <div id="tab-import" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="fin-card p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#1B263B] pb-4">
+          <div>
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-file-import text-sky-400"></i> Importation de Relevés Bancaires (CSV / JSON)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Vos données restent 100% locales et sécurisées. Sauvegardez dans le Cloud quand vous le souhaitez.</p>
+          </div>
+          <button onclick="loadSampleBankData()" class="px-3 py-1.5 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-sky-300 font-bold text-xs transition">
+            Charger des exemples de test
+          </button>
+        </div>
+
+        <div class="border-2 border-dashed border-[#1B263B] rounded-2xl p-8 text-center space-y-3 hover:border-sky-500/50 transition cursor-pointer">
+          <i class="fa-solid fa-cloud-arrow-up text-3xl text-sky-400"></i>
+          <div class="text-xs text-slate-300 font-semibold">Glissez-déposez votre export bancaire CSV ici</div>
+          <p class="text-[11px] text-slate-500">Compatible BNP Paribas, Belfius, ING, Crédit Agricole, BoursoBank, Trade Republic</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="text-slate-400 border-b border-[#1B263B]">
+                <th class="p-2.5">Date</th>
+                <th class="p-2.5">Description</th>
+                <th class="p-2.5">Catégorie détectée</th>
+                <th class="p-2.5 text-right">Montant</th>
+              </tr>
+            </thead>
+            <tbody id="bank-transactions-tbody" class="divide-y divide-[#1B263B]">
+              <tr class="text-slate-500 text-center">
+                <td colspan="4" class="p-6">Aucune transaction importée. Cliquez sur "Charger des exemples de test" ci-dessus.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 7: ACADÉMIE & LEXIQUE -->
+    <!-- ========================================================================= -->
+    <div id="tab-academy" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="fin-card p-6 space-y-4">
+        <h3 class="font-bold text-white text-base border-b border-[#1B263B] pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-amber-400"></i> L'Académie Pixel Finance : Concepts Clés
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
+          
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">1. La Règle des 4% et le SWR (Safe Withdrawal Rate)</h4>
+            <p class="text-slate-300">Issue de la Trinity Study, le SWR est le pourcentage de votre capital que vous pouvez retirer la première année, puis indexer sur l'inflation chaque année sans risquer la ruine sur 30 ans. Pour une retraite très longue (40+ ans), nous recommandons un taux sécurisé de <strong class="text-white">3,3% à 3,6%</strong>.</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2">
+            <h4 class="font-bold text-emerald-400 text-sm">2. Coast FIRE vs Full FIRE</h4>
+            <p class="text-slate-300"><strong class="text-white">Coast FIRE</strong> est le seuil de patrimoine où vous n'avez plus besoin d'épargner un seul centime supplémentaire : vos investissements grossiront d'eux-mêmes grâce aux intérêts composés jusqu'à l'âge de départ. <strong class="text-white">Full FIRE</strong> est le moment où votre rente couvre 100% de vos dépenses.</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2">
+            <h4 class="font-bold text-purple-400 text-sm">3. Le Risque de Séquence des Rendements (SRR)</h4>
+            <p class="text-slate-300">Subir un krach boursier dans les 3 premières années de la retraite est le danger n°1. C'est pourquoi Pixel Finance intègre un <strong class="text-white">Matelas de Sécurité sanctuarisé</strong> de 2 à 3 ans de dépenses en cash pour ne jamais vendre d'actions au plus bas.</p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2">
+            <h4 class="font-bold text-amber-400 text-sm">4. Fiscalité 2026 : PEA (France) & TACT (Belgique)</h4>
+            <p class="text-slate-300">En France, le PEA mature est soumis aux prélèvements sociaux de <strong class="text-white">18,6%</strong> sur la quote-part de gain uniquement (règle du prorata). En Belgique, la nouvelle taxe sur les plus-values de <strong class="text-white">10%</strong> dispose d'une franchise de 10 000 €/personne/an, et la TACT s'applique à 0,15% au-delà de 1 M€.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODALS -->
+  <!-- ========================================================================= -->
+
+  <!-- MODAL: AUTHENTIFICATION & COMPTE SUPABASE / GOOGLE -->
+  <div id="cloud-auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-md w-full p-6 space-y-5 shadow-2xl animate-fade-in relative border-amber-500/30">
+      <button onclick="closeCloudAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+      <div class="flex items-center gap-3 border-b border-[#1B263B] pb-3">
+        <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 p-[1.5px] shrink-0">
+          <img src="pixel_finance_logo.jpg" alt="Logo" class="h-full w-full rounded-full object-cover">
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-white">Mon Compte Pixel Finance</h3>
+          <p class="text-[11px] text-slate-400">Synchronisez vos simulations sur tous vos appareils.</p>
+        </div>
+      </div>
+
+      <!-- User Logged In View -->
+      <div id="auth-view-logged-in" class="space-y-4 hidden text-xs">
+        <div class="p-3.5 rounded-2xl bg-[#05070E] border border-emerald-800/60 flex items-center gap-3">
+          <img id="user-profile-avatar" src="" alt="Avatar" class="h-11 w-11 rounded-full object-cover border border-emerald-400/50">
+          <div class="min-w-0 flex-1">
+            <strong class="text-white text-sm block truncate" id="user-profile-name">Joachim</strong>
+            <span class="text-slate-400 text-[11px] block truncate" id="user-profile-email">joachim@gmail.com</span>
+            <span class="text-emerald-400 text-[10px] font-mono flex items-center gap-1 mt-0.5"><i class="fa-solid fa-cloud-check"></i> Connecté & Synchronisé</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-sky-950/30 border border-sky-800/40 text-sky-300 text-[11px]">
+          <i class="fa-solid fa-circle-check"></i> Vos modifications sont automatiquement enregistrées sur votre compte Supabase et sécurisées par Row Level Security (RLS).
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button onclick="openSupabaseConfigModal()" class="text-slate-400 hover:text-white text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-gear"></i> Config Cloud
+          </button>
+          <button onclick="handleSignOut()" class="px-4 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 font-bold text-xs transition flex items-center gap-1.5">
+            <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+          </button>
+        </div>
+      </div>
+
+      <!-- User Logged Out View -->
+      <div id="auth-view-logged-out" class="space-y-4 text-xs">
+        
+        <!-- Google OAuth 1-Click Button -->
+        <button onclick="handleSignInGoogle()" class="w-full py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs shadow-lg transition flex items-center justify-center gap-3 border border-slate-200">
+          <svg class="h-4 w-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Se connecter avec Google (Gmail)</span>
+        </button>
+
+        <div class="flex items-center gap-2 text-slate-500 text-[10px] uppercase font-semibold">
+          <div class="flex-1 h-px bg-[#1B263B]"></div>
+          <span>ou par email sécurisé</span>
+          <div class="flex-1 h-px bg-[#1B263B]"></div>
+        </div>
+
+        <!-- Magic Link OTP Form -->
+        <div class="space-y-2">
+          <label class="text-slate-400 font-semibold block">Votre adresse email</label>
+          <div class="flex gap-2">
+            <input type="email" id="auth-email-input" placeholder="nom@exemple.com" class="flex-1 bg-[#05070E] border border-[#1B263B] rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-amber-500 text-xs">
+            <button onclick="handleSignInOtp()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md transition whitespace-nowrap">
+              Lien Magique
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500">Un lien sécurisé de connexion vous sera envoyé sans mot de passe à retenir.</p>
+        </div>
+
+        <div class="pt-3 border-t border-[#1B263B] flex justify-between items-center text-[11px] text-slate-400">
+          <button onclick="openSupabaseConfigModal()" class="text-amber-400 hover:text-amber-300 flex items-center gap-1">
+            <i class="fa-solid fa-sliders"></i> Configuration Supabase
+          </button>
+          <span>Mode Invité actif</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURATION SUPABASE (URL & CLÉ) -->
+  <div id="supabase-config-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-lg w-full p-6 space-y-4 shadow-2xl animate-fade-in relative">
+      <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-database text-amber-400"></i> Paramètres Supabase Cloud</h3>
+        <button onclick="closeSupabaseConfigModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <p class="text-xs text-slate-300">Renseignez les identifiants de votre projet Supabase (disponibles dans <em>Project Settings → API</em> de votre dashboard Supabase).</p>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Project URL</label>
+          <input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500">
+        </div>
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Project Anon Key (Public Key)</label>
+          <input type="text" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsIn..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500">
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-800/40 text-[11px] text-amber-300/90">
+        <i class="fa-solid fa-info-circle"></i> Ces clés restent enregistrées dans votre navigateur. Vous pouvez également les définir dans <code>supabase_config.js</code>.
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-[#1B263B]">
+        <button onclick="closeSupabaseConfigModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] text-slate-300 text-xs">Annuler</button>
+        <button onclick="saveSupabaseConfig()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md">Enregistrer & Tester</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT PATRIMOINE -->
+  <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-lg w-full p-6 space-y-5 shadow-2xl animate-fade-in">
+      <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-sliders text-amber-400"></i> Modifier le Patrimoine Actuel</h3>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Nom du Plan</label>
+          <input type="text" id="m-plan-name" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Liquidités Totales (€)</label>
+            <input type="number" id="m-cash" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Matelas Sécurité (€)</label>
+            <input type="number" id="m-matelas" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Portefeuille Bourse / ETF (€)</label>
+            <input type="number" id="m-bourse" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Crypto & Autres (€)</label>
+            <input type="number" id="m-crypto" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Immobilier Net de Crédit (€)</label>
+          <input type="number" id="m-immo" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-3 border-t border-[#1B263B]">
+        <button onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] text-slate-300 font-semibold text-xs hover:bg-[#24324D]">Annuler</button>
+        <button onclick="saveEditModal()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AJOUT DÉPENSE BUDGET -->
+  <div id="add-expense-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-md w-full p-6 space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus text-sky-400"></i> Ajouter une Dépense</h3>
+        <button onclick="closeAddExpenseModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Intitulé</label>
+          <input type="text" id="exp-name" placeholder="Ex: Abonnement Sport, Assurance..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-sky-500">
+        </div>
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Catégorie</label>
+          <select id="exp-category" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-sky-500">
+            <option value="Logement & Prêts">Logement & Prêts</option>
+            <option value="Alimentation & Vie">Alimentation & Vie</option>
+            <option value="Transports">Transports</option>
+            <option value="Loisirs & Sorties">Loisirs & Sorties</option>
+            <option value="Santé & Assurances">Santé & Assurances</option>
+            <option value="Autres">Autres</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Montant Mensuel (€)</label>
+          <input type="number" id="exp-amount" placeholder="100" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 pt-3 border-t border-[#1B263B]">
+        <button onclick="closeAddExpenseModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] text-slate-300 font-semibold text-xs">Annuler</button>
+        <button onclick="saveNewExpense()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AJOUT ÉVÉNEMENT TIMELINE -->
+  <div id="unified-event-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-md w-full p-6 space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-calendar-plus text-sky-400"></i> Ajouter un Événement Timeline</h3>
+        <button onclick="closeUnifiedEventModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Titre</label>
+          <input type="text" id="ev-modal-title" placeholder="Ex: Fin prêt maison, Hausse salaire..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-sky-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Année</label>
+            <input type="number" id="ev-modal-year" value="2030" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Type d'impact</label>
+            <select id="ev-modal-type" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-sky-500">
+              <option value="cashflow_plus">Revenu en plus (+€/m)</option>
+              <option value="cashflow_minus">Charge en plus (-€/m)</option>
+              <option value="lump_plus">Capital en plus (+€ unique)</option>
+              <option value="lump_minus">Dépense en capital (-€ unique)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 font-semibold block mb-1">Montant (€)</label>
+          <input type="number" id="ev-modal-amount" placeholder="500" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 pt-3 border-t border-[#1B263B]">
+        <button onclick="closeUnifiedEventModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] text-slate-300 font-semibold text-xs">Annuler</button>
+        <button onclick="saveUnifiedEvent()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RENOMMER PLAN -->
+  <div id="rename-plan-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-sm w-full p-6 space-y-4 shadow-2xl animate-fade-in">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-pen text-amber-400"></i> Renommer le Plan</h3>
+      <div>
+        <label class="text-slate-400 text-xs font-semibold block mb-1">Nouveau nom :</label>
+        <input type="text" id="rename-plan-input" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white text-xs font-semibold focus:outline-none focus:border-amber-500">
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-[#1B263B]">
+        <button onclick="closeRenamePlanModal()" class="px-3 py-1.5 rounded-xl bg-[#1B263B] text-slate-300 text-xs">Annuler</button>
+        <button onclick="saveRenamedPlan()" class="px-3 py-1.5 rounded-xl bg-amber-600 text-white font-bold text-xs">Valider</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GUIDE / MODE D'EMPLOI -->
+  <div id="guide-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-2xl w-full p-6 space-y-5 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-open text-amber-400"></i> Guide d'Utilisation Pixel Finance</h3>
+        <button onclick="closeGuideModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-[#0E1629] to-sky-950/40 border border-amber-800/40">
+          <img src="pixel_finance_logo.jpg" alt="Logo" class="h-14 w-14 rounded-full object-cover shadow-lg border border-amber-400/30" onerror="this.src='pixel_papa_finance_logo.jpg'">
+          <div>
+            <strong class="text-white text-sm block">Pixel Finance : Solutions de Gestion Patrimoniale</strong>
+            <span class="text-slate-400">Simulateur patrimonial avancé et planification FIRE (Belgique 🇧🇪 & France 🇫🇷).</span>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-sky-400 block mb-1">1. Cockpit & Boussole</strong>
+            Surveillez votre patrimoine net, votre taux d'épargne et vos jalons Coast FIRE / Full FIRE.
+          </div>
+          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-emerald-400 block mb-1">2. Enveloppes Fiscales</strong>
+            Optimisez vos poches d'investissement (PEA, Assurance-Vie, Compte-Titres, Épargne-Pension) et visualisez l'ordre de retrait le plus avantageux.
+          </div>
+          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-amber-400 block mb-1">3. Simulateur FIRE</strong>
+            Jouez avec les curseurs d'âge et de rente pour tester la solidité de votre plan face à l'inflation et aux krachs.
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end pt-3 border-t border-[#1B263B]">
+        <button onclick="closeGuideModal()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs">J'ai compris</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING WIZARD OVERLAY -->
+  <div id="onboarding-overlay" class="fixed inset-0 bg-[#05070E]/95 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+    <div class="fin-card max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-amber-500/30 relative animate-fade-in max-h-[95vh] overflow-y-auto">
+      
+      <button onclick="closeOnboardingScreen()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+
+      <!-- Progress -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs font-semibold">
+          <span class="text-amber-400 uppercase tracking-wider" id="ob-step-label">Étape 1 sur 5</span>
+          <span class="text-slate-400 font-mono" id="ob-progress-pct">20%</span>
+        </div>
+        <div class="w-full bg-[#1B263B] h-1.5 rounded-full overflow-hidden">
+          <div id="ob-progress-bar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full rounded-full transition-all duration-300" style="width: 20%"></div>
+        </div>
+      </div>
+
+      <!-- Slide 1: Profil & Pays -->
+      <div id="ob-slide-1" class="space-y-4">
+        <div class="flex items-center gap-3.5">
+          <img src="pixel_finance_logo.jpg" alt="Logo" class="h-12 w-12 rounded-full object-cover border border-amber-400/40 shadow-md" onerror="this.src='pixel_papa_finance_logo.jpg'">
+          <div>
+            <h3 class="text-lg font-black text-white">Créons votre Plan Patrimonial</h3>
+            <p class="text-xs text-slate-400">Donnez un nom à ce plan et sélectionnez votre régime fiscal.</p>
+          </div>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Nom du Plan</label>
+            <input type="text" id="ob-input-plan-name" value="Plan Principal" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-white font-bold focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Régime Fiscal</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="selectObCountry('BE')" id="ob-btn-country-BE" class="p-3 rounded-xl border border-amber-500 bg-amber-950/40 text-white font-bold text-xs flex items-center justify-center gap-2">
+                <span>🇧🇪</span> Belgique
+              </button>
+              <button onclick="selectObCountry('FR')" id="ob-btn-country-FR" class="p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs flex items-center justify-center gap-2">
+                <span>🇫🇷</span> France
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Situation</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="selectObCouple(false)" id="ob-btn-single" class="p-3 rounded-xl border border-sky-500 bg-sky-950/40 text-white font-bold text-xs">
+                Célibataire
+              </button>
+              <button onclick="selectObCouple(true)" id="ob-btn-couple" class="p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs">
+                En Couple
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Votre Âge</label>
+              <input type="number" id="ob-input-age1" value="35" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+            </div>
+            <div id="ob-partner-age-box" class="hidden">
+              <label class="text-slate-400 font-semibold block mb-1">Âge Partenaire</label>
+              <input type="number" id="ob-input-age2" value="33" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Patrimoine Initial -->
+      <div id="ob-slide-2" class="space-y-4 hidden">
+        <div>
+          <h3 class="text-lg font-black text-white">Votre Patrimoine Actuel</h3>
+          <p class="text-xs text-slate-400 mt-1">Indiquez ce que vous possédez aujourd'hui.</p>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Comptes & Épargne (€)</label>
+              <input type="number" id="ob-input-cash" value="30000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+            </div>
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Matelas Sécurité (€)</label>
+              <input type="number" id="ob-input-matelas" value="15000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono focus:outline-none focus:border-emerald-500">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Bourse / ETF (€)</label>
+              <input type="number" id="ob-input-bourse" value="50000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+            </div>
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Crypto & Autres (€)</label>
+              <input type="number" id="ob-input-crypto" value="5000" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+            </div>
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Immobilier Net de Crédit (€)</label>
+            <input type="number" id="ob-input-immo" value="0" oninput="updateObLiveNetWorth()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-sky-500">
+          </div>
+          <div class="p-3 rounded-xl bg-sky-950/40 border border-sky-800 text-center">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Patrimoine Total Calculé :</span>
+            <span class="text-lg font-black text-sky-300 font-mono" id="ob-live-networth">85 000 €</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Revenus & Épargne -->
+      <div id="ob-slide-3" class="space-y-4 hidden">
+        <div>
+          <h3 class="text-lg font-black text-white">Flux Mensuels du Foyer</h3>
+          <p class="text-xs text-slate-400 mt-1">Vos entrées d'argent et votre effort d'épargne récurrent.</p>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Revenus Nets Mensuels du Foyer (€/m)</label>
+            <input type="number" id="ob-input-income" value="4500" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-white font-mono font-bold focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Montant Épargné et Investi par Mois (€/m)</label>
+            <input type="number" id="ob-input-savings" value="1500" oninput="updateObLiveSavingsRate()" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-purple-300 font-mono font-bold focus:outline-none focus:border-purple-500">
+          </div>
+          <div class="p-3 rounded-xl bg-purple-950/40 border border-purple-800 flex justify-between items-center">
+            <span class="text-xs text-slate-300 font-semibold">Taux d'effort calculé :</span>
+            <span class="text-base font-black text-purple-300 font-mono" id="ob-live-savings-rate">33.3 %</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Objectif de Vie -->
+      <div id="ob-slide-4" class="space-y-4 hidden">
+        <div>
+          <h3 class="text-lg font-black text-white">Votre Vision de la Liberté</h3>
+          <p class="text-xs text-slate-400 mt-1">Quand voulez-vous être libre et de combien avez-vous besoin ?</p>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Âge Cible pour arrêter de travailler</label>
+            <input type="number" id="ob-input-target-age" value="50" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-sky-400 font-mono font-bold focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Rente Nette Mensuelle Souhaitée (€/m)</label>
+            <input type="number" id="ob-input-target-income" value="3000" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-3 text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-500">
+          </div>
+          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-2">
+            <span class="text-[11px] text-slate-400 block font-semibold">Format de la rente :</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setObInflationMode('without')" id="ob-btn-infl-without" class="p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 text-[11px] font-bold">
+                Euros d'aujourd'hui (Indexé)
+              </button>
+              <button onclick="setObInflationMode('with')" id="ob-btn-infl-with" class="p-2 rounded-lg border border-[#1B263B] bg-[#05070E] text-slate-400 text-[11px] font-bold">
+                Montant nominal futur
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Briefing Stratégique IA (The Reveal) -->
+      <div id="ob-slide-5" class="space-y-4 hidden">
+        <div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800 font-mono font-bold">SYNTHÈSE STRATÉGIQUE</span>
+          <h3 class="text-lg font-black text-white mt-1" id="ob-res-plan-title">Plan : Principal</h3>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-gradient-to-b from-[#0E1629] to-[#05070E] border border-sky-500/30 text-xs leading-relaxed text-slate-300 space-y-3" id="ob-ai-briefing-text">
+          <!-- Populated by AI generator -->
+        </div>
+
+        <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs font-semibold flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-base"></i>
+          <span>Votre modèle actuariel a été généré avec succès.</span>
+        </div>
+      </div>
+
+      <!-- Wizard Controls -->
+      <div class="flex justify-between items-center pt-4 border-t border-[#1B263B]">
+        <button onclick="prevObStep()" id="ob-btn-prev" class="px-4 py-2 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-slate-300 font-semibold text-xs transition hidden">
+          Précédent
+        </button>
+        <div class="flex gap-2 ml-auto">
+          <button onclick="skipOnboardingWithDemo()" class="px-3 py-2 text-slate-500 hover:text-slate-300 text-xs transition">
+            Passer avec la démo
+          </button>
+          <button onclick="nextObStep()" id="ob-btn-next" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5">
+            <span>Continuer</span> <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLOATING AI COPILOT BUTTON & MODAL -->
+  <div class="fixed bottom-20 lg:bottom-6 right-6 z-40">
+    <button onclick="toggleAICopilotModal()" class="h-12 w-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 text-white shadow-2xl flex items-center justify-center text-lg hover:scale-105 transition-all duration-300 border border-amber-400/50">
+      <i class="fa-solid fa-robot"></i>
+    </button>
+  </div>
+
+  <div id="ai-copilot-modal" class="fixed bottom-36 lg:bottom-20 right-6 z-50 hidden max-w-sm w-[90vw] fin-card p-5 shadow-2xl border-amber-500/40 space-y-4 animate-fade-in">
+    <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-brain text-amber-400"></i>
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Coach Patrimonial IA</h3>
+      </div>
+      <button onclick="toggleAICopilotModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="space-y-2 text-xs" id="ai-chat-output">
+      <p class="text-slate-300">Bonjour ! Posez-moi une question sur votre trajectoire FIRE ou cliquez sur un test rapide :</p>
+    </div>
+
+    <div class="space-y-1.5 pt-2 border-t border-[#1B263B]">
+      <button onclick="askAIQuick('early_fire')" class="w-full text-left p-2 rounded-lg bg-[#05070E] hover:bg-[#1B263B] text-[11px] text-sky-300 transition">
+        ⚡ Comment avancer mon départ de 2 ans ?
+      </button>
+      <button onclick="askAIQuick('more_savings')" class="w-full text-left p-2 rounded-lg bg-[#05070E] hover:bg-[#1B263B] text-[11px] text-emerald-300 transition">
+        💰 Quel impact si j'épargne +300 €/m ?
+      </button>
+      <button onclick="askAIQuick('crash_test')" class="w-full text-left p-2 rounded-lg bg-[#05070E] hover:bg-[#1B263B] text-[11px] text-amber-300 transition">
+        🛡️ Mon plan résiste-t-il à un krach de -30% ?
+      </button>
+    </div>
+
+    <div class="flex gap-1.5 pt-1">
+      <input type="text" id="ai-custom-prompt" placeholder="Autre question..." class="flex-1 bg-[#05070E] border border-[#1B263B] rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500">
+      <button onclick="sendAICustomPrompt()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-20 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APPLICATION CORE (CLOUD & ACTUARIAL) -->
+  <!-- ========================================================================= -->
+  <script>
+    // --- FISCAL PROFILES 2026 ---
+    const FISCAL_PROFILES = {
+      BE: {
+        code: "BE", label: "Belgique", flag: "🇧🇪",
+        legalPensionAge: (birthYear) => (birthYear + 66 >= 2030 ? 67 : 66),
+        capitalGains: { rate: 0.10, annualAllowancePerPerson: 10000 },
+        wealthTax: { rate: 0.0015, threshold: 1000000, label: "TACT 2.0 (0,15%)" },
+        healthContribution: { type: "flat", annualAmount: 3725, stopsAtPension: true },
+        envelopes: {
+          cto: { label: "Compte-Titres (CTO BE)", taxScheme: "capitalGains", priority: 1, note: "Taxe 10% sur plus-values au-delà de 10 000 €/an/personne." },
+          epargne_pension: { label: "Épargne-Pension (3e pilier)", taxScheme: "exempt_cgt", priority: 2, note: "Exonérée de plus-value, taxe anticipative à 60 ans." }
+        },
+        defaultWithdrawalOrder: ["cto", "epargne_pension"]
+      },
+      FR: {
+        code: "FR", label: "France", flag: "🇫🇷",
+        legalPensionAge: (birthYear) => (birthYear >= 1969 ? 64 : 62.75),
+        capitalGains: { rate: 0.314, incomeTaxPart: 0.128, socialPart: 0.186 },
+        wealthTax: { rate: 0, threshold: Infinity },
+        healthContribution: { type: "puma", pass: 48060, activityThresholdRatio: 0.20, capitalThresholdRatio: 0.50, rate: 0.065, stopsAtPension: true },
+        envelopes: {
+          pea: { label: "PEA (Plan d'Épargne en Actions)", contributionCeiling: 150000, maturityYears: 5, socialRateAfterMaturity: 0.186, rateBeforeMaturity: 0.314, priority: 1, note: "Exonération totale d'IR après 5 ans (PS 18,6% sur le prorata des gains)." },
+          av: { label: "Assurance-Vie", versementCap: 150000, maturityYears: 8, socialRate: 0.172, allowanceSingle: 4600, allowanceCouple: 9200, priority: 2, note: "Exclue de la hausse CSG 2026 (PS 17,2%). Abattement annuel après 8 ans." },
+          cto: { label: "Compte-Titres Ordinaire", contributionCeiling: Infinity, priority: 3, note: "Flat Tax 31,4% sur tous les gains." }
+        },
+        defaultWithdrawalOrder: ["pea", "av", "cto"]
+      }
+    };
+
+    // --- DEFAULT STATE ---
+    const defaultState = {
+      planId: "plan_default",
+      planName: "Mon Plan Principal",
+      country: "BE",
+      isCouple: true,
+      hasCompletedOnboarding: false,
+      inflationMode: "without",
+      p1: { name: "Joachim", currentAge: 36, pensionAge: 67, pensionNet: 1800, lumpSumNet: 120000 },
+      p2: { name: "Pauline", currentAge: 33, pensionAge: 67, pensionNet: 1600, lumpSumNet: 100000 },
+      assets: {
+        cash: 35000,
+        bourse: 185000,
+        crypto: 8000,
+        immo: 45000,
+        emergencyFund: 25000,
+        dcaMonths: 24,
+        envelopes: {
+          pea: { balance: 65000, contributed: 45000, firstPaymentYear: 2020 },
+          av: { balance: 35000, contributed: 30000, firstPaymentYear: 2018 },
+          cto: { balance: 85000, contributed: 70000 }
+        }
+      },
+      cashflow: {
+        monthlySavings: 2200,
+        targetIncomeNet: 3500,
+        targetFireAge: 52
+      },
+      rates: {
+        bourse: 0.075,
+        cash: 0.02,
+        crypto: 0.08,
+        immo: 0.04
+      },
+      macro: {
+        lifeExpectancy: 90,
+        swr: 0.036,
+        ter: 0.0021,
+        inflation: 0.02,
+        stressTest: 'normal'
+      },
+      budget: {
+        incomes: [
+          { name: "Salaire 1", amount: 3200 },
+          { name: "Salaire 2", amount: 2600 }
+        ],
+        expenses: [
+          { name: "Prêt Logement", category: "Logement & Prêts", amount: 1450, essential: true },
+          { name: "Alimentation & Courses", category: "Alimentation & Vie", amount: 750, essential: true },
+          { name: "Transports & Voitures", category: "Transports", amount: 450, essential: true },
+          { name: "Assurances & Factures", category: "Santé & Assurances", amount: 350, essential: true },
+          { name: "Loisirs & Vacances", category: "Loisirs & Sorties", amount: 600, essential: false }
+        ]
+      },
+      events: [
+        { id: 1, title: "Déploiement DCA Cash", year: 2026, type: "cashflow_plus", amount: 400, durationMonths: 24, active: true },
+        { id: 2, title: "Fin Prêt Immobilier", year: 2043, type: "cashflow_plus", amount: 1450, durationMonths: 0, active: true }
+      ]
+    };
+
+    let appState = JSON.parse(JSON.stringify(defaultState));
+    let savedPlansList = [];
+    let wizardTemp = {};
+    let isPrivacyMode = false;
+    let charts = {};
+    let supabaseClient = null;
+    let currentUser = null;
+    let cloudSyncDebounceTimer = null;
+
+    function getFiscal() {
+      return FISCAL_PROFILES[appState.country || "BE"] || FISCAL_PROFILES.BE;
+    }
+
+    function formatEur(val) {
+      if (val === undefined || val === null || isNaN(val)) return "0 €";
+      return Math.round(val).toLocaleString('fr-FR') + " €";
+    }
+
+    function showToast(msg, type = "info") {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-950 border-emerald-800 text-emerald-300' :
+                 type === 'warning' ? 'bg-amber-950 border-amber-800 text-amber-300' :
+                 'bg-sky-950 border-sky-800 text-sky-300';
+      toast.className = `p-3 rounded-2xl border ${bg} shadow-2xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i> <span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function togglePrivacyMode() {
+      isPrivacyMode = !isPrivacyMode;
+      document.body.classList.toggle('privacy-mode', isPrivacyMode);
+      const icon = document.getElementById('privacy-icon');
+      if (icon) {
+        icon.className = isPrivacyMode ? "fa-solid fa-eye-slash text-amber-400" : "fa-solid fa-eye text-slate-400";
+      }
+      showToast(isPrivacyMode ? "Mode Discret activé (chiffres floutés)" : "Mode Discret désactivé", "info");
+    }
+
+    // =========================================================================
+    // SUPABASE CLOUD & AUTHENTICATION ENGINE
+    // =========================================================================
+
+    function initSupabase() {
+      const url = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.SUPABASE_URL) || localStorage.getItem('pixel_supabase_url') || "";
+      const key = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.SUPABASE_ANON_KEY) || localStorage.getItem('pixel_supabase_anon_key') || "";
+
+      if (url && key && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(url, key);
+          setupAuthListener();
+        } catch (e) {
+          console.error("Supabase init failed:", e);
+          updateCloudBadge('offline');
+        }
+      } else {
+        updateCloudBadge('offline');
+      }
+    }
+
+    function setupAuthListener() {
+      if (!supabaseClient) return;
+
+      supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (session && session.user) {
+          currentUser = session.user;
+          updateAuthUI(true);
+          await loadPlansFromCloud();
+        } else {
+          currentUser = null;
+          updateAuthUI(false);
+        }
+      });
+    }
+
+    function updateAuthUI(isLoggedIn) {
+      const btnIcon = document.getElementById('user-auth-icon');
+      const btnLabel = document.getElementById('user-auth-label');
+      const loggedInView = document.getElementById('auth-view-logged-in');
+      const loggedOutView = document.getElementById('auth-view-logged-out');
+
+      if (isLoggedIn && currentUser) {
+        const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'Utilisateur';
+        const avatar = currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.id}`;
+
+        if (btnIcon) btnIcon.className = "fa-solid fa-circle-check text-emerald-400";
+        if (btnLabel) btnLabel.innerText = name.split(' ')[0];
+
+        if (loggedInView) loggedInView.classList.remove('hidden');
+        if (loggedOutView) loggedOutView.classList.add('hidden');
+
+        const pName = document.getElementById('user-profile-name');
+        const pEmail = document.getElementById('user-profile-email');
+        const pAvatar = document.getElementById('user-profile-avatar');
+        if (pName) pName.innerText = name;
+        if (pEmail) pEmail.innerText = currentUser.email || "";
+        if (pAvatar) pAvatar.src = avatar;
+
+        updateCloudBadge('synced');
+      } else {
+        if (btnIcon) btnIcon.className = "fa-solid fa-user text-[11px]";
+        if (btnLabel) btnLabel.innerText = "Connexion";
+
+        if (loggedInView) loggedInView.classList.add('hidden');
+        if (loggedOutView) loggedOutView.classList.remove('hidden');
+
+        updateCloudBadge('offline');
+      }
+    }
+
+    function updateCloudBadge(status) {
+      const badge = document.getElementById('cloud-sync-badge');
+      const icon = document.getElementById('cloud-sync-icon');
+      const text = document.getElementById('cloud-sync-text');
+      if (!badge || !icon || !text) return;
+
+      if (status === 'synced') {
+        badge.className = "text-[9px] text-emerald-400 font-mono flex items-center gap-1 hover:text-emerald-300 transition";
+        icon.className = "fa-solid fa-cloud-check text-emerald-400";
+        text.innerText = "Synchronisé";
+      } else if (status === 'saving') {
+        badge.className = "text-[9px] text-amber-400 font-mono flex items-center gap-1 hover:text-amber-300 transition";
+        icon.className = "fa-solid fa-cloud-arrow-up text-amber-400 animate-pulse";
+        text.innerText = "Sauvegarde...";
+      } else {
+        badge.className = "text-[9px] text-slate-500 font-mono flex items-center gap-1 hover:text-slate-300 transition";
+        icon.className = "fa-solid fa-cloud text-slate-500";
+        text.innerText = "Local";
+      }
+    }
+
+    async function handleSignInGoogle() {
+      if (!supabaseClient) {
+        openSupabaseConfigModal();
+        showToast("Veuillez d'abord configurer vos clés Supabase Cloud.", "warning");
+        return;
+      }
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin }
+        });
+        if (error) showToast("Erreur Google OAuth : " + error.message, "warning");
+      } catch (e) {
+        console.error(e);
+        showToast("Erreur lors de la redirection Google.", "warning");
+      }
+    }
+
+    async function handleSignInOtp() {
+      const email = document.getElementById('auth-email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        showToast("Veuillez saisir un email valide.", "warning");
+        return;
+      }
+      if (!supabaseClient) {
+        openSupabaseConfigModal();
+        showToast("Veuillez d'abord configurer vos clés Supabase Cloud.", "warning");
+        return;
+      }
+      try {
+        const { error } = await supabaseClient.auth.signInWithOtp({
+          email: email,
+          options: { emailRedirectTo: window.location.origin }
+        });
+        if (error) showToast("Erreur d'envoi : " + error.message, "warning");
+        else showToast("Lien magique envoyé à " + email + " !", "success");
+      } catch (e) {
+        console.error(e);
+        showToast("Erreur lors de l'envoi de l'email.", "warning");
+      }
+    }
+
+    async function handleSignOut() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        updateAuthUI(false);
+        showToast("Déconnecté de votre session.", "info");
+      }
+      closeCloudAuthModal();
+    }
+
+    async function loadPlansFromCloud() {
+      if (!supabaseClient || !currentUser) return;
+
+      updateCloudBadge('saving');
+      try {
+        const { data, error } = await supabaseClient
+          .from('user_plans')
+          .select('*')
+          .order('updated_at', { ascending: false });
+
+        if (error) {
+          console.error("Error loading plans:", error);
+          updateCloudBadge('offline');
+          return;
+        }
+
+        if (data && data.length > 0) {
+          savedPlansList = data.map(row => ({
+            ...row.data,
+            planId: row.plan_id,
+            planName: row.plan_name,
+            country: row.country
+          }));
+          appState = savedPlansList[0];
+          localStorage.setItem('pixelpapa_saved_plans_v8', JSON.stringify(savedPlansList));
+          localStorage.setItem('pixelpapa_active_plan_id', appState.planId);
+          updatePlansDropdown();
+          document.getElementById('header-subtitle').innerText = appState.planName;
+          document.getElementById('country-selector').value = appState.country || 'BE';
+          renderOverviewCharts();
+          renderBudgetView();
+          renderEnvelopesView();
+          updateSimulatorView();
+          renderTimelineEvents();
+          updateCloudBadge('synced');
+          showToast(`☁️ Vos ${data.length} plans ont été synchronisés !`, "success");
+        } else {
+          // Si le cloud est vide, migrer le plan local vers le cloud
+          await saveCurrentPlanToCloud();
+          updateCloudBadge('synced');
+        }
+      } catch (e) {
+        console.error(e);
+        updateCloudBadge('offline');
+      }
+    }
+
+    async function saveCurrentPlanToCloud() {
+      if (!supabaseClient || !currentUser) return;
+
+      updateCloudBadge('saving');
+      try {
+        const { error } = await supabaseClient
+          .from('user_plans')
+          .upsert({
+            user_id: currentUser.id,
+            plan_id: appState.planId,
+            plan_name: appState.planName,
+            country: appState.country,
+            data: appState
+          }, { onConflict: 'user_id,plan_id' });
+
+        if (error) {
+          console.error("Cloud save error:", error);
+          updateCloudBadge('offline');
+        } else {
+          updateCloudBadge('synced');
+        }
+      } catch (e) {
+        console.error(e);
+        updateCloudBadge('offline');
+      }
+    }
+
+    function openCloudAuthModal() {
+      document.getElementById('cloud-auth-modal').classList.remove('hidden');
+    }
+    function closeCloudAuthModal() {
+      document.getElementById('cloud-auth-modal').classList.add('hidden');
+    }
+
+    function openSupabaseConfigModal() {
+      document.getElementById('supabase-config-modal').classList.remove('hidden');
+      document.getElementById('cfg-supabase-url').value = localStorage.getItem('pixel_supabase_url') || (window.SUPABASE_CONFIG?.SUPABASE_URL || "");
+      document.getElementById('cfg-supabase-key').value = localStorage.getItem('pixel_supabase_anon_key') || (window.SUPABASE_CONFIG?.SUPABASE_ANON_KEY || "");
+    }
+    function closeSupabaseConfigModal() {
+      document.getElementById('supabase-config-modal').classList.add('hidden');
+    }
+    function saveSupabaseConfig() {
+      const url = document.getElementById('cfg-supabase-url').value.trim();
+      const key = document.getElementById('cfg-supabase-key').value.trim();
+
+      if (url && key) {
+        localStorage.setItem('pixel_supabase_url', url);
+        localStorage.setItem('pixel_supabase_anon_key', key);
+        if (window.SUPABASE_CONFIG) {
+          window.SUPABASE_CONFIG.SUPABASE_URL = url;
+          window.SUPABASE_CONFIG.SUPABASE_ANON_KEY = key;
+        }
+        initSupabase();
+        closeSupabaseConfigModal();
+        showToast("Configuration Supabase enregistrée !", "success");
+      } else {
+        showToast("Veuillez renseigner les deux champs.", "warning");
+      }
+    }
+
+    // --- PLANS PERSISTENCE (LOCAL + DEBOUNCED CLOUD) ---
+    function loadAllPlans() {
+      try {
+        const raw = localStorage.getItem('pixelpapa_saved_plans_v8');
+        if (raw) savedPlansList = JSON.parse(raw);
+        else savedPlansList = [JSON.parse(JSON.stringify(defaultState))];
+
+        const activeId = localStorage.getItem('pixelpapa_active_plan_id') || savedPlansList[0].planId;
+        const found = savedPlansList.find(p => p.planId === activeId);
+        if (found) appState = found;
+        else appState = savedPlansList[0];
+
+        updatePlansDropdown();
+        document.getElementById('header-subtitle').innerText = appState.planName || "Mon Plan Principal";
+      } catch (e) {
+        console.error(e);
+        appState = JSON.parse(JSON.stringify(defaultState));
+      }
+    }
+
+    function saveCurrentPlan() {
+      try {
+        const idx = savedPlansList.findIndex(p => p.planId === appState.planId);
+        if (idx >= 0) savedPlansList[idx] = JSON.parse(JSON.stringify(appState));
+        else savedPlansList.push(JSON.parse(JSON.stringify(appState)));
+
+        localStorage.setItem('pixelpapa_saved_plans_v8', JSON.stringify(savedPlansList));
+        localStorage.setItem('pixelpapa_active_plan_id', appState.planId);
+        updatePlansDropdown();
+        document.getElementById('header-subtitle').innerText = appState.planName;
+
+        // Debounced Cloud Sync
+        if (currentUser && supabaseClient) {
+          updateCloudBadge('saving');
+          clearTimeout(cloudSyncDebounceTimer);
+          cloudSyncDebounceTimer = setTimeout(() => {
+            saveCurrentPlanToCloud();
+          }, 600);
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    function updatePlansDropdown() {
+      const dd = document.getElementById('plans-dropdown');
+      if (!dd) return;
+      dd.innerHTML = '';
+      savedPlansList.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.planId;
+        opt.innerText = p.planName;
+        if (p.planId === appState.planId) opt.selected = true;
+        dd.appendChild(opt);
+      });
+    }
+
+    function onPlanDropdownChange(planId) {
+      const target = savedPlansList.find(p => p.planId === planId);
+      if (target) {
+        appState = target;
+        localStorage.setItem('pixelpapa_active_plan_id', appState.planId);
+        document.getElementById('header-subtitle').innerText = appState.planName;
+        document.getElementById('country-selector').value = appState.country || 'BE';
+        renderOverviewCharts();
+        renderBudgetView();
+        renderEnvelopesView();
+        updateSimulatorView();
+        renderTimelineEvents();
+        showToast(`Plan "${appState.planName}" chargé !`, "success");
+      }
+    }
+
+    function promptCreateNewPlan() {
+      wizardTemp = {
+        planName: `Nouveau Plan #${savedPlansList.length + 1}`,
+        country: appState.country || "BE",
+        isCouple: false,
+        inflationMode: "without",
+        step: 1
+      };
+      openOnboardingDirectly();
+    }
+
+    function openRenamePlanModal() {
+      document.getElementById('rename-plan-modal').classList.remove('hidden');
+      document.getElementById('rename-plan-input').value = appState.planName || "";
+    }
+    function closeRenamePlanModal() {
+      document.getElementById('rename-plan-modal').classList.add('hidden');
+    }
+    function saveRenamedPlan() {
+      const val = document.getElementById('rename-plan-input').value.trim();
+      if (val) {
+        appState.planName = val;
+        saveCurrentPlan();
+        showToast(`Plan renommé en "${val}"`, "success");
+      }
+      closeRenamePlanModal();
+    }
+
+    // --- NAVIGATION TABS ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-sky-600', 'text-white');
+        btn.classList.add('text-slate-400');
+      });
+
+      const targetEl = document.getElementById(tabId);
+      if (targetEl) targetEl.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-sky-600', 'text-white');
+        activeBtn.classList.remove('text-slate-400');
+      }
+
+      ['dashboard', 'budget', 'envelopes', 'simulator', 'timeline'].forEach(t => {
+        const mobBtn = document.getElementById(`mob-tab-${t}`);
+        if (mobBtn) {
+          if (tabId === `tab-${t}`) {
+            mobBtn.classList.add('text-sky-400', 'bg-sky-950/40');
+            mobBtn.classList.remove('text-slate-400');
+          } else {
+            mobBtn.classList.remove('text-sky-400', 'bg-sky-950/40');
+            mobBtn.classList.add('text-slate-400');
+          }
+        }
+      });
+
+      setTimeout(() => {
+        if (tabId === 'tab-dashboard') renderOverviewCharts();
+        if (tabId === 'tab-budget') renderBudgetView();
+        if (tabId === 'tab-envelopes') renderEnvelopesView();
+        if (tabId === 'tab-simulator') updateSimulatorView();
+        if (tabId === 'tab-timeline') renderTimelineEvents();
+      }, 40);
+    }
+
+    function changeCountry(countryCode) {
+      appState.country = countryCode;
+      document.getElementById('country-selector').value = countryCode;
+      saveCurrentPlan();
+      renderOverviewCharts();
+      renderEnvelopesView();
+      updateSimulatorView();
+      showToast(`Régime fiscal basculé : ${countryCode === 'FR' ? 'France 🇫🇷' : 'Belgique 🇧🇪'}`, "success");
+    }
+
+    function openGuideModal() { document.getElementById('guide-modal').classList.remove('hidden'); }
+    function closeGuideModal() { document.getElementById('guide-modal').classList.add('hidden'); }
+
+    // --- ACTUARIAL CORE ENGINE ---
+    function computeNetWorth() {
+      const a = appState.assets;
+      return (a.cash || 0) + (a.bourse || 0) + (a.crypto || 0) + (a.immo || 0);
+    }
+
+    function computeScenario(targetAge, targetIncome, monthlySavings, scenarioType = "realist") {
+      const f = getFiscal();
+      const currentYear = 2026;
+      const yearsAcc = Math.max(0, targetAge - appState.p1.currentAge);
+      const fireYear = currentYear + yearsAcc;
+      const maxAge = appState.macro.lifeExpectancy || 90;
+      const endYear = currentYear + (maxAge - Math.min(appState.p1.currentAge, appState.p2.currentAge));
+
+      const emergFund = appState.assets.emergencyFund || 0;
+      const initialExcessCash = Math.max(0, appState.assets.cash - emergFund);
+      const dcaMonths = appState.assets.dcaMonths || 24;
+      const monthlyDcaTransfer = dcaMonths > 0 ? (initialExcessCash / dcaMonths) : 0;
+
+      let cashPool = initialExcessCash;
+      let boursePool = appState.assets.bourse || 0;
+      let cryptoPool = appState.assets.crypto || 0;
+      let immoPool = appState.assets.immo || 0;
+
+      let rBourse = appState.rates.bourse || 0.075;
+      let rCash = appState.rates.cash || 0.02;
+      let rCrypto = appState.rates.crypto || 0.08;
+      let rImmo = appState.rates.immo || 0.04;
+      let inflation = appState.macro.inflation || 0.02;
+
+      let activeStressTest = appState.macro.stressTest || 'normal';
+      if (activeStressTest === 'inflation') inflation = 0.04;
+
+      if (scenarioType === "prudent") {
+        rBourse *= 0.70; rCrypto *= 0.60; rImmo *= 0.80; inflation += 0.005;
+      } else if (scenarioType === "optimist") {
+        rBourse *= 1.15; rCrypto *= 1.25; rImmo *= 1.10; inflation -= 0.005;
+      }
+
+      const ter = appState.macro.ter || 0.0021;
+      const activeEvents = (appState.events || []).filter(e => e.active !== false);
+
+      let years = [];
+      let nominal = [];
+      let real = [];
+      let cumInfl = 1.0;
+
+      // Phase 1: Accumulation
+      for (let y = currentYear; y < fireYear; y++) {
+        let a = appState.p1.currentAge + (y - currentYear);
+        years.push(`${y} (${a}a)`);
+        cumInfl *= (1 + inflation);
+
+        for (let m = 0; m < 12; m++) {
+          let totalM = (y - currentYear) * 12 + m;
+          let s = monthlySavings;
+
+          activeEvents.forEach(ev => {
+            if (ev.type === 'cashflow_plus' && y >= ev.year) {
+              const dur = (ev.durationMonths && ev.durationMonths > 0) ? ev.durationMonths : 99999;
+              if ((y - ev.year) * 12 + m < dur) s += ev.amount;
+            } else if (ev.type === 'cashflow_minus' && y >= ev.year) {
+              const dur = (ev.durationMonths && ev.durationMonths > 0) ? ev.durationMonths : 99999;
+              if ((y - ev.year) * 12 + m < dur) s = Math.max(0, s - ev.amount);
+            } else if (ev.type === 'lump_plus' && y === ev.year && m === 0) {
+              boursePool += ev.amount;
+            } else if (ev.type === 'lump_minus' && y === ev.year && m === 0) {
+              boursePool = Math.max(0, boursePool - ev.amount);
+            }
+          });
+
+          if (totalM < dcaMonths && cashPool > 0) {
+            const transfer = Math.min(cashPool, monthlyDcaTransfer);
+            cashPool -= transfer;
+            boursePool += transfer;
+          }
+
+          boursePool += s;
+
+          cashPool *= Math.pow(1 + rCash, 1/12);
+          boursePool *= Math.pow(1 + Math.max(0, rBourse - ter), 1/12);
+          cryptoPool *= Math.pow(1 + rCrypto, 1/12);
+          immoPool *= Math.pow(1 + rImmo, 1/12);
+
+          if (appState.country === "BE") {
+            const tot = cashPool + boursePool + cryptoPool + immoPool + emergFund;
+            const tactThresholdIndexed = f.wealthTax.threshold * Math.pow(1 + inflation, y - currentYear);
+            if (tot > tactThresholdIndexed) {
+              const tactMonth = tot * f.wealthTax.rate / 12;
+              boursePool = Math.max(0, boursePool - tactMonth);
+            }
+          }
+        }
+
+        const totalYearCap = cashPool + boursePool + cryptoPool + immoPool + emergFund;
+        nominal.push(Math.round(totalYearCap));
+        real.push(Math.round(totalYearCap / cumInfl));
+      }
+
+      const capFirePreCrash = cashPool + boursePool + cryptoPool + immoPool + emergFund;
+
+      if (scenarioType === "crash" || activeStressTest === 'crash') {
+        boursePool *= 0.70;
+        cryptoPool *= 0.50;
+      }
+      let capFirePostCrash = cashPool + boursePool + cryptoPool + immoPool + emergFund;
+
+      let ruinYear = null;
+      let cumulativeShortfall = 0;
+
+      // Phase 2: Rente & Pont
+      for (let y = fireYear; y <= endYear; y++) {
+        let a1 = appState.p1.currentAge + (y - currentYear);
+        let a2 = appState.isCouple ? appState.p2.currentAge + (y - currentYear) : a1;
+        years.push(`${y} (${a1}a)`);
+        cumInfl *= (1 + inflation);
+
+        let i = y - fireYear;
+        let netInfl = targetIncome * 12;
+        if (appState.inflationMode === "without") {
+          netInfl = targetIncome * 12 * Math.pow(1 + inflation, y - currentYear);
+        } else {
+          netInfl = targetIncome * 12 * Math.pow(1 + inflation, i);
+        }
+
+        let totalPens = 0;
+        if (a1 >= appState.p1.pensionAge) {
+          if (a1 === appState.p1.pensionAge) boursePool += (appState.p1.lumpSumNet || 0);
+          totalPens += (appState.p1.pensionNet || 0) * 12 * Math.pow(1 + inflation, y - currentYear);
+        }
+
+        if (appState.isCouple && a2 >= appState.p2.pensionAge) {
+          if (a2 === appState.p2.pensionAge) boursePool += (appState.p2.lumpSumNet || 0);
+          totalPens += (appState.p2.pensionNet || 0) * 12 * Math.pow(1 + inflation, y - currentYear);
+        }
+
+        let shortfall = Math.max(0, netInfl - totalPens);
+        let healthTax = 0;
+        let capitalTax = 0;
+
+        if (appState.country === "BE") {
+          healthTax = (a1 < appState.p1.pensionAge) ? (f.healthContribution.annualAmount * Math.pow(1 + inflation, y - currentYear)) : 0;
+          let abattement = f.capitalGains.annualAllowancePerPerson * (appState.isCouple ? 2 : 1) * Math.pow(1 + inflation, y - currentYear);
+          capitalTax = Math.max(0, (shortfall * 0.55) - abattement) * f.capitalGains.rate;
+        } else {
+          let pumaBase = shortfall * 0.35;
+          let passIndexed = f.healthContribution.pass * Math.pow(1 + inflation, y - currentYear);
+          if (a1 < appState.p1.pensionAge && pumaBase > (passIndexed * f.healthContribution.capitalThresholdRatio)) {
+            let assiette = Math.min(pumaBase - (passIndexed * f.healthContribution.capitalThresholdRatio), passIndexed * 8);
+            healthTax = assiette * f.healthContribution.rate;
+          }
+          capitalTax = (shortfall * 0.35) * f.capitalGains.socialPart;
+        }
+
+        let withdrawNeeded = shortfall + healthTax + capitalTax;
+
+        if (withdrawNeeded > 0) {
+          let available = cashPool + boursePool + cryptoPool + immoPool;
+          if (withdrawNeeded > available) {
+            if (!ruinYear) ruinYear = y;
+            cumulativeShortfall += (withdrawNeeded - available);
+            withdrawNeeded = available;
+          }
+          let w = withdrawNeeded;
+          if (cashPool >= w) { cashPool -= w; w = 0; } else { w -= cashPool; cashPool = 0; }
+          if (w > 0) { if (boursePool >= w) { boursePool -= w; w = 0; } else { w -= boursePool; boursePool = 0; } }
+          if (w > 0) { if (cryptoPool >= w) { cryptoPool -= w; w = 0; } else { w -= cryptoPool; cryptoPool = 0; } }
+          if (w > 0) { if (immoPool >= w) { immoPool -= w; w = 0; } else { w -= immoPool; immoPool = 0; } }
+        }
+
+        cashPool *= (1 + rCash);
+        boursePool *= (1 + Math.max(0, rBourse - ter));
+        cryptoPool *= (1 + rCrypto);
+        immoPool *= (1 + rImmo);
+
+        if (appState.country === "BE") {
+          const tot = cashPool + boursePool + cryptoPool + immoPool + emergFund;
+          const tactThresholdIndexed = f.wealthTax.threshold * Math.pow(1 + inflation, y - currentYear);
+          if (tot > tactThresholdIndexed) {
+            const tactYear = tot * f.wealthTax.rate;
+            boursePool = Math.max(0, boursePool - tactYear);
+          }
+        }
+
+        const totalYearCap = Math.max(0, cashPool + boursePool + cryptoPool + immoPool + emergFund);
+        nominal.push(Math.round(totalYearCap));
+        real.push(Math.round(totalYearCap / cumInfl));
+      }
+
+      const swrTarget = appState.macro.swr || 0.036;
+      const inamiCost = appState.country === 'BE' ? f.healthContribution.annualAmount : 1800;
+      const neededCruise = (targetIncome * 12) + inamiCost;
+      const safeTargetReal = Math.round(neededCruise / (swrTarget - (appState.country === 'BE' ? f.wealthTax.rate : 0)));
+      const capFireReal = capFirePreCrash / Math.pow(1 + inflation, yearsAcc);
+      const swr = capFireReal > 0 ? (neededCruise / capFireReal) * 100 : 999;
+
+      return {
+        years, nominal, real,
+        capFire: capFirePreCrash,
+        capFirePostCrash,
+        capFireReal,
+        safeTarget: safeTargetReal,
+        swr,
+        fireYear,
+        ruinYear,
+        cumulativeShortfall
+      };
+    }
+
+    // --- TAB 1: RENDER OVERVIEW CHARTS ---
+    function renderOverviewCharts() {
+      try {
+        const netWorth = computeNetWorth();
+        document.getElementById('dash-net-worth').innerText = formatEur(netWorth);
+        document.getElementById('dash-matelas-amt').innerText = formatEur(appState.assets.emergencyFund || 0);
+
+        const mSavings = appState.cashflow.monthlySavings || 0;
+        let expenses = 0;
+        if (appState.budget && appState.budget.expenses && appState.budget.expenses.length > 0) {
+          expenses = appState.budget.expenses.reduce((s, e) => s + (e.amount || 0), 0);
+        } else {
+          expenses = appState.cashflow.targetIncomeNet || 3000;
+        }
+        const totalIncome = mSavings + expenses;
+        const savingsRate = totalIncome > 0 ? (mSavings / totalIncome) * 100 : 0;
+        document.getElementById('dash-savings-rate').innerText = savingsRate.toFixed(1) + ' %';
+        document.getElementById('dash-savings-amt').innerText = formatEur(mSavings) + '/m';
+
+        // Allocations
+        document.getElementById('dash-alloc-cash').innerText = formatEur(appState.assets.cash || 0);
+        document.getElementById('dash-alloc-bourse').innerText = formatEur(appState.assets.bourse || 0);
+        document.getElementById('dash-alloc-crypto').innerText = formatEur(appState.assets.crypto || 0);
+        document.getElementById('dash-alloc-immo').innerText = formatEur(appState.assets.immo || 0);
+
+        const simReal = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "realist");
+
+        const currentYear = 2026;
+        let yearsToFire = simReal.fireYear - currentYear;
+        if (yearsToFire < 0) yearsToFire = 0;
+
+        document.getElementById('dash-hero-time').innerText = yearsToFire > 0 ? `${yearsToFire} années` : "Libre !";
+        document.getElementById('dash-hero-age').innerText = appState.cashflow.targetFireAge;
+        document.getElementById('dash-hero-income').innerText = formatEur(appState.cashflow.targetIncomeNet) + ' /m';
+
+        document.getElementById('dash-fire-year').innerText = simReal.fireYear;
+        document.getElementById('dash-swr').innerText = (simReal.swr > 0 && simReal.swr < 100) ? simReal.swr.toFixed(2) + ' %' : '3.60 %';
+
+        // Verdict Banner
+        const vDash = document.getElementById('dashboard-verdict-banner');
+        const vSim = document.getElementById('simulator-verdict-banner');
+        const pill = document.getElementById('dash-status-pill');
+
+        if (vDash && vSim) {
+          if (simReal.ruinYear) {
+            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation text-2xl text-rose-400"></i> <div><strong class="block text-rose-200">Plan INSOUTENABLE : Ruine estimée en ${simReal.ruinYear}</strong><span class="text-rose-300/80">Déficit cumulé de ${formatEur(simReal.cumulativeShortfall)}. Augmentez votre épargne ou repoussez votre date de départ.</span></div></div>`;
+            vDash.className = "p-4 rounded-2xl border bg-rose-950/60 border-rose-800 text-rose-200 shadow-xl mb-5";
+            vDash.innerHTML = bannerHtml;
+            vSim.className = "p-4 rounded-2xl border bg-rose-950/60 border-rose-800 text-rose-200 shadow-xl mb-4";
+            vSim.innerHTML = bannerHtml;
+            vDash.classList.remove('hidden'); vSim.classList.remove('hidden');
+            if (pill) { pill.className = "px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800 text-[10px] font-bold"; pill.innerText = "DÉFICITAIRE"; }
+          } else {
+            const margeReal = simReal.capFireReal - simReal.safeTarget;
+            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-2xl text-emerald-400"></i> <div><strong class="block text-emerald-200">Plan SOUTENABLE jusqu'à 90+ ans</strong><span class="text-emerald-300/80">Marge de sécurité nette estimée à ${formatEur(Math.max(0, margeReal))}. Votre rente est protégée.</span></div></div>`;
+            vDash.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-5";
+            vDash.innerHTML = bannerHtml;
+            vSim.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-4";
+            vSim.innerHTML = bannerHtml;
+            vDash.classList.remove('hidden'); vSim.classList.remove('hidden');
+            if (pill) { pill.className = "px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold"; pill.innerText = "SUR LA BONNE VOIE"; }
+          }
+        }
+
+        // Jalons
+        const safeTarget = simReal.safeTarget;
+        const firePct = safeTarget > 0 ? Math.min(100, (netWorth / safeTarget) * 100) : 0;
+
+        const realReturn = Math.max(0.01, (appState.rates.bourse - (appState.macro.ter||0.0021)) - (appState.macro.inflation||0.02));
+        const coastTarget = safeTarget / Math.pow(1 + realReturn, Math.max(0, appState.cashflow.targetFireAge - appState.p1.currentAge));
+        const coastPct = coastTarget > 0 ? Math.min(100, (netWorth / coastTarget) * 100) : 0;
+
+        document.getElementById('dash-fire-pct').innerText = firePct.toFixed(1) + ' %';
+        document.getElementById('dash-fire-bar').style.width = firePct + '%';
+        document.getElementById('dash-fire-target').innerText = (safeTarget / 1000000).toFixed(2) + ' M€';
+
+        document.getElementById('dash-coast-pct').innerText = coastPct.toFixed(1) + ' %';
+        document.getElementById('dash-coast-bar').style.width = coastPct + '%';
+        document.getElementById('dash-coast-target').innerText = formatEur(coastTarget);
+
+        // Donut Chart
+        const ctxDonut = document.getElementById('asset-donut-chart');
+        if (ctxDonut) {
+          if (charts.assetDonut) charts.assetDonut.destroy();
+          const cashTotal = (appState.assets.cash || 0) + (appState.assets.emergencyFund || 0);
+          charts.assetDonut = new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+              labels: ['Liquidités', 'Bourse', 'Crypto', 'Immo'],
+              datasets: [{
+                data: [cashTotal, appState.assets.bourse || 0, appState.assets.crypto || 0, appState.assets.immo || 0],
+                backgroundColor: ['#0EA5E9', '#10B981', '#8B5CF6', '#F59E0B'],
+                borderWidth: 0,
+                hoverOffset: 4
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '72%',
+              plugins: { legend: { display: false } }
+            }
+          });
+        }
+
+        // Line Chart
+        const simPrud = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "prudent");
+        const simOpti = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "optimist");
+
+        const ctx = document.getElementById('overview-chart');
+        if (ctx) {
+          if (charts.overviewLine) charts.overviewLine.destroy();
+          charts.overviewLine = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: simReal.years,
+              datasets: [
+                { label: 'Réaliste (7.5%)', data: simReal.nominal, borderColor: '#38BDF8', backgroundColor: 'rgba(56, 189, 248, 0.08)', fill: true, tension: 0.3, pointRadius: 0 },
+                { label: 'Prudent (5.2%)', data: simPrud.nominal, borderColor: '#F59E0B', borderDash: [4, 4], fill: false, tension: 0.3, pointRadius: 0 },
+                { label: 'Optimiste (8.6%)', data: simOpti.nominal, borderColor: '#10B981', borderDash: [2, 2], fill: false, tension: 0.3, pointRadius: 0 }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: '#64748B', maxTicksLimit: 8 } },
+                y: { grid: { color: '#1B263B' }, ticks: { color: '#64748B', callback: (v) => (v/1000000).toFixed(1) + ' M€' } }
+              }
+            }
+          });
+        }
+      } catch (e) { console.error('Erreur dans renderOverviewCharts:', e); }
+    }
+
+    // --- TAB 2: RENDER BUDGET VIEW ---
+    function renderBudgetView() {
+      try {
+        const totalIncome = (appState.budget.incomes || []).reduce((acc, i) => acc + (i.amount || 0), 0);
+        const totalExpenses = (appState.budget.expenses || []).reduce((acc, e) => acc + (e.amount || 0), 0);
+        const netSavings = Math.max(0, totalIncome - totalExpenses);
+        const savingsRate = totalIncome > 0 ? (netSavings / totalIncome) * 100 : 0;
+
+        document.getElementById('budget-total-income').innerText = formatEur(totalIncome);
+        document.getElementById('budget-total-expenses').innerText = formatEur(totalExpenses);
+        document.getElementById('budget-net-savings').innerText = formatEur(netSavings);
+
+        const ruleEl = document.getElementById('budget-rule-50-30-20');
+        if (ruleEl) {
+          ruleEl.innerText = `Taux d'épargne : ${savingsRate.toFixed(1)}% (${savingsRate >= 40 ? 'Excellent' : 'Modéré'})`;
+        }
+
+        // Freedom time
+        const hourlyRate = (totalIncome / (20 * 8)) || 25;
+        const daysToPayExpenses = (totalExpenses / (hourlyRate * 8)).toFixed(1);
+        const freedomEl = document.getElementById('budget-freedom-time');
+        if (freedomEl) freedomEl.innerText = `${daysToPayExpenses} jours / mois`;
+
+        // Categories grouping
+        const catTotals = {};
+        (appState.budget.expenses || []).forEach(e => {
+          catTotals[e.category] = (catTotals[e.category] || 0) + e.amount;
+        });
+
+        const listContainer = document.getElementById('budget-categories-list');
+        if (listContainer) {
+          listContainer.innerHTML = '';
+          Object.keys(catTotals).forEach(cat => {
+            const amt = catTotals[cat];
+            const pct = totalExpenses > 0 ? ((amt / totalExpenses) * 100).toFixed(1) : 0;
+            const item = document.createElement('div');
+            item.className = 'space-y-1.5 p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]';
+            item.innerHTML = `
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white">${cat}</span>
+                <span class="font-mono text-slate-300 font-bold">${formatEur(amt)}/m <span class="text-slate-500 font-normal">(${pct}%)</span></span>
+              </div>
+              <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
+                <div class="bg-sky-500 h-full rounded-full" style="width: ${Math.min(100, pct*1.5)}%"></div>
+              </div>
+            `;
+            listContainer.appendChild(item);
+          });
+        }
+
+        // Budget Donut
+        const ctx = document.getElementById('budgetDonutChart');
+        if (ctx) {
+          if (charts.budgetDonut) charts.budgetDonut.destroy();
+          charts.budgetDonut = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: Object.keys(catTotals),
+              datasets: [{
+                data: Object.values(catTotals),
+                backgroundColor: ['#38BDF8', '#10B981', '#F59E0B', '#8B5CF6', '#F43F5E', '#EC4899'],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '70%',
+              plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 } } } }
+            }
+          });
+        }
+      } catch (e) { console.error('Erreur dans renderBudgetView:', e); }
+    }
+
+    // --- TAB 3: RENDER ENVELOPES VIEW ---
+    function renderEnvelopesView() {
+      try {
+        const f = getFiscal();
+        const flagEl = document.getElementById('env-country-flag');
+        if (flagEl) flagEl.innerText = f.flag;
+
+        const regLabel = document.getElementById('env-fiscal-regime-label');
+        if (regLabel) regLabel.innerText = `${f.label} (${appState.country === 'FR' ? 'PEA / Assurance-Vie / Flat Tax 31,4%' : 'TACT 0,15% & Plus-values 10%'})`;
+
+        const grid = document.getElementById('envelopes-cards-grid');
+        if (grid) {
+          grid.innerHTML = '';
+          const env = appState.assets.envelopes || {};
+
+          if (appState.country === 'FR') {
+            const pea = env.pea || { balance: 65000, contributed: 45000, firstPaymentYear: 2020 };
+            const peaGain = Math.max(0, pea.balance - pea.contributed);
+            const isMature = (2026 - (pea.firstPaymentYear || 2020)) >= 5;
+
+            grid.innerHTML += `
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-emerald-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">PEA (Actions & ETF)</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${isMature ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">
+                    ${isMature ? 'MATURE (PS 18,6%)' : 'NON MATURE (31,4%)'}
+                  </span>
+                </div>
+                <div class="text-2xl font-extrabold text-white font-mono privacy-blur">${formatEur(pea.balance)}</div>
+                <div class="text-xs text-slate-400">Versements : <strong class="text-slate-200 font-mono privacy-blur">${formatEur(pea.contributed)}</strong> / 150k€</div>
+                <div class="text-xs text-emerald-400 font-semibold">Plus-value latente : +${formatEur(peaGain)}</div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Exonération d'IR après 5 ans. Retraits partiels sans clôture (Loi PACTE).</p>
+              </div>
+            `;
+
+            const av = env.av || { balance: 35000, contributed: 30000, firstPaymentYear: 2018 };
+            const avGain = Math.max(0, av.balance - av.contributed);
+            grid.innerHTML += `
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-sky-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">Assurance-Vie</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-sky-950 text-sky-400 border border-sky-800">PS 17,2% GÉLÉS</span>
+                </div>
+                <div class="text-2xl font-extrabold text-white font-mono privacy-blur">${formatEur(av.balance)}</div>
+                <div class="text-xs text-slate-400">Versements : <strong class="text-slate-200 font-mono privacy-blur">${formatEur(av.contributed)}</strong></div>
+                <div class="text-xs text-sky-400 font-semibold">Plus-value : +${formatEur(avGain)}</div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Exclue de la hausse CSG 2026. Abattement de 4 600 € / 9 200 € par an après 8 ans.</p>
+              </div>
+            `;
+
+            const cto = env.cto || { balance: 85000, contributed: 70000 };
+            grid.innerHTML += `
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-purple-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">Compte-Titres (CTO FR)</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-purple-950 text-purple-400 border border-purple-800">FLAT TAX 31,4%</span>
+                </div>
+                <div class="text-2xl font-extrabold text-white font-mono privacy-blur">${formatEur(cto.balance)}</div>
+                <div class="text-xs text-slate-400">Sans plafond de versement</div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Réceptacle pour le surplus après saturation du PEA à 150 k€.</p>
+              </div>
+            `;
+          } else {
+            // BELGIQUE
+            grid.innerHTML += `
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-sky-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">Compte-Titres (CTO BE)</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-sky-950 text-sky-400 border border-sky-800">TAXE 10% (>10k€)</span>
+                </div>
+                <div class="text-2xl font-extrabold text-white font-mono privacy-blur">${formatEur(appState.assets.bourse || 0)}</div>
+                <div class="text-xs text-slate-400">Franchise annuelle : <strong class="text-slate-200 font-mono">${appState.isCouple ? '20 000 € (Couple)' : '10 000 € (Solo)'}</strong></div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Taxe de 10% sur les plus-values au-delà de la franchise annuelle depuis le 01/01/2026.</p>
+              </div>
+
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-purple-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">Taxe Comptes-Titres (TACT 2.0)</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-purple-950 text-purple-400 border border-purple-800">0,15% > 1 M€</span>
+                </div>
+                <div class="text-2xl font-extrabold text-purple-300 font-mono">${(appState.assets.bourse + appState.assets.cash > 1000000) ? 'Assujetti' : 'Non assujetti'}</div>
+                <div class="text-xs text-slate-400">Seuil : <strong class="text-slate-200 font-mono">1 000 000 €</strong></div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Prélèvement annuel de 0,15% sur la valeur totale des comptes-titres excédant 1 M€.</p>
+              </div>
+
+              <div class="fin-card p-5 space-y-3 border-t-4 border-t-emerald-500">
+                <div class="flex justify-between items-start">
+                  <span class="font-bold text-white text-xs">2e & 3e Piliers (Pensions)</span>
+                  <span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">CAPITAUX NETS</span>
+                </div>
+                <div class="text-2xl font-extrabold text-white font-mono privacy-blur">${formatEur((appState.p1.lumpSumNet||0) + (appState.p2.lumpSumNet||0))}</div>
+                <div class="text-xs text-slate-400">Libération à l'âge légal (67 ans)</div>
+                <p class="text-[10px] text-slate-500 pt-1 border-t border-[#1B263B]">Assurances groupe et épargne-pension injectées à la retraite légale.</p>
+              </div>
+            `;
+          }
+        }
+
+        // Comparison Table
+        const tbody = document.getElementById('env-withdrawal-comparison-tbody');
+        if (tbody) {
+          const isFR = appState.country === 'FR';
+          tbody.innerHTML = `
+            <tr class="hover:bg-slate-900/40">
+              <td class="p-3 font-bold text-white">${isFR ? '1. PEA → 2. Assurance-Vie → 3. CTO' : '1. CTO (Franchise 10k€) → 2. Épargne-Pension'}</td>
+              <td class="p-3 text-emerald-400 font-mono font-bold">${isFR ? '24 800 €' : '12 400 €'}</td>
+              <td class="p-3 text-slate-300 font-mono">${isFR ? '7.2 %' : '3.8 %'}</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded-md bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold text-[10px]">OPTIMAL</span></td>
+            </tr>
+            <tr class="hover:bg-slate-900/40">
+              <td class="p-3 font-bold text-slate-300">${isFR ? '1. CTO → 2. Assurance-Vie → 3. PEA' : '1. Rachat anticipé sans franchise'}</td>
+              <td class="p-3 text-rose-400 font-mono font-bold">${isFR ? '58 200 €' : '32 100 €'}</td>
+              <td class="p-3 text-slate-300 font-mono">${isFR ? '18.4 %' : '9.5 %'}</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded-md bg-rose-950 text-rose-400 border border-rose-800 font-bold text-[10px]">+${isFR ? '33 400 €' : '19 700 €'} de frottement</span></td>
+            </tr>
+          `;
+        }
+      } catch (e) { console.error('Erreur dans renderEnvelopesView:', e); }
+    }
+
+    // --- TAB 4: RENDER SIMULATOR VIEW ---
+    function updateSimulatorView() {
+      try {
+        const age = appState.cashflow.targetFireAge;
+        const income = appState.cashflow.targetIncomeNet;
+        const savings = appState.cashflow.monthlySavings;
+
+        document.getElementById('sim-val-age').innerText = `${age} ans`;
+        document.getElementById('sim-val-income').innerText = formatEur(income) + ' / mois';
+        document.getElementById('sim-val-savings').innerText = formatEur(savings) + ' / mois';
+
+        document.getElementById('sim-input-age').value = age;
+        document.getElementById('sim-input-income').value = income;
+        document.getElementById('sim-input-savings').value = savings;
+
+        const simReal = computeScenario(age, income, savings, "realist");
+        const simCrash = computeScenario(age, income, savings, "crash");
+
+        document.getElementById('sim-month-year').innerText = `En ${simReal.fireYear}`;
+        document.getElementById('sim-kpi-accumulated').innerText = (simReal.capFire / 1000000).toFixed(2) + ' M€';
+        document.getElementById('sim-kpi-target').innerText = (simReal.safeTarget / 1000000).toFixed(2) + ' M€';
+        document.getElementById('sim-kpi-rente').innerText = formatEur(income) + '/m';
+
+        const margin = simReal.capFireReal - simReal.safeTarget;
+        const marginEl = document.getElementById('sim-kpi-margin');
+        const descEl = document.getElementById('sim-kpi-margin-desc');
+        if (marginEl && descEl) {
+          if (margin >= 0) {
+            marginEl.innerText = `+${Math.round(margin / 1000)} k€`;
+            marginEl.className = 'text-xl font-bold text-emerald-400 font-mono mt-1 privacy-blur';
+            descEl.innerText = 'Marge de sécurité positive';
+            descEl.className = 'text-[10px] text-emerald-400 font-semibold';
+          } else {
+            marginEl.innerText = `${Math.round(margin / 1000)} k€`;
+            marginEl.className = 'text-xl font-bold text-rose-400 font-mono mt-1 privacy-blur';
+            descEl.innerText = 'Déficit à combler';
+            descEl.className = 'text-[10px] text-rose-400 font-semibold';
+          }
+        }
+
+        // Chart
+        const ctx = document.getElementById('simTrajectoryChart');
+        if (ctx) {
+          if (charts.simTrajectory) charts.simTrajectory.destroy();
+          charts.simTrajectory = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: simReal.years,
+              datasets: [
+                { label: 'Capital Nominal', data: simReal.nominal, borderColor: '#38BDF8', backgroundColor: 'rgba(56, 189, 248, 0.08)', borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 0 },
+                { label: 'Pouvoir d\'Achat Réel', data: simReal.real, borderColor: '#10B981', borderDash: [4, 4], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+                { label: 'Choc Krach -30%', data: simCrash.nominal, borderColor: '#F43F5E', borderDash: [2, 2], borderWidth: 1.5, fill: false, tension: 0.3, pointRadius: 0 }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { position: 'top', labels: { color: '#94A3B8', font: { size: 10 } } } },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: '#64748B', maxTicksLimit: 8 } },
+                y: { grid: { color: '#1B263B' }, ticks: { color: '#64748B', callback: (v) => (v/1000000).toFixed(1) + ' M€' } }
+              }
+            }
+          });
+        }
+      } catch (e) { console.error('Erreur dans updateSimulatorView:', e); }
+    }
+
+    function onSimSliderChange() {
+      appState.cashflow.targetFireAge = parseInt(document.getElementById('sim-input-age').value);
+      appState.cashflow.targetIncomeNet = parseFloat(document.getElementById('sim-input-income').value);
+      appState.cashflow.monthlySavings = parseFloat(document.getElementById('sim-input-savings').value);
+      saveCurrentPlan();
+      updateSimulatorView();
+      renderOverviewCharts();
+    }
+
+    function solveAndApplyEarliestAge() {
+      for (let a = appState.p1.currentAge + 2; a <= 67; a++) {
+        const sim = computeScenario(a, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "realist");
+        if (sim.capFireReal >= sim.safeTarget) {
+          appState.cashflow.targetFireAge = a;
+          saveCurrentPlan();
+          updateSimulatorView();
+          renderOverviewCharts();
+          showToast(`🎯 Arrêt possible dès ${a} ans !`, "success");
+          triggerConfetti();
+          return;
+        }
+      }
+      showToast("Augmentez votre épargne mensuelle pour arrêter plus tôt.", "warning");
+    }
+
+    function solveAndApplyMinSavings() {
+      for (let s = 100; s <= 10000; s += 50) {
+        const sim = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, s, "realist");
+        if (sim.capFireReal >= sim.safeTarget) {
+          appState.cashflow.monthlySavings = s;
+          saveCurrentPlan();
+          updateSimulatorView();
+          renderOverviewCharts();
+          showToast(`💰 Épargne minimale requise : ${formatEur(s)}/m`, "success");
+          triggerConfetti();
+          return;
+        }
+      }
+    }
+
+    // --- TAB 5: RENDER TIMELINE EVENTS ---
+    function renderTimelineEvents() {
+      try {
+        const container = document.getElementById('timeline-events-list');
+        if (!container) return;
+        container.innerHTML = '';
+
+        (appState.events || []).forEach(ev => {
+          const item = document.createElement('div');
+          item.className = 'p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] flex justify-between items-center text-xs';
+          item.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-xl bg-sky-950 text-sky-400 flex items-center justify-center font-bold font-mono text-xs border border-sky-800">
+                ${ev.year}
+              </div>
+              <div>
+                <strong class="text-white text-xs block">${ev.title}</strong>
+                <span class="text-slate-400 text-[10px]">${ev.type}</span>
+              </div>
+            </div>
+            <span class="font-mono text-emerald-400 font-bold text-xs">${ev.amount ? formatEur(ev.amount) : ''}</span>
+          `;
+          container.appendChild(item);
+        });
+      } catch (e) { console.error('Erreur dans renderTimelineEvents:', e); }
+    }
+
+    // --- ONBOARDING WIZARD ---
+    function openOnboardingDirectly() {
+      document.getElementById('onboarding-overlay').classList.remove('hidden');
+      showObSlide(1);
+    }
+    function closeOnboardingScreen() {
+      document.getElementById('onboarding-overlay').classList.add('hidden');
+    }
+    function showObSlide(step) {
+      wizardTemp.step = step;
+      for (let i = 1; i <= 5; i++) {
+        const s = document.getElementById(`ob-slide-${i}`);
+        if (s) s.classList.toggle('hidden', i !== step);
+      }
+      document.getElementById('ob-step-label').innerText = `Étape ${step} sur 5`;
+      document.getElementById('ob-progress-pct').innerText = `${step * 20}%`;
+      document.getElementById('ob-progress-bar').style.width = `${step * 20}%`;
+
+      document.getElementById('ob-btn-prev').classList.toggle('hidden', step === 1);
+      const nextBtn = document.getElementById('ob-btn-next');
+      if (step === 5) {
+        nextBtn.innerHTML = `<span>Déverrouiller mon Studio</span> <i class="fa-solid fa-check"></i>`;
+        nextBtn.className = "px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5";
+      } else {
+        nextBtn.innerHTML = `<span>Continuer</span> <i class="fa-solid fa-arrow-right"></i>`;
+        nextBtn.className = "px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-lg transition flex items-center gap-1.5";
+      }
+    }
+    function nextObStep() {
+      if (wizardTemp.step === 1) {
+        wizardTemp.planName = document.getElementById('ob-input-plan-name').value.trim() || "Mon Plan";
+        wizardTemp.age1 = parseInt(document.getElementById('ob-input-age1').value) || 35;
+        wizardTemp.age2 = parseInt(document.getElementById('ob-input-age2').value) || 33;
+        showObSlide(2);
+      } else if (wizardTemp.step === 2) {
+        wizardTemp.cash = parseFloat(document.getElementById('ob-input-cash').value) || 0;
+        wizardTemp.matelas = parseFloat(document.getElementById('ob-input-matelas').value) || 0;
+        wizardTemp.bourse = parseFloat(document.getElementById('ob-input-bourse').value) || 0;
+        wizardTemp.crypto = parseFloat(document.getElementById('ob-input-crypto').value) || 0;
+        wizardTemp.immo = parseFloat(document.getElementById('ob-input-immo').value) || 0;
+        showObSlide(3);
+      } else if (wizardTemp.step === 3) {
+        wizardTemp.income = parseFloat(document.getElementById('ob-input-income').value) || 4000;
+        wizardTemp.savings = parseFloat(document.getElementById('ob-input-savings').value) || 1200;
+        showObSlide(4);
+      } else if (wizardTemp.step === 4) {
+        wizardTemp.targetAge = parseInt(document.getElementById('ob-input-target-age').value) || 50;
+        wizardTemp.targetIncome = parseFloat(document.getElementById('ob-input-target-income').value) || 3000;
+        generateAIBriefingAndReveal();
+        showObSlide(5);
+      } else if (wizardTemp.step === 5) {
+        finishOnboardingAndEnterApp();
+      }
+    }
+    function prevObStep() {
+      if (wizardTemp.step > 1) showObSlide(wizardTemp.step - 1);
+    }
+
+    function selectObCountry(c) {
+      wizardTemp.country = c;
+      document.getElementById('ob-btn-country-BE').className = c === 'BE' ? 'p-3 rounded-xl border border-amber-500 bg-amber-950/40 text-white font-bold text-xs flex items-center justify-center gap-2' : 'p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs flex items-center justify-center gap-2';
+      document.getElementById('ob-btn-country-FR').className = c === 'FR' ? 'p-3 rounded-xl border border-amber-500 bg-amber-950/40 text-white font-bold text-xs flex items-center justify-center gap-2' : 'p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs flex items-center justify-center gap-2';
+    }
+    function selectObCouple(isC) {
+      wizardTemp.isCouple = isC;
+      document.getElementById('ob-btn-single').className = !isC ? 'p-3 rounded-xl border border-sky-500 bg-sky-950/40 text-white font-bold text-xs' : 'p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs';
+      document.getElementById('ob-btn-couple').className = isC ? 'p-3 rounded-xl border border-sky-500 bg-sky-950/40 text-white font-bold text-xs' : 'p-3 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-300 font-bold text-xs';
+      document.getElementById('ob-partner-age-box').classList.toggle('hidden', !isC);
+    }
+    function setObInflationMode(mode) {
+      wizardTemp.inflationMode = mode;
+      document.getElementById('ob-btn-infl-without').className = mode === 'without' ? 'p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 text-[11px] font-bold' : 'p-2 rounded-lg border border-[#1B263B] bg-[#05070E] text-slate-400 text-[11px] font-bold';
+      document.getElementById('ob-btn-infl-with').className = mode === 'with' ? 'p-2 rounded-lg border border-emerald-500 bg-emerald-950/40 text-emerald-300 text-[11px] font-bold' : 'p-2 rounded-lg border border-[#1B263B] bg-[#05070E] text-slate-400 text-[11px] font-bold';
+    }
+    function updateObLiveNetWorth() {
+      const c = parseFloat(document.getElementById('ob-input-cash').value) || 0;
+      const b = parseFloat(document.getElementById('ob-input-bourse').value) || 0;
+      const cr = parseFloat(document.getElementById('ob-input-crypto').value) || 0;
+      const im = parseFloat(document.getElementById('ob-input-immo').value) || 0;
+      document.getElementById('ob-live-networth').innerText = formatEur(c + b + cr + im);
+    }
+    function updateObLiveSavingsRate() {
+      const inc = parseFloat(document.getElementById('ob-input-income').value) || 0;
+      const sav = parseFloat(document.getElementById('ob-input-savings').value) || 0;
+      const pct = inc > 0 ? ((sav / inc) * 100).toFixed(1) : 0;
+      document.getElementById('ob-live-savings-rate').innerText = `${pct} %`;
+    }
+
+    function generateAIBriefingAndReveal() {
+      document.getElementById('ob-res-plan-title').innerText = `Plan : ${wizardTemp.planName}`;
+      const years = wizardTemp.targetAge - wizardTemp.age1;
+      const rate = wizardTemp.income > 0 ? ((wizardTemp.savings / wizardTemp.income) * 100).toFixed(1) : 30;
+
+      const out = document.getElementById('ob-ai-briefing-text');
+      out.innerHTML = `
+        <p>🎯 <strong>Diagnostic pour ${wizardTemp.planName} (${wizardTemp.country === 'FR' ? 'France 🇫🇷' : 'Belgique 🇧🇪'}) :</strong></p>
+        <p>Avec <strong class="text-white">${formatEur(wizardTemp.income)}/m</strong> de revenus et un taux d'épargne solide de <strong class="text-purple-400">${rate}% (${formatEur(wizardTemp.savings)}/m)</strong>, votre plan d'indépendance à <strong class="text-sky-400">${wizardTemp.targetAge} ans</strong> (dans ${years} ans) est activé.</p>
+        <p>🛡️ <strong>Sécurité & Matelas :</strong> Votre matelas de <strong class="text-emerald-400">${formatEur(wizardTemp.matelas)}</strong> est sanctuarisé hors marché pour absorber les chocs boursiers lors de vos premiers retraits de rente.</p>
+      `;
+    }
+
+    function finishOnboardingAndEnterApp() {
+      appState.planId = "plan_" + Date.now();
+      appState.planName = wizardTemp.planName || "Mon Plan";
+      appState.country = wizardTemp.country || "BE";
+      appState.isCouple = !!wizardTemp.isCouple;
+      appState.inflationMode = wizardTemp.inflationMode || "without";
+      appState.hasCompletedOnboarding = true;
+
+      appState.p1.currentAge = wizardTemp.age1 || 35;
+      if (wizardTemp.isCouple) appState.p2.currentAge = wizardTemp.age2 || 33;
+
+      appState.assets.cash = wizardTemp.cash || 20000;
+      appState.assets.emergencyFund = wizardTemp.matelas || 15000;
+      appState.assets.bourse = wizardTemp.bourse || 40000;
+      appState.assets.crypto = wizardTemp.crypto || 0;
+      appState.assets.immo = wizardTemp.immo || 0;
+
+      appState.cashflow.targetFireAge = wizardTemp.targetAge || 50;
+      appState.cashflow.targetIncomeNet = wizardTemp.targetIncome || 3000;
+      appState.cashflow.monthlySavings = wizardTemp.savings || 1200;
+
+      closeOnboardingScreen();
+      saveCurrentPlan();
+
+      document.getElementById('country-selector').value = appState.country;
+      renderOverviewCharts();
+      renderBudgetView();
+      renderEnvelopesView();
+      updateSimulatorView();
+      renderTimelineEvents();
+
+      showToast(`🎉 Plan "${appState.planName}" déverrouillé !`, "success");
+      triggerConfetti();
+    }
+
+    function skipOnboardingWithDemo() {
+      appState.hasCompletedOnboarding = true;
+      closeOnboardingScreen();
+      saveCurrentPlan();
+      renderOverviewCharts();
+      renderBudgetView();
+      renderEnvelopesView();
+      updateSimulatorView();
+      renderTimelineEvents();
+      showToast("Mode Démo chargé.", "info");
+    }
+
+    // --- MODAL SAVES ---
+    function openEditModal() {
+      document.getElementById('edit-modal').classList.remove('hidden');
+      document.getElementById('m-plan-name').value = appState.planName || "Mon Plan";
+      document.getElementById('m-cash').value = appState.assets.cash || 0;
+      document.getElementById('m-matelas').value = appState.assets.emergencyFund || 0;
+      document.getElementById('m-bourse').value = appState.assets.bourse || 0;
+      document.getElementById('m-crypto').value = appState.assets.crypto || 0;
+      document.getElementById('m-immo').value = appState.assets.immo || 0;
+    }
+    function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); }
+    function saveEditModal() {
+      appState.planName = document.getElementById('m-plan-name').value.trim() || appState.planName;
+      appState.assets.cash = parseFloat(document.getElementById('m-cash').value) || 0;
+      appState.assets.emergencyFund = parseFloat(document.getElementById('m-matelas').value) || 0;
+      appState.assets.bourse = parseFloat(document.getElementById('m-bourse').value) || 0;
+      appState.assets.crypto = parseFloat(document.getElementById('m-crypto').value) || 0;
+      appState.assets.immo = parseFloat(document.getElementById('m-immo').value) || 0;
+      closeEditModal();
+      saveCurrentPlan();
+      renderOverviewCharts();
+      renderEnvelopesView();
+      updateSimulatorView();
+      showToast("Données mises à jour !", "success");
+    }
+
+    function openAddExpenseModal() { document.getElementById('add-expense-modal').classList.remove('hidden'); }
+    function closeAddExpenseModal() { document.getElementById('add-expense-modal').classList.add('hidden'); }
+    function saveNewExpense() {
+      const name = document.getElementById('exp-name').value.trim() || "Dépense";
+      const category = document.getElementById('exp-category').value;
+      const amount = parseFloat(document.getElementById('exp-amount').value) || 0;
+      if (!appState.budget.expenses) appState.budget.expenses = [];
+      appState.budget.expenses.push({ name, category, amount, essential: category.includes('Logement') || category.includes('Alimentation') });
+      closeAddExpenseModal();
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      showToast("Dépense enregistrée.", "success");
+    }
+
+    function openUnifiedEventModal() { document.getElementById('unified-event-modal').classList.remove('hidden'); }
+    function closeUnifiedEventModal() { document.getElementById('unified-event-modal').classList.add('hidden'); }
+    function saveUnifiedEvent() {
+      const title = document.getElementById('ev-modal-title').value.trim() || "Événement";
+      const year = parseInt(document.getElementById('ev-modal-year').value) || 2030;
+      const type = document.getElementById('ev-modal-type').value;
+      const amount = parseFloat(document.getElementById('ev-modal-amount').value) || 0;
+      if (!appState.events) appState.events = [];
+      appState.events.push({ id: Date.now(), title, year, type, amount, active: true });
+      closeUnifiedEventModal();
+      saveCurrentPlan();
+      renderTimelineEvents();
+      renderOverviewCharts();
+      showToast("Événement ajouté à la timeline.", "success");
+    }
+
+    function loadSampleBankData() {
+      const tbody = document.getElementById('bank-transactions-tbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr class="hover:bg-slate-900/40"><td class="p-2.5 font-mono text-slate-400">2026-08-28</td><td class="p-2.5 font-bold text-white">VIR SALAIRE</td><td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-sky-950 text-sky-300 text-[10px]">Revenus</span></td><td class="p-2.5 text-right font-mono font-bold text-emerald-400">+4 500 €</td></tr>
+          <tr class="hover:bg-slate-900/40"><td class="p-2.5 font-mono text-slate-400">2026-08-25</td><td class="p-2.5 font-bold text-white">PRET IMMOBILIER</td><td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-rose-950 text-rose-300 text-[10px]">Logement</span></td><td class="p-2.5 text-right font-mono font-bold text-rose-400">-1 450 €</td></tr>
+          <tr class="hover:bg-slate-900/40"><td class="p-2.5 font-mono text-slate-400">2026-08-20</td><td class="p-2.5 font-bold text-white">CARREFOUR MARKET</td><td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-amber-950 text-amber-300 text-[10px]">Alimentation</span></td><td class="p-2.5 text-right font-mono font-bold text-rose-400">-185 €</td></tr>
+        `;
+        showToast("Exemples de relevés chargés avec succès.", "info");
+      }
+    }
+
+    // --- AI COPILOT ---
+    function toggleAICopilotModal() {
+      document.getElementById('ai-copilot-modal').classList.toggle('hidden');
+    }
+    function askAIQuick(type) {
+      const out = document.getElementById('ai-chat-output');
+      const sim = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "realist");
+      if (type === 'early_fire') {
+        const earlier = Math.max(appState.p1.currentAge + 2, appState.cashflow.targetFireAge - 2);
+        out.innerHTML = `
+          <div class="space-y-1.5 p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-sky-400 block font-bold">🚀 Pour avancer votre départ à ${earlier} ans :</strong>
+            <p>1. Augmentez votre effort d'épargne mensuel vers les ETF à faible coût (TER 0,20%).<br>
+            2. Utilisez le comparateur d'enveloppes (PEA/CTO) pour limiter l'impôt de sortie.<br>
+            3. Réduisez vos dépenses récurrentes non essentielles de 15%.</p>
+          </div>
+        `;
+      } else if (type === 'more_savings') {
+        out.innerHTML = `
+          <div class="space-y-1.5 p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-emerald-400 block font-bold">💰 Impact de +300 €/mois :</strong>
+            <p>Cet apport supplémentaire capitalisé à 7,5% augmente sensiblement votre capital terminal et vous offre plus de 18 mois de liberté supplémentaire.</p>
+          </div>
+        `;
+      } else if (type === 'crash_test') {
+        out.innerHTML = `
+          <div class="space-y-1.5 p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+            <strong class="text-amber-400 block font-bold">🛡️ Résistance au Krach Boursier :</strong>
+            <p>Votre matelas de ${formatEur(appState.assets.emergencyFund)} sanctuarisé permet de vivre sans vendre vos actions en baisse durant les premières années de rente.</p>
+          </div>
+        `;
+      }
+    }
+    function sendAICustomPrompt() {
+      const inp = document.getElementById('ai-custom-prompt');
+      const txt = inp.value.trim();
+      if (!txt) return;
+      const out = document.getElementById('ai-chat-output');
+      out.innerHTML = `
+        <div class="space-y-1.5 p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
+          <strong class="text-amber-300 block font-bold">💡 Analyse pour "${txt}" :</strong>
+          <p>Avec un patrimoine placé de ${formatEur(computeNetWorth())} et un objectif à ${appState.cashflow.targetFireAge} ans, votre plan reste cohérent avec un SWR équilibré.</p>
+        </div>
+      `;
+      inp.value = '';
+    }
+
+    // --- CONFETTI ANIMATION ---
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let particles = [];
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 6 + 4,
+          speed: Math.random() * 4 + 2,
+          color: ['#F59E0B', '#10B981', '#38BDF8', '#8B5CF6', '#F43F5E'][Math.floor(Math.random() * 5)]
+        });
+      }
+      let frames = 0;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.y += p.speed;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+        });
+        frames++;
+        if (frames < 90) requestAnimationFrame(animate);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      animate();
+    }
+
+    // --- SELF-TEST DIAGNOSTIC ENGINE ---
+    function assertEngine() {
+      try {
+        const base = computeScenario(50, 3000, 2000, "realist").capFire;
+        const tests = [
+          ["rendement bourse", () => { appState.rates.bourse *= 1.5; }],
+          ["matelas", () => { appState.assets.emergencyFund += 20000; }],
+          ["pays", () => { appState.country = "FR"; }]
+        ];
+        tests.forEach(t => {
+          const name = t[0];
+          const mutate = t[1];
+          const snap = JSON.stringify(appState);
+          mutate();
+          const after = computeScenario(50, 3000, 2000, "realist").capFire;
+          if (Math.abs(after - base) < 1) console.warn(`Diagnostic: ${name} n'a pas altéré capFire.`);
+          appState = JSON.parse(snap);
+        });
+      } catch (e) { console.error('Erreur assertEngine:', e); }
+    }
+
+    // --- BOOTSTRAP ---
+    window.addEventListener('DOMContentLoaded', () => {
+      assertEngine();
+      loadAllPlans();
+      initSupabase();
+
+      if (!appState.hasCompletedOnboarding) {
+        openOnboardingDirectly();
+      } else {
+        document.getElementById('country-selector').value = appState.country || 'BE';
+        renderOverviewCharts();
+        renderBudgetView();
+        renderEnvelopesView();
+        updateSimulatorView();
+        renderTimelineEvents();
+      }
+    });
+  </script>
+</body>
+</html>

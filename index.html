@@ -815,7 +815,8 @@
       <div class="space-y-3 text-xs">
         <div>
           <label class="text-slate-400 font-semibold block mb-1">Project URL</label>
-          <input type="text" id="cfg-supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500">
+          <input type="text" id="cfg-supabase-url" placeholder="https://kxbxdcacgbnytggpafre.supabase.co" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500">
+          <span class="text-[10px] text-slate-500">Ex: https://kxbxdcacgbnytggpafre.supabase.co (ne pas inclure /rest/v1)</span>
         </div>
         <div>
           <label class="text-slate-400 font-semibold block mb-1">Project Anon Key (Public Key)</label>
@@ -1378,12 +1379,22 @@
     }
 
     // =========================================================================
-    // SUPABASE CLOUD & AUTHENTICATION ENGINE
+    // SUPABASE CLOUD & AUTHENTICATION ENGINE (WITH URL SANITIZATION)
     // =========================================================================
 
+    function sanitizeSupabaseUrl(rawUrl) {
+      if (!rawUrl) return "";
+      let u = rawUrl.trim();
+      // Enlève /rest/v1 ou trailing slashes s'ils ont été collés par erreur
+      u = u.replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+      return u;
+    }
+
     function initSupabase() {
-      const url = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.SUPABASE_URL) || localStorage.getItem('pixel_supabase_url') || "";
+      let url = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.SUPABASE_URL) || localStorage.getItem('pixel_supabase_url') || "https://kxbxdcacgbnytggpafre.supabase.co";
       const key = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.SUPABASE_ANON_KEY) || localStorage.getItem('pixel_supabase_anon_key') || "";
+
+      url = sanitizeSupabaseUrl(url);
 
       if (url && key && window.supabase) {
         try {
@@ -1472,13 +1483,14 @@
     async function handleSignInGoogle() {
       if (!supabaseClient) {
         openSupabaseConfigModal();
-        showToast("Veuillez d'abord configurer vos clés Supabase Cloud.", "warning");
+        showToast("Veuillez d'abord renseigner votre clé Publique (Anon) Supabase.", "warning");
         return;
       }
       try {
+        const redirectUrl = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') ? window.location.origin : 'https://pixel-finance.vercel.app';
         const { error } = await supabaseClient.auth.signInWithOAuth({
           provider: 'google',
-          options: { redirectTo: window.location.origin }
+          options: { redirectTo: redirectUrl }
         });
         if (error) showToast("Erreur Google OAuth : " + error.message, "warning");
       } catch (e) {
@@ -1495,13 +1507,14 @@
       }
       if (!supabaseClient) {
         openSupabaseConfigModal();
-        showToast("Veuillez d'abord configurer vos clés Supabase Cloud.", "warning");
+        showToast("Veuillez d'abord renseigner votre clé Publique (Anon) Supabase.", "warning");
         return;
       }
       try {
+        const redirectUrl = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') ? window.location.origin : 'https://pixel-finance.vercel.app';
         const { error } = await supabaseClient.auth.signInWithOtp({
           email: email,
-          options: { emailRedirectTo: window.location.origin }
+          options: { emailRedirectTo: redirectUrl }
         });
         if (error) showToast("Erreur d'envoi : " + error.message, "warning");
         else showToast("Lien magique envoyé à " + email + " !", "success");
@@ -1604,15 +1617,18 @@
 
     function openSupabaseConfigModal() {
       document.getElementById('supabase-config-modal').classList.remove('hidden');
-      document.getElementById('cfg-supabase-url').value = localStorage.getItem('pixel_supabase_url') || (window.SUPABASE_CONFIG?.SUPABASE_URL || "");
+      const currentUrl = sanitizeSupabaseUrl(localStorage.getItem('pixel_supabase_url') || (window.SUPABASE_CONFIG?.SUPABASE_URL || "https://kxbxdcacgbnytggpafre.supabase.co"));
+      document.getElementById('cfg-supabase-url').value = currentUrl;
       document.getElementById('cfg-supabase-key').value = localStorage.getItem('pixel_supabase_anon_key') || (window.SUPABASE_CONFIG?.SUPABASE_ANON_KEY || "");
     }
     function closeSupabaseConfigModal() {
       document.getElementById('supabase-config-modal').classList.add('hidden');
     }
     function saveSupabaseConfig() {
-      const url = document.getElementById('cfg-supabase-url').value.trim();
+      let url = document.getElementById('cfg-supabase-url').value.trim();
       const key = document.getElementById('cfg-supabase-key').value.trim();
+
+      url = sanitizeSupabaseUrl(url);
 
       if (url && key) {
         localStorage.setItem('pixel_supabase_url', url);

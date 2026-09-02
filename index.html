@@ -359,82 +359,286 @@
 
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- TAB 2: BUDGET & COÛT DU TEMPS -->
+        <!-- ========================================================================= -->
+    <!-- TAB 2: BUDGET & COÛT DU TEMPS (STUDIO AVANCÉ BUDGET-2026-JANOWSKI) -->
     <!-- ========================================================================= -->
     <div id="tab-budget" class="tab-content hidden space-y-6 animate-fade-in">
       
-      <!-- Budget Summary Hero -->
-      <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="fin-card p-5 border-l-4 border-l-emerald-500 space-y-1">
-          <span class="text-[11px] font-semibold uppercase text-slate-400">Revenus Nets Mensuels</span>
-          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="budget-total-income">0 €</div>
-          <p class="text-[11px] text-slate-400">Salaires, primes & revenus d'activité</p>
+      <!-- Budget Header & Control Bar -->
+      <div class="fin-card p-5 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#0E1629] via-[#0A0F1D] to-[#05070E] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-mono font-bold">BUDGET 2026 JANOWSKI</span>
+            <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+              <i class="fa-solid fa-wallet text-amber-400"></i> Budget & Flux de Trésorerie du Foyer
+            </h2>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Ventilation détaillée par bénéficiaire (Joachim, Pauline, Famille), catégories de charges et épargne investie.</p>
+        </div>
+        
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="restoreJanowskiBudget()" class="px-3 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm" title="Recharger les 49 lignes exactes du fichier BUDGET-2026-JANOWSKI">
+            <i class="fa-solid fa-rotate text-[11px]"></i> <span>Recharger Modèle 2026</span>
+          </button>
+          <button onclick="openAddBudgetItemModal('expense')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
+            <i class="fa-solid fa-plus text-[11px]"></i> <span>Ajouter une Ligne</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Budget Summary Hero (4 KPI Cards) -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <!-- KPI 1: Revenus -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Revenus Mensuels</span>
+            <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-xs"></i>
+          </div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="budget-total-income">0 €</div>
+          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate" id="budget-income-sub">Salaires CDI, Primes, Vouchers, Allocations</p>
         </div>
 
-        <div class="fin-card p-5 border-l-4 border-l-rose-500 space-y-1">
-          <span class="text-[11px] font-semibold uppercase text-slate-400">Dépenses Mensuelles</span>
-          <div class="text-2xl sm:text-3xl font-black text-rose-400 font-mono privacy-blur" id="budget-total-expenses">0 €</div>
-          <p class="text-[11px] text-slate-400">Charges fixes + train de vie</p>
+        <!-- KPI 2: Dépenses -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-rose-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Dépenses Mensuelles</span>
+            <i class="fa-solid fa-receipt text-rose-400 text-xs"></i>
+          </div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-rose-400 font-mono privacy-blur" id="budget-total-expenses">0 €</div>
+          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate" id="budget-expenses-sub">Charges fixes & train de vie</p>
         </div>
 
-        <div class="fin-card p-5 border-l-4 border-l-purple-500 space-y-1">
-          <span class="text-[11px] font-semibold uppercase text-slate-400">Capacité d'Épargne Mensuelle</span>
-          <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono privacy-blur" id="budget-net-savings">0 €</div>
-          <p class="text-[11px] text-emerald-400 font-semibold" id="budget-rule-50-30-20">Règle 50/30/20 active</p>
+        <!-- KPI 3: Épargne & Investissements Déjà Actifs -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Épargne & Bourse Active</span>
+            <i class="fa-solid fa-piggy-bank text-sky-400 text-xs"></i>
+          </div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-sky-300 font-mono privacy-blur" id="budget-total-investments">0 €</div>
+          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate">Pensions, Bourse ETF & Enfants</p>
+        </div>
+
+        <!-- KPI 4: Capacité d'Épargne Globale -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Capacité d'Épargne</span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold font-mono" id="budget-savings-rate-badge">46.7%</span>
+          </div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-purple-300 font-mono privacy-blur" id="budget-net-savings">0 €</div>
+          <p class="text-[10px] sm:text-[11px] text-emerald-400 font-semibold truncate" id="budget-rule-50-30-20">Flux net disponible pour investissement</p>
         </div>
       </section>
 
-      <!-- Traducteur Temps / Argent -->
-      <div class="fin-card p-6 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D]">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+      <!-- Traducteur Temps / Argent & Ratio 50/30/20 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Traducteur Temps -->
+        <div class="fin-card p-4 sm:p-5 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] flex items-center justify-between gap-4">
+          <div class="space-y-1">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
               <i class="fa-solid fa-hourglass-half text-amber-400"></i> Traducteur Temps ↔ Argent
-            </h3>
-            <p class="text-xs text-slate-400 mt-1">Chaque dépense a un coût en temps de vie de travail.</p>
+            </h4>
+            <p class="text-[11px] text-slate-400">Temps de travail requis par mois pour payer vos dépenses :</p>
           </div>
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] text-center">
-            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Temps de travail pour payer vos charges :</span>
-            <div class="text-lg font-black text-amber-300 font-mono mt-0.5" id="budget-freedom-time">-- jours / mois</div>
+          <div class="text-right shrink-0">
+            <div class="text-lg sm:text-xl font-black text-amber-300 font-mono" id="budget-freedom-time">9.6 jours / mois</div>
+            <span class="text-[10px] text-slate-400">Sur 20 jours ouvrés</span>
+          </div>
+        </div>
+
+        <!-- Règle 50/30/20 & Prêts -->
+        <div class="fin-card p-4 sm:p-5 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] flex items-center justify-between gap-4">
+          <div class="space-y-1">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-simple text-purple-400"></i> Équilibre des Postes
+            </h4>
+            <p class="text-[11px] text-slate-400" id="budget-structure-sub">Prêts : 1 624 €/m | Besoins : 2 715 €/m | Épargne : 4 235 €/m</p>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-xs font-black text-emerald-400 font-mono" id="budget-health-grade">A+ (Taux FIRE optimal)</span>
           </div>
         </div>
       </div>
 
-      <!-- Categories Breakdown & Donut -->
+      <!-- Filters & Search Bar -->
+      <div class="fin-card p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <!-- Beneficiary Filter Pills -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1">
+            <i class="fa-solid fa-filter text-slate-400"></i> Bénéficiaire :
+          </span>
+          <button onclick="setBudgetFilter('all')" id="btn-budget-filter-all" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md">
+            Tous (Ménage)
+          </button>
+          <button onclick="setBudgetFilter('Joachim')" id="btn-budget-filter-joachim" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-sky-400 hover:border-sky-500">
+            👨‍💼 Joachim
+          </button>
+          <button onclick="setBudgetFilter('Pauline')" id="btn-budget-filter-pauline" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-rose-400 hover:border-rose-500">
+            👩‍💼 Pauline
+          </button>
+          <button onclick="setBudgetFilter('Famille')" id="btn-budget-filter-famille" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-amber-400 hover:border-amber-500">
+            👨‍👩‍👧‍👦 Famille & Maison
+          </button>
+        </div>
+
+        <!-- Section Switcher & Search -->
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <div class="relative flex-1 sm:w-52">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+            <input type="text" id="budget-search-input" oninput="renderBudgetView()" placeholder="Rechercher un poste..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+          </div>
+          
+          <select id="budget-section-select" onchange="switchBudgetSection(this.value)" class="bg-[#05070E] border border-[#1B263B] text-amber-300 text-xs rounded-xl px-2.5 py-1.5 font-bold focus:outline-none focus:border-amber-400 cursor-pointer">
+            <option value="expenses">💸 Dépenses (49)</option>
+            <option value="incomes">💰 Revenus (16)</option>
+            <option value="investments">📈 Épargne (4)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Tables & Visuals Container -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <div class="lg:col-span-7 fin-card p-6 space-y-5">
+        <!-- COL 1: Detailed Interactive Table (8 cols on large screens) -->
+        <div class="lg:col-span-8 fin-card p-5 sm:p-6 space-y-4">
           <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
-            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-list-check text-sky-400"></i> Détail des Dépenses par Poste
+            <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2" id="budget-table-title">
+              <i class="fa-solid fa-list-check text-rose-400"></i> Détail des Dépenses Mensualisées
             </h3>
-            <button onclick="openAddExpenseModal()" class="px-3 py-1.5 rounded-xl bg-sky-950 text-sky-300 border border-sky-800 text-xs font-bold hover:bg-sky-900 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-plus"></i> Ajouter une ligne
-            </button>
+            <span class="text-xs text-slate-400 font-mono font-bold" id="budget-table-count">49 lignes</span>
           </div>
 
-          <div class="space-y-3" id="budget-categories-list">
-            <!-- Dynamically populated -->
+          <!-- Table Container with custom scrollbar -->
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto pr-1">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-[#1B263B] text-slate-400 text-[11px] uppercase tracking-wider sticky top-0 bg-[#0E1629] z-10">
+                  <th class="pb-2.5 font-semibold">Catégorie</th>
+                  <th class="pb-2.5 font-semibold">Bénéficiaire</th>
+                  <th class="pb-2.5 font-semibold">Détail du Poste</th>
+                  <th class="pb-2.5 font-semibold text-right">Montant (€/m)</th>
+                  <th class="pb-2.5 font-semibold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="budget-table-tbody" class="divide-y divide-[#1B263B]/60 text-slate-300">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="lg:col-span-5 fin-card p-6 space-y-4 flex flex-col justify-between">
-          <div>
-            <h3 class="font-bold text-white text-sm uppercase tracking-wider border-b border-[#1B263B] pb-3 flex items-center gap-2">
-              <i class="fa-solid fa-chart-pie text-purple-400"></i> Répartition du Budget
+        <!-- COL 2: Analytics & Charts (4 cols on large screens) -->
+        <div class="lg:col-span-4 space-y-6">
+          <!-- Donut Chart: Catégories -->
+          <div class="fin-card p-5 space-y-4">
+            <h3 class="font-bold text-white text-xs uppercase tracking-wider border-b border-[#1B263B] pb-2.5 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-purple-400"></i> Répartition par Catégorie
             </h3>
-            <div class="h-60 relative w-full flex justify-center items-center mt-4">
+            <div class="h-56 relative w-full flex justify-center items-center">
               <canvas id="budgetDonutChart"></canvas>
             </div>
           </div>
-          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] text-center text-xs text-slate-400">
-            Astuce : 100 € économisés par mois = <strong class="text-emerald-400">+32 000 €</strong> de capital sur 15 ans à 7%.
+
+          <!-- Bar Chart: Répartition par Bénéficiaire -->
+          <div class="fin-card p-5 space-y-4">
+            <h3 class="font-bold text-white text-xs uppercase tracking-wider border-b border-[#1B263B] pb-2.5 flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-sky-400"></i> Flux par Bénéficiaire
+            </h3>
+            <div class="h-52 relative w-full flex justify-center items-center">
+              <canvas id="budgetMemberChart"></canvas>
+            </div>
           </div>
         </div>
 
       </div>
 
+    </div>
+
+    <!-- MODAL: AJOUTER / MODIFIER UNE LIGNE DU BUDGET -->
+    <div id="budget-item-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="fin-card max-w-lg w-full p-6 space-y-5 border border-amber-500/40 animate-scale-up">
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+          <h3 class="font-black text-white text-base flex items-center gap-2" id="modal-budget-title">
+            <i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne de Budget
+          </h3>
+          <button onclick="closeBudgetItemModal()" class="text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <input type="hidden" id="modal-budget-id" value="">
+        <input type="hidden" id="modal-budget-type" value="expense">
+
+        <div class="space-y-3.5 text-xs">
+          <!-- Type selector -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Type de Flux</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" onclick="setModalBudgetType('expense')" id="modal-type-btn-expense" class="py-2 rounded-xl border border-rose-500 bg-rose-950/40 text-rose-300 font-bold text-xs">
+                💸 Dépense
+              </button>
+              <button type="button" onclick="setModalBudgetType('income')" id="modal-type-btn-income" class="py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs">
+                💰 Revenu
+              </button>
+              <button type="button" onclick="setModalBudgetType('investment')" id="modal-type-btn-investment" class="py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs">
+                📈 Épargne
+              </button>
+            </div>
+          </div>
+
+          <!-- Beneficiary -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Bénéficiaire / Membre</label>
+            <select id="modal-budget-user" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-amber-500">
+              <option value="Joachim">👨‍💼 Joachim</option>
+              <option value="Pauline">👩‍💼 Pauline</option>
+              <option value="Famille" selected>👨‍👩‍👧‍👦 Famille & Maison (Commun)</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Catégorie</label>
+            <input type="text" id="modal-budget-category" placeholder="Ex: Assurances, Frais Voitures, Habitation..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500">
+          </div>
+
+          <!-- Name -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Libellé / Détail du Poste</label>
+            <input type="text" id="modal-budget-name" placeholder="Ex: Assurance SrD Maison, Salaire CDI..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
+          </div>
+
+          <!-- Amount & Frequency -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Montant Saisi (€)</label>
+              <input type="number" step="0.01" id="modal-budget-raw-amount" placeholder="0.00" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Périodicité</label>
+              <select id="modal-budget-frequency" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500">
+                <option value="1">Mensuel (x 1)</option>
+                <option value="12">Annuel (divisé par 12)</option>
+                <option value="3">Trimestriel (divisé par 3)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Note -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Commentaire / Notes (optionnel)</label>
+            <input type="text" id="modal-budget-note" placeholder="Ex: Taux fixe < 2%, voiture de société..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-slate-300 focus:outline-none focus:border-amber-500">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2.5 pt-3 border-t border-[#1B263B]">
+          <button onclick="closeBudgetItemModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-slate-300 font-semibold text-xs transition">
+            Annuler
+          </button>
+          <button onclick="saveBudgetItemModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white font-bold text-xs shadow-md transition">
+            Enregistrer la Ligne
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- ========================================================================= -->
@@ -1314,19 +1518,614 @@
         inflation: 0.02,
         stressTest: 'normal'
       },
-      budget: {
-        incomes: [
-          { name: "Salaire Net Joachim (Cadre)", amount: 3500 },
-          { name: "Salaire Net Pauline (Employée)", amount: 2360 }
-        ],
+            budget: {
         expenses: [
-          { name: "Prêt Maison (Fin 10/2043)", category: "Logement & Prêts", amount: 1321, essential: true },
-          { name: "Prêt Appartement (Fin 08/2035)", category: "Logement & Prêts", amount: 303, essential: true },
-          { name: "Alimentation & Courses", category: "Alimentation & Vie", amount: 750, essential: true },
-          { name: "Transports & Voitures", category: "Transports", amount: 450, essential: true },
-          { name: "Santé, Assurances & Énergie", category: "Santé & Assurances", amount: 400, essential: true },
-          { name: "Loisirs & Sorties", category: "Loisirs & Sorties", amount: 600, essential: false }
-        ]
+          {
+                    "id": 1,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Maison",
+                    "amount": 99.39,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 2,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Auto Van",
+                    "amount": 17.95,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 3,
+                    "category": "Assurances",
+                    "user": "Pauline",
+                    "name": "Auto Pauline",
+                    "amount": 125.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 4,
+                    "category": "Assurances",
+                    "user": "Joachim",
+                    "name": "Garage Joachim",
+                    "amount": 12.67,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 5,
+                    "category": "Assurances",
+                    "user": "Pauline",
+                    "name": "Mutuelle Pauline",
+                    "amount": 16.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 6,
+                    "category": "Assurances",
+                    "user": "Joachim",
+                    "name": "Mutuelle Joachim",
+                    "amount": 16.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 7,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Assurance SrD Maison",
+                    "amount": 45.33,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 8,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Assurance SrD appartement",
+                    "amount": 5.58,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 9,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Protection Juridique Consommateur",
+                    "amount": 29.41,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 10,
+                    "category": "Assurances",
+                    "user": "Famille",
+                    "name": "Assurances ambulatoire",
+                    "amount": 35.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 11,
+                    "category": "Frais Voitures",
+                    "user": "Pauline",
+                    "name": "Carburant",
+                    "amount": 100.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 12,
+                    "category": "Frais Voitures",
+                    "user": "Joachim",
+                    "name": "Carburant",
+                    "amount": 0.0,
+                    "note": "voiture de société",
+                    "essential": true
+          },
+          {
+                    "id": 13,
+                    "category": "Frais Voitures",
+                    "user": "Pauline",
+                    "name": "Taxe Voiture Pauline",
+                    "amount": 25.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 14,
+                    "category": "Frais Voitures",
+                    "user": "Joachim",
+                    "name": "Taxe Voiture Joachim",
+                    "amount": 0.0,
+                    "note": "voiture de société",
+                    "essential": true
+          },
+          {
+                    "id": 15,
+                    "category": "Frais Voitures",
+                    "user": "Famille",
+                    "name": "Taxe Van",
+                    "amount": 10.83,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 16,
+                    "category": "Frais Voitures",
+                    "user": "Famille",
+                    "name": "Contrôle technique Van",
+                    "amount": 5.42,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 17,
+                    "category": "Frais Voitures",
+                    "user": "Famille",
+                    "name": "Parking",
+                    "amount": 4.17,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 18,
+                    "category": "Frais Voitures",
+                    "user": "Famille",
+                    "name": "Réparations Van",
+                    "amount": 66.67,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 19,
+                    "category": "Frais Voitures",
+                    "user": "Pauline",
+                    "name": "Contrôle annuel Pauline",
+                    "amount": 33.33,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 20,
+                    "category": "Frais Voitures",
+                    "user": "Pauline",
+                    "name": "Contrôle annuel Joachim",
+                    "amount": 0.0,
+                    "note": "voiture de société",
+                    "essential": true
+          },
+          {
+                    "id": 21,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Voo Internet",
+                    "amount": 42.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 22,
+                    "category": "Habitation",
+                    "user": "Pauline",
+                    "name": "GSM Pauline",
+                    "amount": 7.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 23,
+                    "category": "Habitation",
+                    "user": "Joachim",
+                    "name": "GSM Joachim",
+                    "amount": 0.0,
+                    "note": "GSM Société",
+                    "essential": true
+          },
+          {
+                    "id": 24,
+                    "category": "Habitation",
+                    "user": "Joachim",
+                    "name": "Google Gemini",
+                    "amount": 25.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 25,
+                    "category": "Habitation",
+                    "user": "Joachim",
+                    "name": "Youtube Premium",
+                    "amount": 13.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 26,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Netflix",
+                    "amount": 0.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 27,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Amazon Prime",
+                    "amount": 2.08,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 28,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Acompte électricité",
+                    "amount": 85.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 29,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Eau",
+                    "amount": 45.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 30,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Nourriture",
+                    "amount": 500.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 31,
+                    "category": "Habitation",
+                    "user": "Famille",
+                    "name": "Frais Animaux (Nourriture, vétérinaire,etc)",
+                    "amount": 50.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 32,
+                    "category": "Taxes",
+                    "user": "Famille",
+                    "name": "Précompte immobilier Maison",
+                    "amount": 82.5,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 33,
+                    "category": "Taxes",
+                    "user": "Joachim",
+                    "name": "Précompte immobilier Garage",
+                    "amount": 9.17,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 34,
+                    "category": "Taxes",
+                    "user": "Famille",
+                    "name": "Taxes communales",
+                    "amount": 17.42,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 35,
+                    "category": "Dépenses extraordinaires",
+                    "user": "Famille",
+                    "name": "Préparation anniversaires, nourritures, décoration",
+                    "amount": 50.0,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 36,
+                    "category": "Dépenses extraordinaires",
+                    "user": "Joachim",
+                    "name": "Gadgets Joachim",
+                    "amount": 12.5,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 37,
+                    "category": "Dépenses extraordinaires",
+                    "user": "Joachim",
+                    "name": "Gadgets Pauline",
+                    "amount": 12.5,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 38,
+                    "category": "Chauffage",
+                    "user": "Famille",
+                    "name": "Mazout",
+                    "amount": 250.0,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 39,
+                    "category": "Chauffage",
+                    "user": "Famille",
+                    "name": "Entretien",
+                    "amount": 16.67,
+                    "note": "",
+                    "essential": true
+          },
+          {
+                    "id": 40,
+                    "category": "Prêt immo",
+                    "user": "Famille",
+                    "name": "Appartement (fin 1/08/2035)",
+                    "amount": 302.72,
+                    "note": "Taux fixe moins de 2% - 36000 EUR (pas de valeur de revente - déjà effectué) -fin paiement : 22/01/2036",
+                    "essential": true
+          },
+          {
+                    "id": 41,
+                    "category": "Prêt immo",
+                    "user": "Famille",
+                    "name": "Maison (Fin 28/05/2043)",
+                    "amount": 1321.48,
+                    "note": "Taux fixe moins de 2% - capital restant dû 258 000 EUR (valeur maison 350 000 EUR) -fin paiement : 28/10/2043",
+                    "essential": true
+          },
+          {
+                    "id": 42,
+                    "category": "Autres",
+                    "user": "Famille",
+                    "name": "Cadeaux famille/anniversaires/Noël/enfants/etc",
+                    "amount": 141.67,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 43,
+                    "category": "Loisirs",
+                    "user": "Famille",
+                    "name": "Verre",
+                    "amount": 30.0,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 44,
+                    "category": "Loisirs",
+                    "user": "Famille",
+                    "name": "sorties/loisirs/activités",
+                    "amount": 66.67,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 45,
+                    "category": "Loisirs",
+                    "user": "Famille",
+                    "name": "Restaurant",
+                    "amount": 100.0,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 46,
+                    "category": "Loisirs",
+                    "user": "Famille",
+                    "name": "Vêtements",
+                    "amount": 100.0,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 47,
+                    "category": "Loisirs",
+                    "user": "Famille",
+                    "name": "Vacances",
+                    "amount": 333.33,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 48,
+                    "category": "Taxe VISA",
+                    "user": "Joachim",
+                    "name": "Carte Visa Beobank",
+                    "amount": 0.42,
+                    "note": "",
+                    "essential": false
+          },
+          {
+                    "id": 49,
+                    "category": "Enfants",
+                    "user": "Famille",
+                    "name": "Frais médicaux",
+                    "amount": 75.0,
+                    "note": "",
+                    "essential": true
+          }
+],
+        incomes: [
+          {
+                    "id": 1,
+                    "category": "Revenus",
+                    "user": "Joachim",
+                    "name": "Revenus CDI",
+                    "amount": 4400.0,
+                    "note": "Salaire à 90%"
+          },
+          {
+                    "id": 2,
+                    "category": "Vouchers",
+                    "user": "Joachim",
+                    "name": "Tickets restaurant",
+                    "amount": 146.0,
+                    "note": ""
+          },
+          {
+                    "id": 3,
+                    "category": "Revenus",
+                    "user": "Pauline",
+                    "name": "Revenus CDI",
+                    "amount": 2688.1,
+                    "note": "Salaire à 90%"
+          },
+          {
+                    "id": 4,
+                    "category": "Vouchers",
+                    "user": "Pauline",
+                    "name": "Tickets restaurant",
+                    "amount": 154.0,
+                    "note": ""
+          },
+          {
+                    "id": 5,
+                    "category": "Loyer",
+                    "user": "Joachim",
+                    "name": "Loyer garage",
+                    "amount": 70.0,
+                    "note": ""
+          },
+          {
+                    "id": 6,
+                    "category": "Revenus",
+                    "user": "Pauline",
+                    "name": "Revenus CDI (13eme mois + DPV)",
+                    "amount": 151.16,
+                    "note": ""
+          },
+          {
+                    "id": 7,
+                    "category": "Revenus",
+                    "user": "Joachim",
+                    "name": "Revenus CDI (double pécule de vacances)",
+                    "amount": 196.23,
+                    "note": ""
+          },
+          {
+                    "id": 8,
+                    "category": "Bonus",
+                    "user": "Année complète",
+                    "name": "MBO (Bonus)",
+                    "amount": 500.0,
+                    "note": "Bonus Variable (50% warrants / 50% plan assurance groupe)"
+          },
+          {
+                    "id": 9,
+                    "category": "Dividendes",
+                    "user": "Famille",
+                    "name": "Bourse",
+                    "amount": 50.0,
+                    "note": ""
+          },
+          {
+                    "id": 10,
+                    "category": "Vouchers",
+                    "user": "Joachim",
+                    "name": "éco-chèques",
+                    "amount": 18.75,
+                    "note": ""
+          },
+          {
+                    "id": 11,
+                    "category": "Vouchers",
+                    "user": "Pauline",
+                    "name": "chèques cadeaux",
+                    "amount": 2.92,
+                    "note": ""
+          },
+          {
+                    "id": 12,
+                    "category": "Vouchers",
+                    "user": "Joachim",
+                    "name": "chèques cadeaux",
+                    "amount": 2.92,
+                    "note": ""
+          },
+          {
+                    "id": 13,
+                    "category": "Allocations",
+                    "user": "Famille",
+                    "name": "Allocations bébé",
+                    "amount": 377.9,
+                    "note": ""
+          },
+          {
+                    "id": 14,
+                    "category": "Revenus",
+                    "user": "Pauline",
+                    "name": "ONEM",
+                    "amount": 72.0,
+                    "note": "compensation pour temps partiel"
+          },
+          {
+                    "id": 15,
+                    "category": "Revenus",
+                    "user": "Joachim",
+                    "name": "ONEM",
+                    "amount": 72.0,
+                    "note": "compensation pour temps partiel"
+          },
+          {
+                    "id": 16,
+                    "category": "Bonus",
+                    "user": "Joachim",
+                    "name": "CCT90",
+                    "amount": 166.67,
+                    "note": "Bonus Variable"
+          }
+],
+        investments: [
+          {
+                    "id": 1,
+                    "category": "Epargne Pension",
+                    "user": "Joachim",
+                    "name": "Epargne pension Joachim",
+                    "amount": 82.0,
+                    "note": ""
+          },
+          {
+                    "id": 2,
+                    "category": "Epargne Pension",
+                    "user": "Pauline",
+                    "name": "Epargne pension Pauline",
+                    "amount": 82.5,
+                    "note": ""
+          },
+          {
+                    "id": 3,
+                    "category": "Investissement",
+                    "user": "Famille",
+                    "name": "Investissement (ETFS, ACTIONS, Cryptos)",
+                    "amount": 1800.0,
+                    "note": ""
+          },
+          {
+                    "id": 4,
+                    "category": "Enfants",
+                    "user": "Famille",
+                    "name": "Argent compte bancaires enfants",
+                    "amount": 330.0,
+                    "note": "Investissement pour nos enfants"
+          }
+]
       },
       events: [
         { id: 1, title: "Déploiement DCA Cash Excédentaire (148k€)", year: 2026, type: "cashflow_plus", amount: 6182, durationMonths: 24, active: true },
@@ -2167,23 +2966,692 @@
       } catch (e) { console.error('Erreur dans renderOverviewCharts:', e); }
     }
 
-    // --- TAB 2: RENDER BUDGET VIEW ---
+    
+    // --- JANOWSKI 2026 RAW BUDGET DATASET (49 Expenses, 16 Incomes, 4 Investments) ---
+    const JANOWSKI_BUDGET_2026 = {
+    "expenses": [
+        {
+            "id": 1,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Maison",
+            "amount": 99.39,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 2,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Auto Van",
+            "amount": 17.95,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 3,
+            "category": "Assurances",
+            "user": "Pauline",
+            "name": "Auto Pauline",
+            "amount": 125.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 4,
+            "category": "Assurances",
+            "user": "Joachim",
+            "name": "Garage Joachim",
+            "amount": 12.67,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 5,
+            "category": "Assurances",
+            "user": "Pauline",
+            "name": "Mutuelle Pauline",
+            "amount": 16.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 6,
+            "category": "Assurances",
+            "user": "Joachim",
+            "name": "Mutuelle Joachim",
+            "amount": 16.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 7,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurance SrD Maison",
+            "amount": 45.33,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 8,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurance SrD appartement",
+            "amount": 5.58,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 9,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Protection Juridique Consommateur",
+            "amount": 29.41,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 10,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurances ambulatoire",
+            "amount": 35.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 11,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Carburant",
+            "amount": 100.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 12,
+            "category": "Frais Voitures",
+            "user": "Joachim",
+            "name": "Carburant",
+            "amount": 0.0,
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 13,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Taxe Voiture Pauline",
+            "amount": 25.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 14,
+            "category": "Frais Voitures",
+            "user": "Joachim",
+            "name": "Taxe Voiture Joachim",
+            "amount": 0.0,
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 15,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Taxe Van",
+            "amount": 10.83,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 16,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Contrôle technique Van",
+            "amount": 5.42,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 17,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Parking",
+            "amount": 4.17,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 18,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Réparations Van",
+            "amount": 66.67,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 19,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Contrôle annuel Pauline",
+            "amount": 33.33,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 20,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Contrôle annuel Joachim",
+            "amount": 0.0,
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 21,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Voo Internet",
+            "amount": 42.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 22,
+            "category": "Habitation",
+            "user": "Pauline",
+            "name": "GSM Pauline",
+            "amount": 7.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 23,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "GSM Joachim",
+            "amount": 0.0,
+            "note": "GSM Société",
+            "essential": true
+        },
+        {
+            "id": 24,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "Google Gemini",
+            "amount": 25.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 25,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "Youtube Premium",
+            "amount": 13.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 26,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Netflix",
+            "amount": 0.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 27,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Amazon Prime",
+            "amount": 2.08,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 28,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Acompte électricité",
+            "amount": 85.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 29,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Eau",
+            "amount": 45.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 30,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Nourriture",
+            "amount": 500.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 31,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Frais Animaux (Nourriture, vétérinaire,etc)",
+            "amount": 50.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 32,
+            "category": "Taxes",
+            "user": "Famille",
+            "name": "Précompte immobilier Maison",
+            "amount": 82.5,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 33,
+            "category": "Taxes",
+            "user": "Joachim",
+            "name": "Précompte immobilier Garage",
+            "amount": 9.17,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 34,
+            "category": "Taxes",
+            "user": "Famille",
+            "name": "Taxes communales",
+            "amount": 17.42,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 35,
+            "category": "Dépenses extraordinaires",
+            "user": "Famille",
+            "name": "Préparation anniversaires, nourritures, décoration",
+            "amount": 50.0,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 36,
+            "category": "Dépenses extraordinaires",
+            "user": "Joachim",
+            "name": "Gadgets Joachim",
+            "amount": 12.5,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 37,
+            "category": "Dépenses extraordinaires",
+            "user": "Joachim",
+            "name": "Gadgets Pauline",
+            "amount": 12.5,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 38,
+            "category": "Chauffage",
+            "user": "Famille",
+            "name": "Mazout",
+            "amount": 250.0,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 39,
+            "category": "Chauffage",
+            "user": "Famille",
+            "name": "Entretien",
+            "amount": 16.67,
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 40,
+            "category": "Prêt immo",
+            "user": "Famille",
+            "name": "Appartement (fin 1/08/2035)",
+            "amount": 302.72,
+            "note": "Taux fixe moins de 2% - 36000 EUR (pas de valeur de revente - déjà effectué) -fin paiement : 22/01/2036",
+            "essential": true
+        },
+        {
+            "id": 41,
+            "category": "Prêt immo",
+            "user": "Famille",
+            "name": "Maison (Fin 28/05/2043)",
+            "amount": 1321.48,
+            "note": "Taux fixe moins de 2% - capital restant dû 258 000 EUR (valeur maison 350 000 EUR) -fin paiement : 28/10/2043",
+            "essential": true
+        },
+        {
+            "id": 42,
+            "category": "Autres",
+            "user": "Famille",
+            "name": "Cadeaux famille/anniversaires/Noël/enfants/etc",
+            "amount": 141.67,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 43,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Verre",
+            "amount": 30.0,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 44,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "sorties/loisirs/activités",
+            "amount": 66.67,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 45,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Restaurant",
+            "amount": 100.0,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 46,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Vêtements",
+            "amount": 100.0,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 47,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Vacances",
+            "amount": 333.33,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 48,
+            "category": "Taxe VISA",
+            "user": "Joachim",
+            "name": "Carte Visa Beobank",
+            "amount": 0.42,
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 49,
+            "category": "Enfants",
+            "user": "Famille",
+            "name": "Frais médicaux",
+            "amount": 75.0,
+            "note": "",
+            "essential": true
+        }
+    ],
+    "incomes": [
+        {
+            "id": 1,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "Revenus CDI",
+            "amount": 4400.0,
+            "note": "Salaire à 90%"
+        },
+        {
+            "id": 2,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "Tickets restaurant",
+            "amount": 146.0,
+            "note": ""
+        },
+        {
+            "id": 3,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "Revenus CDI",
+            "amount": 2688.1,
+            "note": "Salaire à 90%"
+        },
+        {
+            "id": 4,
+            "category": "Vouchers",
+            "user": "Pauline",
+            "name": "Tickets restaurant",
+            "amount": 154.0,
+            "note": ""
+        },
+        {
+            "id": 5,
+            "category": "Loyer",
+            "user": "Joachim",
+            "name": "Loyer garage",
+            "amount": 70.0,
+            "note": ""
+        },
+        {
+            "id": 6,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "Revenus CDI (13eme mois + DPV)",
+            "amount": 151.16,
+            "note": ""
+        },
+        {
+            "id": 7,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "Revenus CDI (double pécule de vacances)",
+            "amount": 196.23,
+            "note": ""
+        },
+        {
+            "id": 8,
+            "category": "Bonus",
+            "user": "Année complète",
+            "name": "MBO (Bonus)",
+            "amount": 500.0,
+            "note": "Bonus Variable (50% warrants / 50% plan assurance groupe)"
+        },
+        {
+            "id": 9,
+            "category": "Dividendes",
+            "user": "Famille",
+            "name": "Bourse",
+            "amount": 50.0,
+            "note": ""
+        },
+        {
+            "id": 10,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "éco-chèques",
+            "amount": 18.75,
+            "note": ""
+        },
+        {
+            "id": 11,
+            "category": "Vouchers",
+            "user": "Pauline",
+            "name": "chèques cadeaux",
+            "amount": 2.92,
+            "note": ""
+        },
+        {
+            "id": 12,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "chèques cadeaux",
+            "amount": 2.92,
+            "note": ""
+        },
+        {
+            "id": 13,
+            "category": "Allocations",
+            "user": "Famille",
+            "name": "Allocations bébé",
+            "amount": 377.9,
+            "note": ""
+        },
+        {
+            "id": 14,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "ONEM",
+            "amount": 72.0,
+            "note": "compensation pour temps partiel"
+        },
+        {
+            "id": 15,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "ONEM",
+            "amount": 72.0,
+            "note": "compensation pour temps partiel"
+        },
+        {
+            "id": 16,
+            "category": "Bonus",
+            "user": "Joachim",
+            "name": "CCT90",
+            "amount": 166.67,
+            "note": "Bonus Variable"
+        }
+    ],
+    "investments": [
+        {
+            "id": 1,
+            "category": "Epargne Pension",
+            "user": "Joachim",
+            "name": "Epargne pension Joachim",
+            "amount": 82.0,
+            "note": ""
+        },
+        {
+            "id": 2,
+            "category": "Epargne Pension",
+            "user": "Pauline",
+            "name": "Epargne pension Pauline",
+            "amount": 82.5,
+            "note": ""
+        },
+        {
+            "id": 3,
+            "category": "Investissement",
+            "user": "Famille",
+            "name": "Investissement (ETFS, ACTIONS, Cryptos)",
+            "amount": 1800.0,
+            "note": ""
+        },
+        {
+            "id": 4,
+            "category": "Enfants",
+            "user": "Famille",
+            "name": "Argent compte bancaires enfants",
+            "amount": 330.0,
+            "note": "Investissement pour nos enfants"
+        }
+    ]
+};
+
+    let currentBudgetFilter = 'all';
+    let currentBudgetSection = 'expenses';
+
+    function setBudgetFilter(filter) {
+      currentBudgetFilter = filter;
+      ['all', 'joachim', 'pauline', 'famille'].forEach(f => {
+        const btn = document.getElementById(`btn-budget-filter-${f}`);
+        if (!btn) return;
+        if (f.toLowerCase() === filter.toLowerCase()) {
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-slate-300 hover:border-amber-500/50";
+        }
+      });
+      renderBudgetView();
+    }
+
+    function switchBudgetSection(section) {
+      currentBudgetSection = section;
+      const select = document.getElementById('budget-section-select');
+      if (select) select.value = section;
+      renderBudgetView();
+    }
+
+    function restoreJanowskiBudget() {
+      if (!appState.budget) appState.budget = {};
+      appState.budget.expenses = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.expenses));
+      appState.budget.incomes = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.incomes));
+      appState.budget.investments = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.investments));
+      
+      // Auto-update global cashflow savings
+      const totalInc = appState.budget.incomes.reduce((acc, i) => acc + (i.amount || 0), 0);
+      const totalExp = appState.budget.expenses.reduce((acc, e) => acc + (e.amount || 0), 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("🎯 Budget 2026 Janowski rechargé (49 dépenses, 16 revenus, 4 investissements) !", "success");
+    }
+
     function renderBudgetView() {
       try {
         appState = deepMergeState(defaultState, appState);
-        const totalIncome = (appState.budget.incomes || []).reduce((acc, i) => acc + (i.amount || 0), 0);
-        const totalExpenses = (appState.budget.expenses || []).reduce((acc, e) => acc + (e.amount || 0), 0);
+        if (!appState.budget) appState.budget = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026));
+        if (!appState.budget.investments) appState.budget.investments = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.investments));
+
+        const allExpenses = appState.budget.expenses || [];
+        const allIncomes = appState.budget.incomes || [];
+        const allInvestments = appState.budget.investments || [];
+
+        // Calculate Global Totals
+        const totalIncome = allIncomes.reduce((acc, i) => acc + (i.amount || 0), 0);
+        const totalExpenses = allExpenses.reduce((acc, e) => acc + (e.amount || 0), 0);
+        const totalInvestments = allInvestments.reduce((acc, inv) => acc + (inv.amount || 0), 0);
         const netSavings = Math.max(0, totalIncome - totalExpenses);
-        const savingsRate = totalIncome > 0 ? (netSavings / totalIncome) * 100 : 0;
+        const savingsRate = totalIncome > 0 ? ((netSavings / totalIncome) * 100).toFixed(1) : 0;
 
-        document.getElementById('budget-total-income').innerText = formatEur(totalIncome);
-        document.getElementById('budget-total-expenses').innerText = formatEur(totalExpenses);
-        document.getElementById('budget-net-savings').innerText = formatEur(netSavings);
+        // Update KPIs
+        const incEl = document.getElementById('budget-total-income');
+        if (incEl) incEl.innerText = formatEur(totalIncome);
 
-        const ruleEl = document.getElementById('budget-rule-50-30-20');
-        if (ruleEl) {
-          ruleEl.innerText = `Taux d'épargne : ${savingsRate.toFixed(1)}% (${savingsRate >= 40 ? 'Excellent' : 'Modéré'})`;
-        }
+        const expEl = document.getElementById('budget-total-expenses');
+        if (expEl) expEl.innerText = formatEur(totalExpenses);
+
+        const invEl = document.getElementById('budget-total-investments');
+        if (invEl) invEl.innerText = formatEur(totalInvestments);
+
+        const savEl = document.getElementById('budget-net-savings');
+        if (savEl) savEl.innerText = formatEur(netSavings);
+
+        const badgeEl = document.getElementById('budget-savings-rate-badge');
+        if (badgeEl) badgeEl.innerText = `${savingsRate}%`;
 
         // Freedom time
         const hourlyRate = (totalIncome / (20 * 8)) || 25;
@@ -2191,57 +3659,276 @@
         const freedomEl = document.getElementById('budget-freedom-time');
         if (freedomEl) freedomEl.innerText = `${daysToPayExpenses} jours / mois`;
 
-        // Categories grouping
-        const catTotals = {};
-        (appState.budget.expenses || []).forEach(e => {
-          catTotals[e.category] = (catTotals[e.category] || 0) + e.amount;
+        // Search and user filter
+        const searchInput = document.getElementById('budget-search-input');
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+        const filterItem = (item) => {
+          const matchUser = currentBudgetFilter === 'all' || (item.user && item.user.toLowerCase() === currentBudgetFilter.toLowerCase());
+          const matchQuery = !query || (item.name && item.name.toLowerCase().includes(query)) || (item.category && item.category.toLowerCase().includes(query)) || (item.note && item.note.toLowerCase().includes(query));
+          return matchUser && matchQuery;
+        };
+
+        // Render Active Table
+        const tbody = document.getElementById('budget-table-tbody');
+        const titleEl = document.getElementById('budget-table-title');
+        const countEl = document.getElementById('budget-table-count');
+
+        if (tbody) {
+          tbody.innerHTML = '';
+          let itemsToRender = [];
+          let itemType = currentBudgetSection;
+
+          if (currentBudgetSection === 'expenses') {
+            itemsToRender = allExpenses.filter(filterItem);
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-receipt text-rose-400"></i> Détail des Dépenses Mensualisées (${itemsToRender.length})`;
+          } else if (currentBudgetSection === 'incomes') {
+            itemsToRender = allIncomes.filter(filterItem);
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-arrow-trend-up text-emerald-400"></i> Détail des Revenus Mensualisés (${itemsToRender.length})`;
+          } else {
+            itemsToRender = allInvestments.filter(filterItem);
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-piggy-bank text-sky-400"></i> Épargne & Investissements Programmés (${itemsToRender.length})`;
+          }
+
+          if (countEl) countEl.innerText = `${itemsToRender.length} lignes`;
+
+          if (itemsToRender.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-500 italic">Aucune ligne trouvée pour ces critères de filtre.</td></tr>`;
+          } else {
+            itemsToRender.forEach(item => {
+              const tr = document.createElement('tr');
+              tr.className = "hover:bg-[#1B263B]/30 transition group";
+
+              // Badges formatting
+              const userBadge = item.user === 'Joachim' ? 
+                '<span class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-bold">👨‍💼 Joachim</span>' :
+                (item.user === 'Pauline' ? 
+                  '<span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">👩‍💼 Pauline</span>' :
+                  '<span class="px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold">👨‍👩‍👧‍👦 Famille</span>');
+
+              const noteHtml = item.note ? `<span class="block text-[10px] text-slate-500 italic truncate max-w-xs">${item.note}</span>` : '';
+              const amountColor = itemType === 'expenses' ? 'text-rose-400' : (itemType === 'incomes' ? 'text-emerald-400' : 'text-sky-300');
+
+              tr.innerHTML = `
+                <td class="py-2.5 font-semibold text-slate-300 text-[11px]">${item.category}</td>
+                <td class="py-2.5">${userBadge}</td>
+                <td class="py-2.5">
+                  <span class="font-bold text-white block">${item.name}</span>
+                  ${noteHtml}
+                </td>
+                <td class="py-2.5 text-right font-mono font-bold ${amountColor} text-sm privacy-blur">${formatEur(item.amount)}</td>
+                <td class="py-2.5 text-right space-x-1">
+                  <button onclick="editBudgetItem(${item.id}, '${itemType}')" class="p-1 rounded text-slate-400 hover:text-amber-400 transition" title="Modifier">
+                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                  </button>
+                  <button onclick="deleteBudgetItem(${item.id}, '${itemType}')" class="p-1 rounded text-slate-400 hover:text-rose-400 transition" title="Supprimer">
+                    <i class="fa-solid fa-trash text-xs"></i>
+                  </button>
+                </td>
+              `;
+              tbody.appendChild(tr);
+            });
+          }
+        }
+
+        // Render Charts
+        renderBudgetCharts(allExpenses, allIncomes, allInvestments);
+
+      } catch (err) {
+        console.error("renderBudgetView error:", err);
+      }
+    }
+
+    function renderBudgetCharts(expenses, incomes, investments) {
+      // 1. Donut Categories Chart
+      const catCtx = document.getElementById('budgetDonutChart');
+      if (catCtx) {
+        const catMap = {};
+        expenses.forEach(e => {
+          catMap[e.category] = (catMap[e.category] || 0) + (e.amount || 0);
         });
 
-        const listContainer = document.getElementById('budget-categories-list');
-        if (listContainer) {
-          listContainer.innerHTML = '';
-          Object.keys(catTotals).forEach(cat => {
-            const amt = catTotals[cat];
-            const pct = totalExpenses > 0 ? ((amt / totalExpenses) * 100).toFixed(1) : 0;
-            const item = document.createElement('div');
-            item.className = 'space-y-1.5 p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]';
-            item.innerHTML = `
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-bold text-white">${cat}</span>
-                <span class="font-mono text-slate-300 font-bold">${formatEur(amt)}/m <span class="text-slate-500 font-normal">(${pct}%)</span></span>
-              </div>
-              <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
-                <div class="bg-sky-500 h-full rounded-full" style="width: ${Math.min(100, pct*1.5)}%"></div>
-              </div>
-            `;
-            listContainer.appendChild(item);
-          });
-        }
+        const labels = Object.keys(catMap);
+        const data = Object.values(catMap);
 
-        // Budget Donut
-        const ctx = document.getElementById('budgetDonutChart');
-        if (ctx) {
-          if (charts.budgetDonut) charts.budgetDonut.destroy();
-          charts.budgetDonut = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-              labels: Object.keys(catTotals),
-              datasets: [{
-                data: Object.values(catTotals),
-                backgroundColor: ['#38BDF8', '#10B981', '#F59E0B', '#8B5CF6', '#F43F5E', '#EC4899'],
-                borderWidth: 0
-              }]
+        if (charts.budgetDonut) charts.budgetDonut.destroy();
+        charts.budgetDonut = new Chart(catCtx, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: ['#F59E0B', '#38BDF8', '#10B981', '#F43F5E', '#A855F7', '#EC4899', '#6366F1', '#14B8A6', '#64748B', '#84CC16'],
+              borderWidth: 1,
+              borderColor: '#05070E'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 }, boxWidth: 10 } }
             },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              cutout: '70%',
-              plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 } } } }
+            cutout: '65%'
+          }
+        });
+      }
+
+      // 2. Bar Chart per Member
+      const memCtx = document.getElementById('budgetMemberChart');
+      if (memCtx) {
+        const users = ['Joachim', 'Pauline', 'Famille'];
+        const userIncomes = users.map(u => incomes.filter(i => (i.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + b.amount, 0));
+        const userExpenses = users.map(u => expenses.filter(e => (e.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + b.amount, 0));
+
+        if (charts.budgetMember) charts.budgetMember.destroy();
+        charts.budgetMember = new Chart(memCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Joachim', 'Pauline', 'Famille'],
+            datasets: [
+              { label: 'Revenus (€)', data: userIncomes, backgroundColor: '#10B981', borderRadius: 6 },
+              { label: 'Dépenses (€)', data: userExpenses, backgroundColor: '#F43F5E', borderRadius: 6 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 10 }, boxWidth: 10 } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { size: 10 } } },
+              y: { grid: { color: '#1B263B' }, ticks: { color: '#94A3B8', font: { size: 10 } } }
             }
-          });
-        }
-      } catch (e) { console.error('Erreur dans renderBudgetView:', e); }
+          }
+        });
+      }
     }
+
+    // --- MODAL ITEM HANDLERS ---
+    function openAddBudgetItemModal(type = 'expense') {
+      document.getElementById('modal-budget-id').value = '';
+      document.getElementById('modal-budget-category').value = '';
+      document.getElementById('modal-budget-name').value = '';
+      document.getElementById('modal-budget-raw-amount').value = '';
+      document.getElementById('modal-budget-frequency').value = '1';
+      document.getElementById('modal-budget-note').value = '';
+      document.getElementById('modal-budget-user').value = 'Famille';
+      setModalBudgetType(type);
+      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne`;
+      document.getElementById('budget-item-modal').classList.remove('hidden');
+    }
+
+    function closeBudgetItemModal() {
+      document.getElementById('budget-item-modal').classList.add('hidden');
+    }
+
+    function setModalBudgetType(type) {
+      document.getElementById('modal-budget-type').value = type;
+      ['expense', 'income', 'investment'].forEach(t => {
+        const btn = document.getElementById(`modal-type-btn-${t}`);
+        if (!btn) return;
+        if (t === type) {
+          const color = t === 'expense' ? 'border-rose-500 bg-rose-950/40 text-rose-300' : (t === 'income' ? 'border-emerald-500 bg-emerald-950/40 text-emerald-300' : 'border-sky-500 bg-sky-950/40 text-sky-300');
+          btn.className = `py-2 rounded-xl border ${color} font-bold text-xs`;
+        } else {
+          btn.className = "py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs";
+        }
+      });
+    }
+
+    function editBudgetItem(id, type) {
+      const list = type === 'expenses' ? appState.budget.expenses : (type === 'incomes' ? appState.budget.incomes : appState.budget.investments);
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('modal-budget-id').value = item.id;
+      setModalBudgetType(type === 'expenses' ? 'expense' : (type === 'incomes' ? 'income' : 'investment'));
+      document.getElementById('modal-budget-category').value = item.category || '';
+      document.getElementById('modal-budget-user').value = item.user || 'Famille';
+      document.getElementById('modal-budget-name').value = item.name || '';
+      document.getElementById('modal-budget-raw-amount').value = item.amount || '';
+      document.getElementById('modal-budget-frequency').value = '1';
+      document.getElementById('modal-budget-note').value = item.note || '';
+      
+      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier la Ligne`;
+      document.getElementById('budget-item-modal').classList.remove('hidden');
+    }
+
+    function saveBudgetItemModal() {
+      const id = document.getElementById('modal-budget-id').value;
+      const type = document.getElementById('modal-budget-type').value;
+      const cat = document.getElementById('modal-budget-category').value.trim() || 'Divers';
+      const user = document.getElementById('modal-budget-user').value || 'Famille';
+      const name = document.getElementById('modal-budget-name').value.trim() || 'Sans titre';
+      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0;
+      const freq = parseInt(document.getElementById('modal-budget-frequency').value) || 1;
+      const note = document.getElementById('modal-budget-note').value.trim();
+
+      const monthlyAmount = round2(rawAmt / freq);
+
+      if (!appState.budget) appState.budget = { expenses: [], incomes: [], investments: [] };
+      const targetList = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
+
+      if (id) {
+        // Edit existing
+        const idx = targetList.findIndex(x => x.id === parseInt(id));
+        if (idx !== -1) {
+          targetList[idx] = { ...targetList[idx], category: cat, user: user, name: name, amount: monthlyAmount, note: note };
+        }
+      } else {
+        // Add new
+        targetList.push({
+          id: Date.now(),
+          category: cat,
+          user: user,
+          name: name,
+          amount: monthlyAmount,
+          note: note,
+          essential: cat in ['Assurances', 'Habitation', 'Taxes', 'Chauffage', 'Prêt immo', 'Enfants', 'Frais Voitures']
+        });
+      }
+
+      // Recompute global monthly savings
+      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + b.amount, 0);
+      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + b.amount, 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      closeBudgetItemModal();
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("Ligne de budget enregistrée !", "success");
+    }
+
+    function deleteBudgetItem(id, type) {
+      if (!confirm("Voulez-vous supprimer cette ligne de budget ?")) return;
+      if (!appState.budget) return;
+      if (type === 'expenses') {
+        appState.budget.expenses = (appState.budget.expenses || []).filter(x => x.id !== id);
+      } else if (type === 'incomes') {
+        appState.budget.incomes = (appState.budget.incomes || []).filter(x => x.id !== id);
+      } else {
+        appState.budget.investments = (appState.budget.investments || []).filter(x => x.id !== id);
+      }
+      
+      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + b.amount, 0);
+      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + b.amount, 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("Ligne supprimée.", "info");
+    }
+
+    function round2(v) {
+      return Math.round((v + Number.EPSILON) * 100) / 100;
+    }
+
 
     // --- TAB 3: RENDER ENVELOPES VIEW ---
     function renderEnvelopesView() {

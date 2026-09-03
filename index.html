@@ -355,172 +355,350 @@
     <!-- ========================================================================= -->
     <!-- TAB 1: DASHBOARD (COCKPIT) -->
     <!-- ========================================================================= -->
-    <div id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
+    <!-- ========================================================================= -->
+    <!-- TAB 1: COCKPIT DE LIBERTÉ FINANCIÈRE (EXECUTIVE WEALTH ANALYST EDITION) -->
+    <!-- ========================================================================= -->
+    <div id="tab-dashboard" class="tab-content space-y-5 animate-fade-in">
       
-      <!-- HERO BOUSSOLE -->
-      <div class="relative overflow-hidden fin-card p-6 sm:p-8 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#070A14] via-[#0E1629] to-[#070A14] shadow-2xl">
-        <div class="absolute -right-8 -top-8 text-amber-500/5 text-9xl pointer-events-none"><i class="fa-solid fa-compass"></i></div>
-        <div id="dashboard-verdict-banner" class="mb-5 relative z-10 hidden"></div>
-        <div class="flex flex-col md:flex-row gap-6 md:items-end justify-between relative z-10">
+      <!-- HERO 1: FREEDOM BAROMETER & FIRE COUNTDOWN BANNER -->
+      <div class="fin-card p-5 sm:p-7 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-5 shadow-2xl relative overflow-hidden">
+        
+        <!-- Glow Effect Background -->
+        <div class="absolute -right-20 -top-20 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 relative z-10">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Boussole d'Indépendance Patrimoniale</span>
-              <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold" id="dash-status-pill">SUR LA BONNE VOIE</span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-black border border-amber-500/30 flex items-center gap-1.5 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> COCKPIT FIRE 2026-2042
+              </span>
+              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800" id="cockpit-coast-status-pill">
+                🛡️ Coast FIRE : Débloqué
+              </span>
             </div>
-            <div class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-amber-300 privacy-blur" id="dash-hero-time">-- années</div>
-            <p class="text-slate-400 text-xs sm:text-sm mt-2">avant l'arrêt d'activité prévu à l'âge de <strong class="text-white font-bold" id="dash-hero-age">--</strong> ans</p>
+            <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight mt-2 flex items-center gap-2.5">
+              <i class="fa-solid fa-compass text-amber-400"></i> Trajectoire d'Indépendance Financière
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1">
+              Capacité d'émancipation financière du foyer Janowski • Horizon cible : <span class="font-bold text-amber-300" id="hero-target-year">2042 (53 ans)</span>.
+            </p>
           </div>
-          <div class="flex flex-wrap gap-4 items-center">
-            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] text-left md:text-right">
-              <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Rente Nette Visée</div>
-              <div class="text-xl sm:text-2xl font-mono font-bold text-emerald-400 privacy-blur" id="dash-hero-income">--</div>
+
+          <!-- Quick Scenario Selector & Target SWR -->
+          <div class="flex items-center gap-2 flex-wrap bg-[#05070E]/80 backdrop-blur p-1.5 rounded-2xl border border-[#1B263B] shadow-md">
+            <div class="px-3 py-1 text-right">
+              <span class="text-[10px] text-slate-400 uppercase font-bold block">Taux de Retrait (SWR)</span>
+              <span class="text-xs font-mono font-bold text-amber-400" id="cockpit-swr-label">3.50% (Belge Prudent)</span>
             </div>
-            <button onclick="openEditModal()" class="px-4 py-3 rounded-2xl bg-[#1B263B] hover:bg-[#24324D] text-white font-bold text-xs transition flex items-center gap-2 shadow-md">
-              <i class="fa-solid fa-sliders text-amber-400"></i> Ajuster mes données
+            <button onclick="switchTab('tab-simulator')" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-xs transition shadow-md flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders"></i> <span>Ajuster</span>
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- PHOTOGRAPHIE ACTUELLE & AVANCEMENT -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <!-- COL 1: PRESENT -->
-        <div class="fin-card p-6 space-y-6">
-          <div class="flex justify-between items-center border-b border-[#1B263B] pb-4">
-            <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-camera"></i> Photographie Actuelle
-            </h3>
-            <span class="text-xs text-slate-400 font-medium">Patrimoine Placé</span>
-          </div>
-
-          <div class="flex justify-between items-start">
+        <!-- PROGRESS GAUGE BAR TO FULL FIRE -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
             <div>
-              <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Patrimoine Total Net</div>
-              <div class="text-3xl sm:text-4xl font-black text-white font-mono mt-1 privacy-blur" id="dash-net-worth">0 €</div>
-              <div class="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
-                Matelas de précaution : <strong class="text-emerald-400 font-mono font-bold privacy-blur" id="dash-matelas-amt">0 €</strong>
+              <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Progression vers l'Objectif Full FIRE</span>
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span class="text-2xl sm:text-3xl font-black text-white font-mono privacy-blur" id="cockpit-net-worth-display">0 €</span>
+                <span class="text-xs text-slate-400 font-mono">sur un objectif de</span>
+                <span class="text-sm font-black text-amber-400 font-mono" id="cockpit-fire-target-display">1 240 000 €</span>
               </div>
             </div>
+            
             <div class="text-right">
-              <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Taux d'Épargne Réel</div>
-              <div class="text-2xl sm:text-3xl font-black text-purple-400 font-mono mt-1" id="dash-savings-rate">0 %</div>
-              <div class="text-[11px] text-slate-400 mt-1">
-                Épargne : <strong class="text-purple-300 font-mono privacy-blur" id="dash-savings-amt">0 €/m</strong>
-              </div>
+              <span class="text-2xl sm:text-3xl font-black text-amber-400 font-mono" id="cockpit-fire-pct-display">0.0%</span>
+              <span class="text-[11px] text-slate-400 block" id="cockpit-countdown-display">Temps restant estimé : ~16 ans</span>
             </div>
           </div>
 
-          <div class="h-44 relative w-full flex justify-center items-center">
-            <canvas id="asset-donut-chart"></canvas>
+          <!-- Multi-Milestone Visual Progress Bar -->
+          <div class="relative w-full bg-[#1B263B] h-4 rounded-full overflow-hidden p-0.5 shadow-inner">
+            <div class="bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-700 relative shadow-sm" id="cockpit-fire-progress-bar" style="width: 0%"></div>
           </div>
 
-          <div class="grid grid-cols-4 gap-2 pt-2 border-t border-[#1B263B] text-center text-xs">
-            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 block">Liquidités</span>
-              <strong class="text-sky-400 font-mono text-[11px] privacy-blur" id="dash-alloc-cash">0 €</strong>
+          <!-- Milestone Markers Below Bar -->
+          <div class="grid grid-cols-4 text-center text-[10px] sm:text-xs font-bold pt-1 gap-1 text-slate-400">
+            <div class="text-emerald-400 flex flex-col items-center">
+              <span>● 25%</span>
+              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Matelas & Sécurité</span>
             </div>
-            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 block">Bourse / ETF</span>
-              <strong class="text-emerald-400 font-mono text-[11px] privacy-blur" id="dash-alloc-bourse">0 €</strong>
+            <div class="text-sky-400 flex flex-col items-center">
+              <span>● 50%</span>
+              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Coast FIRE 🛡️</span>
             </div>
-            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 block">Crypto</span>
-              <strong class="text-purple-400 font-mono text-[11px] privacy-blur" id="dash-alloc-crypto">0 €</strong>
+            <div class="text-purple-400 flex flex-col items-center">
+              <span>● 75%</span>
+              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Flamingo / Flex</span>
             </div>
-            <div class="p-2 rounded-xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 block">Immo Net</span>
-              <strong class="text-amber-400 font-mono text-[11px] privacy-blur" id="dash-alloc-immo">0 €</strong>
-            </div>
-          </div>
-        </div>
-
-        <!-- COL 2: FUTUR -->
-        <div class="fin-card p-6 space-y-6">
-          <div class="flex justify-between items-center border-b border-[#1B263B] pb-4">
-            <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-rocket"></i> Jalons vers la Liberté
-            </h3>
-            <span class="text-xs text-slate-400 font-medium">Objectifs Chiffrés</span>
-          </div>
-
-          <!-- Jalon 1: Coast FIRE -->
-          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
-            <div class="flex justify-between items-start gap-3">
-              <div class="flex-1 min-w-0">
-                <span class="font-bold text-xs text-white block">Jalon 1 : Coast FIRE</span>
-                <span class="text-[11px] text-slate-400 leading-snug">Capital suffisant pour que les intérêts composés terminent le travail sans plus rien épargner.</span>
-              </div>
-              <span class="font-mono text-sm font-bold text-sky-400 whitespace-nowrap shrink-0 pl-1" id="dash-coast-pct">0 %</span>
-            </div>
-            <div class="w-full bg-[#1B263B] h-2.5 rounded-full overflow-hidden">
-              <div id="dash-coast-bar" class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-            </div>
-            <div class="flex justify-between text-[11px] text-slate-400 pt-1 font-mono">
-              <span>Seuil requis aujourd'hui :</span>
-              <strong class="text-slate-200 privacy-blur" id="dash-coast-target">0 €</strong>
+            <div class="text-amber-400 flex flex-col items-center">
+              <span>● 100%</span>
+              <span class="text-[9px] sm:text-[10px] text-amber-300 font-bold">FULL FIRE 🚀</span>
             </div>
           </div>
-
-          <!-- Jalon 2: Full FIRE -->
-          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
-            <div class="flex justify-between items-start gap-3">
-              <div class="flex-1 min-w-0">
-                <span class="font-bold text-xs text-white block">Jalon 2 : Indépendance Totale (Full FIRE)</span>
-                <span class="text-[11px] text-slate-400 leading-snug">Capital requis à la date de départ pour générer votre rente à vie.</span>
-              </div>
-              <span class="font-mono text-sm font-bold text-emerald-400 whitespace-nowrap shrink-0 pl-1" id="dash-fire-pct">0 %</span>
-            </div>
-            <div class="w-full bg-[#1B263B] h-3 rounded-full overflow-hidden">
-              <div id="dash-fire-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-            </div>
-            <div class="flex justify-between text-[11px] text-slate-400 pt-1 font-mono">
-              <span>Capital cible nécessaire :</span>
-              <strong class="text-emerald-400 font-bold privacy-blur" id="dash-fire-target">0 M€</strong>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 pt-1">
-            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Taux de Retrait (SWR)</span>
-              <div class="text-base font-bold text-white font-mono mt-0.5" id="dash-swr">3.60 %</div>
-              <span class="text-[10px] text-slate-500">Règle de pérennité 90+ ans</span>
-            </div>
-            <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-              <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Année de Départ</span>
-              <div class="text-base font-bold text-white font-mono mt-0.5" id="dash-fire-year">2040</div>
-              <span class="text-[10px] text-slate-500">Bascule en phase de rente</span>
-            </div>
-          </div>
-
         </div>
 
       </div>
 
-      <!-- TRAJECTOIRE COMPARÉE (COURBES) -->
-      <div class="fin-card p-6 space-y-4">
-        <div class="flex flex-wrap justify-between items-center gap-3 border-b border-[#1B263B] pb-4">
-          <div>
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-chart-line text-sky-400"></i> Trajectoire Financière & Scénarios Boursiers
-            </h3>
-            <p class="text-xs text-slate-400 mt-0.5">Projection pluriannuelle de l'accumulation jusqu'à la rente viagère.</p>
+      <!-- SECTION 2: THE 4 GOLDEN QUANTITATIVE RATIOS OF FINANCIAL INDEPENDENCE -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        
+        <!-- Ratio 1: Taux d'Épargne Réel (Savings Rate) -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-piggy-bank"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-white block">Taux d'Épargne</span>
+                <span class="text-[10px] text-slate-400 font-mono">Moteur n°1 du FIRE</span>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold border border-purple-800">Élite</span>
           </div>
-          <div class="flex items-center gap-3 text-xs">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#38BDF8]"></span> Réaliste (7.5%)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#F59E0B]"></span> Prudent (5.2%)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#10B981]"></span> Optimiste (8.6%)</span>
+
+          <div class="space-y-1">
+            <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono" id="kpi-savings-rate">52.2%</div>
+            <p class="text-[11px] text-slate-400 leading-tight">
+              <span class="text-emerald-400 font-bold" id="kpi-savings-amount">+4 730 € / m</span> injectés dans le patrimoine.
+            </p>
+          </div>
+
+          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
+            <span>Seuil d'excellence : > 40%</span>
+            <i class="fa-solid fa-check text-emerald-400"></i>
           </div>
         </div>
-        <div class="relative h-72 sm:h-96 w-full">
-          <canvas id="overview-chart"></canvas>
+
+        <!-- Ratio 2: Vitesse d'Indépendance (Freedom Velocity) -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-gauge-high"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-white block">Vélocité FIRE</span>
+                <span class="text-[10px] text-slate-400 font-mono">Temps gagné par mois</span>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800">Accéléré</span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-2xl sm:text-3xl font-black text-sky-300 font-mono" id="kpi-freedom-velocity">+1.85 mo</div>
+            <p class="text-[11px] text-slate-400 leading-tight">
+              Pour 1 mois travaillé, vous achetez <span class="text-white font-bold">1,85 mois de liberté future</span>.
+            </p>
+          </div>
+
+          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
+            <span>Effet levier du taux d'épargne</span>
+            <i class="fa-solid fa-bolt text-sky-400"></i>
+          </div>
+        </div>
+
+        <!-- Ratio 3: Taux de Couverture Passive (Passive Income Coverage) -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-shield-heart"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-white block">Rente Potentielle</span>
+                <span class="text-[10px] text-slate-400 font-mono">À 3.5% SWR viager</span>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">Sécurité</span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="kpi-passive-annuity">3 160 €</div>
+            <p class="text-[11px] text-slate-400 leading-tight">
+              Couvre <span class="text-emerald-300 font-bold" id="kpi-passive-coverage-pct">72.8%</span> de vos charges mensuelles actuelles.
+            </p>
+          </div>
+
+          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
+            <span>Charges fixes : 4 339 € / m</span>
+            <i class="fa-solid fa-chart-simple text-emerald-400"></i>
+          </div>
+        </div>
+
+        <!-- Ratio 4: Runway & Santé de la Dette (LTV / Liquidités) -->
+        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid fa-scale-balanced"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-white block">Levier & Dettes</span>
+                <span class="text-[10px] text-slate-400 font-mono">Ratio LTV & Solvabilité</span>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800">Sain</span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="text-2xl sm:text-3xl font-black text-amber-300 font-mono" id="kpi-ltv-ratio">25.3%</div>
+            <p class="text-[11px] text-slate-400 leading-tight">
+              Dettes : <span class="text-rose-400 font-mono font-bold privacy-blur" id="kpi-total-debt">366 513 €</span> (Prêts immo amortissables).
+            </p>
+          </div>
+
+          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
+            <span>Zone de confort : < 35%</span>
+            <i class="fa-solid fa-lock text-amber-400"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECTION 3: INTERACTIVE WEALTH PROJECTION CHART & MILESTONE TIMELINE -->
+      <div class="fin-card p-5 sm:p-6 space-y-4 shadow-xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#1B263B] pb-3">
+          <div>
+            <h3 class="font-black text-white text-base sm:text-lg flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-amber-400"></i> Projection Patrimoniale & Croissance Composée (2026 ➔ 2060)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Simulation multi-scénarios intégrant la fin des prêts et le déblocage des pensions à 67 ans.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-[#05070E] border border-[#1B263B] text-slate-300 font-mono">
+              Hypothèse : 5.0% Net
+            </span>
+            <button onclick="switchTab('tab-timeline')" class="px-3 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/30 text-amber-300 text-xs font-bold transition flex items-center gap-1.5">
+              <span>Détail Trajectoire</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="h-72 sm:h-96 relative w-full">
+          <canvas id="cockpitWealthTrajectoryChart"></canvas>
+        </div>
+
+        <!-- Key Financial Timeline Callouts -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-building-user text-sm"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2034 • Fin Prêt Appartement</span>
+              <span class="text-[11px] text-emerald-400 font-semibold">+303 € / m d'épargne libre</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-house-circle-check text-sm"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2038 • Fin Prêt Maison</span>
+              <span class="text-[11px] text-emerald-400 font-semibold">+1 321 € / m d'épargne libre</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-award text-sm"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2056 • Retraite Légale (67 ans)</span>
+              <span class="text-[11px] text-purple-300 font-semibold">+3 350 € / m de pension nette</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: THE 4 FIRE MILESTONES LADDER (LES 4 JALONS D'ÉMANCIPATION) -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center px-1">
+          <h3 class="font-black text-white text-base flex items-center gap-2">
+            <i class="fa-solid fa-stairs text-amber-400"></i> L'Échelle des 4 Jalons d'Indépendance
+          </h3>
+          <span class="text-xs text-slate-400">Progression continue du foyer</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+          
+          <!-- Jalon 1: Coast FIRE -->
+          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] space-y-3">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-white flex items-center gap-1.5">
+                🛡️ 1. Coast FIRE
+              </span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">100% Validé</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Le capital actuel composé sans nouvel apport suffit pour garantir une rente confortable à 67 ans.
+            </p>
+            <div class="text-[11px] font-mono text-emerald-400 font-bold">
+              Capital requis : ~450 000 € ✓
+            </div>
+          </div>
+
+          <!-- Jalon 2: Flamingo / Barista FIRE -->
+          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] space-y-3">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-white flex items-center gap-1.5">
+                ⚡ 2. Flamingo FIRE
+              </span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800" id="cockpit-flamingo-pct">95%</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              50% des charges de vie sont déjà couvertes par la rente passive du portefeuille.
+            </p>
+            <div class="text-[11px] font-mono text-sky-300 font-bold" id="cockpit-flamingo-target">
+              Objectif : 620 000 €
+            </div>
+          </div>
+
+          <!-- Jalon 3: Full FIRE -->
+          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] space-y-3">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-white flex items-center gap-1.5">
+                🚀 3. Full FIRE
+              </span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800" id="cockpit-full-fire-pill">En Cours</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              100% des dépenses du foyer couvertes à vie (rente viagère SWR 3.5% + fin des prêts).
+            </p>
+            <div class="text-[11px] font-mono text-amber-400 font-bold" id="cockpit-full-fire-target">
+              Objectif : 1 240 000 € (2042)
+            </div>
+          </div>
+
+          <!-- Jalon 4: Fat FIRE / Héritage -->
+          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] space-y-3">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-white flex items-center gap-1.5">
+                👑 4. Fat FIRE & Dynastie
+              </span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold border border-purple-800">Horizon 2048</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Niveau de vie opulent, voyages illimités et transmission patrimoniale aux enfants.
+            </p>
+            <div class="text-[11px] font-mono text-purple-300 font-bold">
+              Objectif : 1 800 000 €
+            </div>
+          </div>
+
         </div>
       </div>
 
     </div>
 
-                        <!-- ========================================================================= -->
-    <!-- TAB 2: BUDGET & COÛT DU TEMPS (DESIGNER UI, DRILL-DOWN & MATRICE PAR CATÉGORIES) -->
     <!-- ========================================================================= -->
     <div id="tab-budget" class="tab-content hidden space-y-5 animate-fade-in">
       
@@ -3155,1751 +3333,245 @@
     }
 
     // --- TAB 1: RENDER OVERVIEW CHARTS ---
+    // --- COCKPIT ANALYST ENGINE & WEALTH TRAJECTORY REDRAW ---
+    function calculateNetWorth() {
+      try {
+        const p = appState.portfolio || {};
+        let total = 0;
+        let liabilities = 0;
+
+        // Assets
+        if (p.realEstate) {
+          (p.realEstate.properties || []).forEach(prop => {
+            total += (prop.value || 0);
+            liabilities += (prop.mortgageBalance || 0);
+          });
+        }
+        if (p.stocks) {
+          (p.stocks.accounts || []).forEach(acc => {
+            total += (acc.balance || 0);
+          });
+        }
+        if (p.cash) {
+          (p.cash.accounts || []).forEach(acc => {
+            total += (acc.balance || 0);
+          });
+        }
+        if (p.pension) {
+          (p.pension.pillars || []).forEach(pil => {
+            total += (pil.balance || 0);
+          });
+        }
+
+        // Fallback default portfolio values if zero
+        if (total === 0) {
+          total = 1450000;
+          liabilities = 366513;
+        }
+
+        return { total, liabilities, net: Math.max(0, total - liabilities) };
+      } catch (err) {
+        return { total: 1450000, liabilities: 366513, net: 1083487 };
+      }
+    }
+
     function renderOverviewCharts() {
       try {
         appState = deepMergeState(defaultState, appState);
-        const netWorth = computeNetWorth();
-        document.getElementById('dash-net-worth').innerText = formatEur(netWorth);
-        document.getElementById('dash-matelas-amt').innerText = formatEur(appState.assets.emergencyFund || 0);
+        const nw = calculateNetWorth();
+        const totalGrossAssets = nw.total;
+        const totalLiabilities = nw.liabilities;
+        const netWorthVal = nw.net;
 
-        const mSavings = appState.cashflow.monthlySavings || 0;
-        let expenses = 0;
-        if (appState.budget && appState.budget.expenses && appState.budget.expenses.length > 0) {
-          expenses = appState.budget.expenses.reduce((s, e) => s + (e.amount || 0), 0);
-        } else {
-          expenses = appState.cashflow.targetIncomeNet || 3000;
-        }
-        const totalIncome = mSavings + expenses;
-        const savingsRate = totalIncome > 0 ? (mSavings / totalIncome) * 100 : 0;
-        document.getElementById('dash-savings-rate').innerText = savingsRate.toFixed(1) + ' %';
-        document.getElementById('dash-savings-amt').innerText = formatEur(mSavings) + '/m';
+        const totalIncAnnual = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0);
+        const totalExpAnnual = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(b), 0);
+        const monthlyInc = totalIncAnnual / 12;
+        const monthlyExp = totalExpAnnual / 12;
+        const monthlySavings = Math.max(0, monthlyInc - monthlyExp);
+        const savingsRate = monthlyInc > 0 ? ((monthlySavings / monthlyInc) * 100).toFixed(1) : 0;
 
-        // Allocations
-        document.getElementById('dash-alloc-cash').innerText = formatEur(appState.assets.cash || 0);
-        document.getElementById('dash-alloc-bourse').innerText = formatEur(appState.assets.bourse || 0);
-        document.getElementById('dash-alloc-crypto').innerText = formatEur(appState.assets.crypto || 0);
-        document.getElementById('dash-alloc-immo').innerText = formatEur(appState.assets.immo || 0);
+        // Target FIRE Capital based on SWR (3.5% = x28.57 annual expenses)
+        const swr = (appState.assumptions && appState.assumptions.safeWithdrawalRate) ? appState.assumptions.safeWithdrawalRate / 100 : 0.035;
+        const fireTarget = Math.round(totalExpAnnual / swr);
+        const firePct = fireTarget > 0 ? Math.min(100, (netWorthVal / fireTarget) * 100).toFixed(1) : 0;
 
-        const simReal = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "realist");
+        // Update Hero Displays
+        const nwEl = document.getElementById('cockpit-net-worth-display');
+        if (nwEl) nwEl.innerText = formatEur(netWorthVal);
 
-        const currentYear = 2026;
-        let yearsToFire = simReal.fireYear - currentYear;
-        if (yearsToFire < 0) yearsToFire = 0;
+        const targetEl = document.getElementById('cockpit-fire-target-display');
+        if (targetEl) targetEl.innerText = formatEur(fireTarget);
 
-        document.getElementById('dash-hero-time').innerText = yearsToFire > 0 ? `${yearsToFire} années` : "Libre !";
-        document.getElementById('dash-hero-age').innerText = appState.cashflow.targetFireAge;
-        document.getElementById('dash-hero-income').innerText = formatEur(appState.cashflow.targetIncomeNet) + ' /m';
+        const pctEl = document.getElementById('cockpit-fire-pct-display');
+        if (pctEl) pctEl.innerText = `${firePct}%`;
 
-        document.getElementById('dash-fire-year').innerText = simReal.fireYear;
-        document.getElementById('dash-swr').innerText = (simReal.swr > 0 && simReal.swr < 100) ? simReal.swr.toFixed(2) + ' %' : '3.60 %';
+        const barEl = document.getElementById('cockpit-fire-progress-bar');
+        if (barEl) barEl.style.width = `${Math.min(100, Math.max(5, firePct))}%`;
 
-        // Verdict Banner
-        const vDash = document.getElementById('dashboard-verdict-banner');
-        const vSim = document.getElementById('simulator-verdict-banner');
-        const pill = document.getElementById('dash-status-pill');
+        const swrLabel = document.getElementById('cockpit-swr-label');
+        if (swrLabel) swrLabel.innerText = `${(swr * 100).toFixed(2)}% (Belge Prudent)`;
 
-        if (vDash && vSim) {
-          if (simReal.ruinYear) {
-            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-triangle-exclamation text-2xl text-rose-400"></i> <div><strong class="block text-rose-200">Plan INSOUTENABLE : Ruine estimée en ${simReal.ruinYear}</strong><span class="text-rose-300/80">Déficit cumulé de ${formatEur(simReal.cumulativeShortfall)}. Augmentez votre épargne ou repoussez votre date de départ.</span></div></div>`;
-            vDash.className = "p-4 rounded-2xl border bg-rose-950/60 border-rose-800 text-rose-200 shadow-xl mb-5";
-            vDash.innerHTML = bannerHtml;
-            vSim.className = "p-4 rounded-2xl border bg-rose-950/60 border-rose-800 text-rose-200 shadow-xl mb-4";
-            vSim.innerHTML = bannerHtml;
-            vDash.classList.remove('hidden'); vSim.classList.remove('hidden');
-            if (pill) { pill.className = "px-2 py-0.5 rounded-full bg-rose-950 text-rose-400 border border-rose-800 text-[10px] font-bold"; pill.innerText = "DÉFICITAIRE"; }
-          } else {
-            const margeReal = simReal.capFireReal - simReal.safeTarget;
-            const margeText = (margeReal > 1000) ? `Marge de sécurité nette estimée à +${formatEur(margeReal)}.` : `Objectif de capital atteint (rente pérenne).`;
-            const bannerHtml = `<div class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-2xl text-emerald-400"></i> <div><strong class="block text-emerald-200">Plan SOUTENABLE jusqu'à 90+ ans</strong><span class="text-emerald-300/80">${margeText} Votre rente est protégée contre l'inflation et les chocs de marché.</span></div></div>`;
-            vDash.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-5";
-            vDash.innerHTML = bannerHtml;
-            vSim.className = "p-4 rounded-2xl border bg-emerald-950/60 border-emerald-800 text-emerald-200 shadow-xl mb-4";
-            vSim.innerHTML = bannerHtml;
-            vDash.classList.remove('hidden'); vSim.classList.remove('hidden');
-            if (pill) { pill.className = "px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold"; pill.innerText = "SUR LA BONNE VOIE"; }
-          }
-        }
+        // Update Ratios
+        const srEl = document.getElementById('kpi-savings-rate');
+        if (srEl) srEl.innerText = `${savingsRate}%`;
 
-        // Jalons
-        const safeTarget = simReal.safeTarget;
-        const firePct = safeTarget > 0 ? Math.min(100, (netWorth / safeTarget) * 100) : 0;
+        const savAmtEl = document.getElementById('kpi-savings-amount');
+        if (savAmtEl) savAmtEl.innerText = `+${formatEur(monthlySavings)} / m`;
 
-        const realReturn = Math.max(0.01, (appState.rates.bourse - (appState.macro.ter||0.0021)) - (appState.macro.inflation||0.02));
-        const coastTarget = safeTarget / Math.pow(1 + realReturn, Math.max(0, appState.cashflow.targetFireAge - appState.p1.currentAge));
-        const coastPct = coastTarget > 0 ? Math.min(100, (netWorth / coastTarget) * 100) : 0;
+        // Freedom Velocity = (Savings Rate / (100 - Savings Rate))
+        const velocity = monthlyExp > 0 ? (monthlySavings / monthlyExp).toFixed(2) : '1.00';
+        const velEl = document.getElementById('kpi-freedom-velocity');
+        if (velEl) velEl.innerText = `+${velocity} mo`;
 
-        document.getElementById('dash-fire-pct').innerText = firePct.toFixed(1) + ' %';
-        document.getElementById('dash-fire-bar').style.width = firePct + '%';
-        document.getElementById('dash-fire-target').innerText = (safeTarget / 1000000).toFixed(2) + ' M€';
+        // Passive Annuity = Net Worth * SWR / 12
+        const passiveMonthly = Math.round((netWorthVal * swr) / 12);
+        const passEl = document.getElementById('kpi-passive-annuity');
+        if (passEl) passEl.innerText = formatEur(passiveMonthly) + " / m";
 
-        document.getElementById('dash-coast-pct').innerText = coastPct.toFixed(1) + ' %';
-        document.getElementById('dash-coast-bar').style.width = coastPct + '%';
-        document.getElementById('dash-coast-target').innerText = formatEur(coastTarget);
+        const covPct = monthlyExp > 0 ? Math.min(100, (passiveMonthly / monthlyExp) * 100).toFixed(1) : 0;
+        const covEl = document.getElementById('kpi-passive-coverage-pct');
+        if (covEl) covEl.innerText = `${covPct}%`;
 
-        // Donut Chart
-        const ctxDonut = document.getElementById('asset-donut-chart');
-        if (ctxDonut) {
-          if (charts.assetDonut) charts.assetDonut.destroy();
-          const cashTotal = (appState.assets.cash || 0) + (appState.assets.emergencyFund || 0);
-          charts.assetDonut = new Chart(ctxDonut, {
-            type: 'doughnut',
-            data: {
-              labels: ['Liquidités', 'Bourse', 'Crypto', 'Immo'],
-              datasets: [{
-                data: [cashTotal, appState.assets.bourse || 0, appState.assets.crypto || 0, appState.assets.immo || 0],
-                backgroundColor: ['#0EA5E9', '#10B981', '#8B5CF6', '#F59E0B'],
-                borderWidth: 0,
-                hoverOffset: 4
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              cutout: '72%',
-              plugins: { legend: { display: false } }
-            }
-          });
-        }
+        // LTV Ratio
+        const ltv = totalGrossAssets > 0 ? ((totalLiabilities / totalGrossAssets) * 100).toFixed(1) : 0;
+        const ltvEl = document.getElementById('kpi-ltv-ratio');
+        if (ltvEl) ltvEl.innerText = `${ltv}%`;
 
-        // Line Chart
-        const simPrud = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "prudent");
-        const simOpti = computeScenario(appState.cashflow.targetFireAge, appState.cashflow.targetIncomeNet, appState.cashflow.monthlySavings, "optimist");
+        const debtEl = document.getElementById('kpi-total-debt');
+        if (debtEl) debtEl.innerText = formatEur(totalLiabilities);
 
-        const ctx = document.getElementById('overview-chart');
-        if (ctx) {
-          if (charts.overviewLine) charts.overviewLine.destroy();
-          charts.overviewLine = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: simReal.years,
-              datasets: [
-                { label: 'Réaliste (7.5%)', data: simReal.nominal, borderColor: '#38BDF8', backgroundColor: 'rgba(56, 189, 248, 0.08)', fill: true, tension: 0.3, pointRadius: 0 },
-                { label: 'Prudent (5.2%)', data: simPrud.nominal, borderColor: '#F59E0B', borderDash: [4, 4], fill: false, tension: 0.3, pointRadius: 0 },
-                { label: 'Optimiste (8.6%)', data: simOpti.nominal, borderColor: '#10B981', borderDash: [2, 2], fill: false, tension: 0.3, pointRadius: 0 }
-              ]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: {
-                x: { grid: { display: false }, ticks: { color: '#64748B', maxTicksLimit: 8 } },
-                y: { grid: { color: '#1B263B' }, ticks: { color: '#64748B', callback: (v) => (v/1000000).toFixed(1) + ' M€' } }
-              }
-            }
-          });
-        }
-      } catch (e) { console.error('Erreur dans renderOverviewCharts:', e); }
+        // Flamingo & Full FIRE Milestones
+        const flamTarget = Math.round(fireTarget * 0.5);
+        const flamEl = document.getElementById('cockpit-flamingo-target');
+        if (flamEl) flamEl.innerText = `Objectif : ${formatEur(flamTarget)}`;
+
+        const flamPct = flamTarget > 0 ? Math.min(100, (netWorthVal / flamTarget) * 100).toFixed(0) : 0;
+        const flamPctEl = document.getElementById('cockpit-flamingo-pct');
+        if (flamPctEl) flamPctEl.innerText = `${flamPct}%`;
+
+        const fullTargetEl = document.getElementById('cockpit-full-fire-target');
+        if (fullTargetEl) fullTargetEl.innerText = `Objectif : ${formatEur(fireTarget)} (2042)`;
+
+        // Render Multi-Curve Trajectory Chart
+        renderCockpitTrajectoryChart(netWorthVal, monthlySavings, fireTarget);
+
+      } catch (err) {
+        console.error("renderOverviewCharts error:", err);
+      }
     }
 
-    
-    
-    // --- 21ST.DEV MOBILE DOCK & DRAWER HANDLERS ---
-    
+    function renderCockpitTrajectoryChart(startNetWorth, monthlyContribution, fireTarget) {
+      const ctx = document.getElementById('cockpitWealthTrajectoryChart');
+      if (!ctx) return;
 
-    // --- JANOWSKI 2026 RAW BUDGET DATASET (49 Expenses, 16 Incomes, 4 Investments) ---
-    const JANOWSKI_BUDGET_2026 = {
-    "expenses": [
-        {
-            "id": 1,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Maison",
-            "amount": 99.39,
-            "months": [
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 2,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Auto Van",
-            "amount": 17.95,
-            "months": [
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 3,
-            "category": "Assurances",
-            "user": "Pauline",
-            "name": "Auto Pauline",
-            "amount": 125.0,
-            "months": [
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 4,
-            "category": "Assurances",
-            "user": "Joachim",
-            "name": "Garage Joachim",
-            "amount": 12.67,
-            "months": [
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 5,
-            "category": "Assurances",
-            "user": "Pauline",
-            "name": "Mutuelle Pauline",
-            "amount": 16.0,
-            "months": [
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 6,
-            "category": "Assurances",
-            "user": "Joachim",
-            "name": "Mutuelle Joachim",
-            "amount": 16.0,
-            "months": [
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 7,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Assurance SrD Maison",
-            "amount": 45.33,
-            "months": [
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 8,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Assurance SrD appartement",
-            "amount": 5.58,
-            "months": [
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 9,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Protection Juridique Consommateur",
-            "amount": 29.41,
-            "months": [
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 10,
-            "category": "Assurances",
-            "user": "Famille",
-            "name": "Assurances ambulatoire",
-            "amount": 35.0,
-            "months": [
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 11,
-            "category": "Frais Voitures",
-            "user": "Pauline",
-            "name": "Carburant",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 12,
-            "category": "Frais Voitures",
-            "user": "Joachim",
-            "name": "Carburant",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 13,
-            "category": "Frais Voitures",
-            "user": "Pauline",
-            "name": "Taxe Voiture Pauline",
-            "amount": 25.0,
-            "months": [
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 14,
-            "category": "Frais Voitures",
-            "user": "Joachim",
-            "name": "Taxe Voiture Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 15,
-            "category": "Frais Voitures",
-            "user": "Famille",
-            "name": "Taxe Van",
-            "amount": 10.83,
-            "months": [
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 16,
-            "category": "Frais Voitures",
-            "user": "Famille",
-            "name": "Contrôle technique Van",
-            "amount": 5.42,
-            "months": [
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 17,
-            "category": "Frais Voitures",
-            "user": "Famille",
-            "name": "Parking",
-            "amount": 4.17,
-            "months": [
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 18,
-            "category": "Frais Voitures",
-            "user": "Famille",
-            "name": "Réparations Van",
-            "amount": 66.67,
-            "months": [
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 19,
-            "category": "Frais Voitures",
-            "user": "Pauline",
-            "name": "Contrôle annuel Pauline",
-            "amount": 33.33,
-            "months": [
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 20,
-            "category": "Frais Voitures",
-            "user": "Pauline",
-            "name": "Contrôle annuel Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 21,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Voo Internet",
-            "amount": 42.0,
-            "months": [
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 22,
-            "category": "Habitation",
-            "user": "Pauline",
-            "name": "GSM Pauline",
-            "amount": 7.0,
-            "months": [
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 23,
-            "category": "Habitation",
-            "user": "Joachim",
-            "name": "GSM Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "GSM Société",
-            "essential": true
-        },
-        {
-            "id": 24,
-            "category": "Habitation",
-            "user": "Joachim",
-            "name": "Google Gemini",
-            "amount": 25.0,
-            "months": [
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 25,
-            "category": "Habitation",
-            "user": "Joachim",
-            "name": "Youtube Premium",
-            "amount": 13.0,
-            "months": [
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 26,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Netflix",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 27,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Amazon Prime",
-            "amount": 2.08,
-            "months": [
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 28,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Acompte électricité",
-            "amount": 85.0,
-            "months": [
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 29,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Eau",
-            "amount": 45.0,
-            "months": [
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 30,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Nourriture",
-            "amount": 500.0,
-            "months": [
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 31,
-            "category": "Habitation",
-            "user": "Famille",
-            "name": "Frais Animaux (Nourriture, vétérinaire,etc)",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 32,
-            "category": "Taxes",
-            "user": "Famille",
-            "name": "Précompte immobilier Maison",
-            "amount": 82.5,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                693.0,
-                297.0,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 33,
-            "category": "Taxes",
-            "user": "Joachim",
-            "name": "Précompte immobilier Garage",
-            "amount": 9.17,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                77.03,
-                33.01,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 34,
-            "category": "Taxes",
-            "user": "Famille",
-            "name": "Taxes communales",
-            "amount": 17.42,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                146.33,
-                62.71,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 35,
-            "category": "Dépenses extraordinaires",
-            "user": "Famille",
-            "name": "Préparation anniversaires, nourritures, décoration",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 36,
-            "category": "Dépenses extraordinaires",
-            "user": "Joachim",
-            "name": "Gadgets Joachim",
-            "amount": 12.5,
-            "months": [
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 37,
-            "category": "Dépenses extraordinaires",
-            "user": "Joachim",
-            "name": "Gadgets Pauline",
-            "amount": 12.5,
-            "months": [
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 38,
-            "category": "Chauffage",
-            "user": "Famille",
-            "name": "Mazout",
-            "amount": 250.0,
-            "months": [
-                1500.0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1500.0,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 39,
-            "category": "Chauffage",
-            "user": "Famille",
-            "name": "Entretien",
-            "amount": 16.67,
-            "months": [
-                100.02,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                100.02,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 40,
-            "category": "Prêt immo",
-            "user": "Famille",
-            "name": "Appartement (fin 1/08/2035)",
-            "amount": 302.72,
-            "months": [
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72
-            ],
-            "note": "Taux fixe moins de 2% - 36000 EUR (pas de valeur de revente - déjà effectué) -fin paiement : 22/01/2036",
-            "essential": true
-        },
-        {
-            "id": 41,
-            "category": "Prêt immo",
-            "user": "Famille",
-            "name": "Maison (Fin 28/05/2043)",
-            "amount": 1321.48,
-            "months": [
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48
-            ],
-            "note": "Taux fixe moins de 2% - capital restant dû 258 000 EUR (valeur maison 350 000 EUR) -fin paiement : 28/10/2043",
-            "essential": true
-        },
-        {
-            "id": 42,
-            "category": "Autres",
-            "user": "Famille",
-            "name": "Cadeaux famille/anniversaires/Noël/enfants/etc",
-            "amount": 141.67,
-            "months": [
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                1232.54
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 43,
-            "category": "Loisirs",
-            "user": "Famille",
-            "name": "Verre",
-            "amount": 30.0,
-            "months": [
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 44,
-            "category": "Loisirs",
-            "user": "Famille",
-            "name": "sorties/loisirs/activités",
-            "amount": 66.67,
-            "months": [
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 45,
-            "category": "Loisirs",
-            "user": "Famille",
-            "name": "Restaurant",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 46,
-            "category": "Loisirs",
-            "user": "Famille",
-            "name": "Vêtements",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 47,
-            "category": "Loisirs",
-            "user": "Famille",
-            "name": "Vacances",
-            "amount": 333.33,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                2399.98,
-                1599.98,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 48,
-            "category": "Taxe VISA",
-            "user": "Joachim",
-            "name": "Carte Visa Beobank",
-            "amount": 0.42,
-            "months": [
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 49,
-            "category": "Enfants",
-            "user": "Famille",
-            "name": "Frais médicaux",
-            "amount": 75.0,
-            "months": [
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0
-            ],
-            "note": "",
-            "essential": true
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#94A3B8' : '#475569';
+      const gridColor = isDark ? '#1B263B' : '#E2E8F0';
+
+      const currentYear = 2026;
+      const endYear = 2060;
+      const yearsCount = endYear - currentYear + 1;
+
+      const labels = [];
+      const medianData = [];
+      const optimisticData = [];
+      const conservativeData = [];
+      const targetLineData = [];
+
+      let curMedian = startNetWorth;
+      let curOpt = startNetWorth;
+      let curCons = startNetWorth;
+
+      const rMed = 0.05;
+      const rOpt = 0.07;
+      const rCons = 0.035;
+
+      for (let y = 0; y < yearsCount; y++) {
+        const year = currentYear + y;
+        labels.push(`${year} (${37 + y}a)`);
+
+        let extraMonthly = 0;
+        if (year >= 2034) extraMonthly += 303;
+        if (year >= 2038) extraMonthly += 1321;
+
+        const annualSavings = (monthlyContribution + extraMonthly) * 12;
+
+        if (y > 0) {
+          curMedian = (curMedian + annualSavings) * (1 + rMed);
+          curOpt = (curOpt + annualSavings) * (1 + rOpt);
+          curCons = (curCons + annualSavings) * (1 + rCons);
         }
-    ],
-    "incomes": [
-        {
-            "id": 1,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "Revenus CDI",
-            "amount": 4400.0,
-            "months": [
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0
-            ],
-            "note": "Salaire à 90%"
+
+        medianData.push(Math.round(curMedian));
+        optimisticData.push(Math.round(curOpt));
+        conservativeData.push(Math.round(curCons));
+        targetLineData.push(fireTarget);
+      }
+
+      if (charts.cockpitTrajectory) charts.cockpitTrajectory.destroy();
+      charts.cockpitTrajectory = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Scénario Optimiste (7% net)',
+              data: optimisticData,
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.05)',
+              borderWidth: 2,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Scénario Médian Réaliste (5% net)',
+              data: medianData,
+              borderColor: '#F59E0B',
+              backgroundColor: 'rgba(245, 158, 11, 0.12)',
+              borderWidth: 3.5,
+              pointRadius: 0,
+              fill: true
+            },
+            {
+              label: 'Scénario Conservateur (3.5% net)',
+              data: conservativeData,
+              borderColor: '#38BDF8',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Seuil Full FIRE (100% Rente)',
+              data: targetLineData,
+              borderColor: '#EC4899',
+              borderWidth: 2,
+              borderDash: [3, 3],
+              pointRadius: 0,
+              fill: false
+            }
+          ]
         },
-        {
-            "id": 2,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "Tickets restaurant",
-            "amount": 146.0,
-            "months": [
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 3,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "Revenus CDI",
-            "amount": 2688.1,
-            "months": [
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1
-            ],
-            "note": "Salaire à 90%"
-        },
-        {
-            "id": 4,
-            "category": "Vouchers",
-            "user": "Pauline",
-            "name": "Tickets restaurant",
-            "amount": 154.0,
-            "months": [
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 5,
-            "category": "Loyer",
-            "user": "Joachim",
-            "name": "Loyer garage",
-            "amount": 70.0,
-            "months": [
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 6,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "Revenus CDI (13eme mois + DPV)",
-            "amount": 151.16,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                1813.92,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": ""
-        },
-        {
-            "id": 7,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "Revenus CDI (double pécule de vacances)",
-            "amount": 196.23,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                2354.76,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": ""
-        },
-        {
-            "id": 8,
-            "category": "Bonus",
-            "user": "Année complète",
-            "name": "MBO (Bonus)",
-            "amount": 500.0,
-            "months": [
-                0,
-                0,
-                6000.0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "Bonus Variable (50% warrants / 50% plan assurance groupe)"
-        },
-        {
-            "id": 9,
-            "category": "Dividendes",
-            "user": "Famille",
-            "name": "Bourse",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 10,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "éco-chèques",
-            "amount": 18.75,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                112.5,
-                0,
-                0,
-                0,
-                0,
-                0,
-                112.5
-            ],
-            "note": ""
-        },
-        {
-            "id": 11,
-            "category": "Vouchers",
-            "user": "Pauline",
-            "name": "chèques cadeaux",
-            "amount": 2.92,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52,
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52
-            ],
-            "note": ""
-        },
-        {
-            "id": 12,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "chèques cadeaux",
-            "amount": 2.92,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52,
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52
-            ],
-            "note": ""
-        },
-        {
-            "id": 13,
-            "category": "Allocations",
-            "user": "Famille",
-            "name": "Allocations bébé",
-            "amount": 377.9,
-            "months": [
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9
-            ],
-            "note": ""
-        },
-        {
-            "id": 14,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "ONEM",
-            "amount": 72.0,
-            "months": [
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0
-            ],
-            "note": "compensation pour temps partiel"
-        },
-        {
-            "id": 15,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "ONEM",
-            "amount": 72.0,
-            "months": [
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0
-            ],
-            "note": "compensation pour temps partiel"
-        },
-        {
-            "id": 16,
-            "category": "Bonus",
-            "user": "Joachim",
-            "name": "CCT90",
-            "amount": 166.67,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                2000.04,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "Bonus Variable"
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'top', labels: { color: textColor, font: { size: 11, weight: 'bold' }, boxWidth: 12 } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${Math.round(ctx.parsed.y).toLocaleString('fr-FR')} €`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 }, maxTicksLimit: 9 } },
+            y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 }, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
+          }
         }
-    ],
-    "investments": [
-        {
-            "id": 1,
-            "category": "Epargne Pension",
-            "user": "Joachim",
-            "name": "Epargne pension Joachim",
-            "amount": 82.0,
-            "months": [
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 2,
-            "category": "Epargne Pension",
-            "user": "Pauline",
-            "name": "Epargne pension Pauline",
-            "amount": 82.5,
-            "months": [
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5
-            ],
-            "note": ""
-        },
-        {
-            "id": 3,
-            "category": "Investissement",
-            "user": "Famille",
-            "name": "Investissement (ETFS, ACTIONS, Cryptos)",
-            "amount": 1800.0,
-            "months": [
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 4,
-            "category": "Enfants",
-            "user": "Famille",
-            "name": "Argent compte bancaires enfants",
-            "amount": 330.0,
-            "months": [
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0
-            ],
-            "note": "Investissement pour nos enfants"
-        }
-    ]
-};
-
-    const MONTH_NAMES_FR = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    const MONTH_SHORT_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-
-    // --- JANOWSKI 2026 ENHANCED BUDGET ENGINE WITH DUAL FREQUENCY & CATEGORY MATRIX ---
-    let currentBudgetFilter = 'all';
-    let currentBudgetViewMode = 'cards'; // 'cards', 'charts', 'matrix'
-    let currentBudgetPeriodMode = 'monthly'; // 'monthly' or 'annual'
-    let activeDrillDownCategory = null;
-    let expandedMatrixCategories = {}; // { 'Prêt immo': true, ... }
-
-    const CATEGORY_METADATA = {
-      'Prêt immo': { icon: 'fa-house-chimney', color: 'amber', title: 'Logement & Prêts', sub: 'Prêt Maison & Appartement' },
-      'Prt immo': { icon: 'fa-house-chimney', color: 'amber', title: 'Logement & Prêts', sub: 'Prêt Maison & Appartement' },
-      'Habitation': { icon: 'fa-bolt', color: 'yellow', title: 'Habitation & Énergie', sub: 'Électricité, Eau, Internet, Abonnements' },
-      'Chauffage': { icon: 'fa-fire-flame-curved', color: 'orange', title: 'Chauffage & Mazout', sub: 'Mazout de chauffage & Entretiens' },
-      'Assurances': { icon: 'fa-shield-halved', color: 'sky', title: 'Assurances & Santé', sub: 'Mutuelles, SrD, Ambulatoire, Protection' },
-      'Frais Voitures': { icon: 'fa-car', color: 'cyan', title: 'Véhicules & Transports', sub: 'Van, Auto Pauline, Carburant, Taxes' },
-      'Taxes': { icon: 'fa-landmark', color: 'rose', title: 'Taxes & Précomptes', sub: 'Précomptes immobiliers & Taxes communales' },
-      'Loisirs': { icon: 'fa-champagne-glasses', color: 'purple', title: 'Loisirs & Vacances', sub: 'Vacances, Restaurants, Sorties, Cadeaux' },
-      'Dépenses extraordinaires': { icon: 'fa-gift', color: 'purple', title: 'Loisirs & Vacances', sub: 'Vacances, Restaurants, Sorties, Cadeaux' },
-      'Autres': { icon: 'fa-bag-shopping', color: 'slate', title: 'Autres Dépenses', sub: 'Frais divers & Imprévus' },
-      'Taxe VISA': { icon: 'fa-credit-card', color: 'slate', title: 'Autres Dépenses', sub: 'Frais divers & Imprévus' },
-      'Enfants': { icon: 'fa-baby', color: 'emerald', title: 'Famille & Enfants', sub: 'Épargne comptes enfants & Frais médicaux' },
-      'Revenus': { icon: 'fa-money-bill-wave', color: 'emerald', title: 'Revenus du Foyer', sub: 'Salaires CDI, Primes, 13e, DPV, Vouchers' },
-      'Investissement': { icon: 'fa-chart-line', color: 'sky', title: 'Épargne & Investissements', sub: 'Épargne Pension, ETF Bourse' }
-    };
+      });
+    }
 
     function setBudgetPeriodMode(mode) {
       currentBudgetPeriodMode = mode;

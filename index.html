@@ -3247,32 +3247,7 @@
     
     
     // --- 21ST.DEV MOBILE DOCK & DRAWER HANDLERS ---
-    function updateMobileDockState(activeTabId) {
-      const tabs = [
-        { id: 'tab-dashboard', dockId: 'mobile-dock-tab-dashboard', iconId: 'mobile-icon-tab-dashboard' },
-        { id: 'tab-budget', dockId: 'mobile-dock-tab-budget', iconId: 'mobile-icon-tab-budget' },
-        { id: 'tab-simulator', dockId: 'mobile-dock-tab-simulator', iconId: 'mobile-icon-tab-simulator' },
-        { id: 'tab-portfolio', dockId: 'mobile-dock-tab-portfolio', iconId: 'mobile-icon-tab-portfolio' }
-      ];
-
-      tabs.forEach(t => {
-        const btn = document.getElementById(t.dockId);
-        const icon = document.getElementById(t.iconId);
-        if (!btn || !icon) return;
-        if (t.id === activeTabId) {
-          btn.className = "mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-amber-400 font-bold text-[10px] transition-all";
-          icon.className = "w-8 h-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-sm shadow-sm";
-        } else {
-          btn.className = "mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400 hover:text-white font-medium text-[10px] transition-all";
-          icon.className = "w-8 h-8 rounded-xl bg-transparent flex items-center justify-center text-sm";
-        }
-      });
-    }
-
-    function toggleMobileMenuSheet() {
-      const sheet = document.getElementById('mobile-menu-sheet');
-      if (sheet) sheet.classList.toggle('hidden');
-    }
+    
 
     // --- JANOWSKI 2026 RAW BUDGET DATASET (49 Expenses, 16 Incomes, 4 Investments) ---
     const JANOWSKI_BUDGET_2026 = {
@@ -5666,116 +5641,7 @@
       }
     }
 
-    // --- MODAL ITEM HANDLERS ---
-    function openAddBudgetItemModal(type = 'expense') {
-      document.getElementById('modal-budget-id').value = '';
-      document.getElementById('modal-budget-name').value = '';
-      document.getElementById('modal-budget-raw-amount').value = '';
-      document.getElementById('modal-budget-note').value = '';
-      document.getElementById('modal-budget-user').value = 'Famille';
-      setModalBudgetType(type);
-      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne`;
-      document.getElementById('budget-item-modal').classList.remove('hidden');
-    }
-
-    function closeBudgetItemModal() {
-      document.getElementById('budget-item-modal').classList.add('hidden');
-    }
-
-    function setModalBudgetType(type) {
-      document.getElementById('modal-budget-type').value = type;
-      ['expense', 'income', 'investment'].forEach(t => {
-        const btn = document.getElementById(`modal-type-btn-${t}`);
-        if (!btn) return;
-        if (t === type) {
-          const color = t === 'expense' ? 'border-rose-500 bg-rose-950/40 text-rose-300' : (t === 'income' ? 'border-emerald-500 bg-emerald-950/40 text-emerald-300' : 'border-sky-500 bg-sky-950/40 text-sky-300');
-          btn.className = `py-2 rounded-xl border ${color} font-bold text-xs`;
-        } else {
-          btn.className = "py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs";
-        }
-      });
-    }
-
-    function editBudgetItem(id, type) {
-      const list = type === 'expenses' ? appState.budget.expenses : (type === 'incomes' ? appState.budget.incomes : appState.budget.investments);
-      const item = list.find(x => x.id === id);
-      if (!item) return;
-
-      document.getElementById('modal-budget-id').value = item.id;
-      setModalBudgetType(type === 'expenses' ? 'expense' : (type === 'incomes' ? 'income' : 'investment'));
-      document.getElementById('modal-budget-category').value = item.category || '';
-      document.getElementById('modal-budget-user').value = item.user || 'Famille';
-      document.getElementById('modal-budget-name').value = item.name || '';
-      document.getElementById('modal-budget-raw-amount').value = item.amount || '';
-      document.getElementById('modal-budget-note').value = item.note || '';
-      
-      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier la Ligne`;
-      document.getElementById('budget-item-modal').classList.remove('hidden');
-    }
-
-    function saveBudgetItemModal() {
-      const id = document.getElementById('modal-budget-id').value;
-      const type = document.getElementById('modal-budget-type').value;
-      const cat = document.getElementById('modal-budget-category').value || 'Divers';
-      const user = document.getElementById('modal-budget-user').value || 'Famille';
-      const name = document.getElementById('modal-budget-name').value.trim() || 'Sans titre';
-      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0;
-      const note = document.getElementById('modal-budget-note').value.trim();
-
-      if (!appState.budget) appState.budget = { expenses: [], incomes: [], investments: [] };
-      const targetList = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
-
-      if (id) {
-        const idx = targetList.findIndex(x => x.id === parseInt(id));
-        if (idx !== -1) {
-          targetList[idx] = { ...targetList[idx], category: cat, user: user, name: name, amount: round2(rawAmt), months: Array(12).fill(round2(rawAmt)), note: note };
-        }
-      } else {
-        targetList.push({
-          id: Date.now(),
-          category: cat,
-          user: user,
-          name: name,
-          amount: round2(rawAmt),
-          months: Array(12).fill(round2(rawAmt)),
-          note: note,
-          essential: cat in ['Assurances', 'Habitation', 'Taxes', 'Chauffage', 'Prêt immo', 'Enfants', 'Frais Voitures']
-        });
-      }
-
-      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      closeBudgetItemModal();
-      saveCurrentPlan();
-      renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast("Ligne de budget enregistrée !", "success");
-    }
-
-    function deleteBudgetItem(id, type) {
-      if (!confirm("Voulez-vous supprimer cette ligne de budget ?")) return;
-      if (!appState.budget) return;
-      if (type === 'expenses') {
-        appState.budget.expenses = (appState.budget.expenses || []).filter(x => x.id !== id);
-      } else if (type === 'incomes') {
-        appState.budget.incomes = (appState.budget.incomes || []).filter(x => x.id !== id);
-      } else {
-        appState.budget.investments = (appState.budget.investments || []).filter(x => x.id !== id);
-      }
-      
-      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      saveCurrentPlan();
-      renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast("Ligne supprimée.", "info");
-    }
+    
 
     function round2(v) {
       return Math.round((v + Number.EPSILON) * 100) / 100;

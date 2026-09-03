@@ -285,7 +285,7 @@
 
     </div>
 
-    <!-- ALWAYS-VISIBLE SWIPEABLE 7-TAB BAR (Full Navigation on All Devices) -->
+        <!-- ALWAYS-VISIBLE SWIPEABLE 7-TAB BAR (100% Mapped to Real DOM Containers) -->
     <div class="bg-[#05070E]/90 border-t border-[#1B263B]/60 w-full overflow-x-auto no-scrollbar scroll-smooth">
       <div class="max-w-7xl mx-auto px-2 sm:px-6 py-1.5 flex items-center gap-1.5 whitespace-nowrap min-w-max" id="global-tab-bar">
         
@@ -294,34 +294,34 @@
           <i class="fa-solid fa-chart-pie"></i> <span>Cockpit</span>
         </button>
 
-        <!-- Tab 2: Budget Studio -->
+        <!-- Tab 2: Budget Studio 2026 -->
         <button onclick="switchTab('tab-budget')" id="nav-tab-budget" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
           <i class="fa-solid fa-wallet text-amber-400"></i> <span>Budget 2026</span>
         </button>
 
-        <!-- Tab 3: Simulateur FIRE -->
+        <!-- Tab 3: Enveloppes Fiscales & Taux -->
+        <button onclick="switchTab('tab-envelopes')" id="nav-tab-envelopes" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
+          <i class="fa-solid fa-vault text-purple-400"></i> <span>Enveloppes & Taux</span>
+        </button>
+
+        <!-- Tab 4: Simulateur FIRE -->
         <button onclick="switchTab('tab-simulator')" id="nav-tab-simulator" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
           <i class="fa-solid fa-rocket text-emerald-400"></i> <span>Simulateur FIRE</span>
         </button>
 
-        <!-- Tab 4: Patrimoine & Actifs -->
-        <button onclick="switchTab('tab-portfolio')" id="nav-tab-portfolio" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
-          <i class="fa-solid fa-coins text-sky-400"></i> <span>Patrimoine</span>
+        <!-- Tab 5: Trajectoire & Événements -->
+        <button onclick="switchTab('tab-timeline')" id="nav-tab-timeline" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
+          <i class="fa-solid fa-timeline text-sky-400"></i> <span>Trajectoire</span>
         </button>
 
-        <!-- Tab 5: Fiscalité & Retraite -->
-        <button onclick="switchTab('tab-tax')" id="nav-tab-tax" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
-          <i class="fa-solid fa-landmark text-purple-400"></i> <span>Fiscalité Belge</span>
+        <!-- Tab 6: Données & Plans -->
+        <button onclick="switchTab('tab-import')" id="nav-tab-import" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
+          <i class="fa-solid fa-database text-cyan-400"></i> <span>Données & Plans</span>
         </button>
 
-        <!-- Tab 6: Scénarios Stress -->
-        <button onclick="switchTab('tab-scenarios')" id="nav-tab-scenarios" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
-          <i class="fa-solid fa-bolt text-rose-400"></i> <span>Scénarios</span>
-        </button>
-
-        <!-- Tab 7: Rapport IA & Audit -->
-        <button onclick="switchTab('tab-montecarlo')" id="nav-tab-montecarlo" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
-          <i class="fa-solid fa-brain text-yellow-400"></i> <span>Rapport IA</span>
+        <!-- Tab 7: Académie & Guides -->
+        <button onclick="switchTab('tab-academy')" id="nav-tab-academy" class="nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50">
+          <i class="fa-solid fa-graduation-cap text-yellow-400"></i> <span>Académie FIRE</span>
         </button>
 
       </div>
@@ -2922,46 +2922,77 @@
     }
 
     // --- NAVIGATION TABS ---
-    // --- TAB SWITCHER WITH ACTIVE INDICATOR & HORIZONTAL AUTO-SCROLL ---
-    // --- TAB SWITCHER WITH ACTIVE INDICATOR & HORIZONTAL AUTO-SCROLL ---
+        // --- TAB SWITCHER WITH ACTIVE INDICATOR & HORIZONTAL AUTO-SCROLL ---
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.add('hidden');
-      });
+      try {
+        document.querySelectorAll('.tab-content').forEach(tab => {
+          tab.classList.add('hidden');
+        });
 
-      const activeTab = document.getElementById(tabId);
-      if (activeTab) {
-        activeTab.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const activeTab = document.getElementById(tabId);
+        if (activeTab) {
+          activeTab.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // All 7 real DOM Tab IDs
+        const tabNavIds = [
+          'tab-dashboard', 'tab-budget', 'tab-envelopes', 
+          'tab-simulator', 'tab-timeline', 'tab-import', 'tab-academy'
+        ];
+
+        tabNavIds.forEach(id => {
+          const btn = document.getElementById(`nav-${id}`);
+          if (!btn) return;
+          if (id === tabId) {
+            btn.className = "nav-tab px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-950 shadow-md";
+            try {
+              btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } catch(e) {}
+          } else {
+            btn.className = "nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50";
+          }
+        });
+
+        // Update Bottom Mobile Dock
+        updateMobileDockState(tabId);
+
+        // Trigger redraw of charts in active tab
+        if (tabId === 'tab-dashboard' && typeof renderOverviewCharts === 'function') renderOverviewCharts();
+        if (tabId === 'tab-budget' && typeof renderBudgetView === 'function') renderBudgetView();
+        if (tabId === 'tab-envelopes' && typeof renderEnvelopesView === 'function') renderEnvelopesView();
+        if (tabId === 'tab-simulator' && typeof updateSimulatorView === 'function') updateSimulatorView();
+        if (tabId === 'tab-timeline' && typeof renderTimelineEvents === 'function') renderTimelineEvents();
+      } catch (err) {
+        console.error("Erreur switchTab:", err);
       }
+    }
 
-      // Update Top Tab Bar Pills
-      const tabNavIds = [
-        'tab-dashboard', 'tab-budget', 'tab-simulator', 
-        'tab-portfolio', 'tab-tax', 'tab-scenarios', 'tab-montecarlo'
+    function updateMobileDockState(activeTabId) {
+      const tabs = [
+        { id: 'tab-dashboard', dockId: 'mobile-dock-tab-dashboard', iconId: 'mobile-icon-tab-dashboard' },
+        { id: 'tab-budget', dockId: 'mobile-dock-tab-budget', iconId: 'mobile-icon-tab-budget' },
+        { id: 'tab-simulator', dockId: 'mobile-dock-tab-simulator', iconId: 'mobile-icon-tab-simulator' },
+        { id: 'tab-envelopes', dockId: 'mobile-dock-tab-envelopes', iconId: 'mobile-icon-tab-envelopes' }
       ];
 
-      tabNavIds.forEach(id => {
-        const btn = document.getElementById(`nav-${id}`);
-        if (!btn) return;
-        if (id === tabId) {
-          btn.className = "nav-tab px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-amber-500 text-slate-950 shadow-md";
-          // Smooth scroll tab into view on mobile
-          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      tabs.forEach(t => {
+        const btn = document.getElementById(t.dockId);
+        const icon = document.getElementById(t.iconId);
+        if (!btn || !icon) return;
+        if (t.id === activeTabId) {
+          btn.className = "mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-amber-400 font-bold text-[10px] transition-all";
+          icon.className = "w-8 h-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-sm shadow-sm";
         } else {
-          btn.className = "nav-tab px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-[#1B263B]/50";
+          btn.className = "mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400 hover:text-white font-medium text-[10px] transition-all";
+          icon.className = "w-8 h-8 rounded-xl bg-transparent flex items-center justify-center text-sm";
         }
       });
+    }
 
-      // Update Bottom Mobile Dock
-      updateMobileDockState(tabId);
-
-      // Trigger redraw of charts in active tab
-      if (tabId === 'tab-dashboard') renderOverviewCharts();
-      if (tabId === 'tab-budget') renderBudgetView();
-      if (tabId === 'tab-portfolio') renderPortfolioCharts();
-      if (tabId === 'tab-scenarios') renderScenarioCharts();
-    }, 40);
+    function toggleMobileMenuSheet() {
+      const sheet = document.getElementById('mobile-menu-sheet');
+      if (sheet) sheet.classList.toggle('hidden');
     }
 
     function changeCountry(countryCode) {
@@ -6426,7 +6457,7 @@
     });
   </script>
 
-  <!-- ========================================================================= -->
+    <!-- ========================================================================= -->
   <!-- FLOATING MOBILE BOTTOM NAVIGATION DOCK (21st.dev Style - Thumb Zone) -->
   <!-- ========================================================================= -->
   <nav id="mobile-bottom-dock" class="md:hidden fixed bottom-3 left-3 right-3 z-50 glass-panel rounded-3xl p-1.5 shadow-2xl border border-[#1B263B] flex items-center justify-around select-none">
@@ -6435,7 +6466,7 @@
       <div class="w-8 h-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-sm shadow-sm" id="mobile-icon-tab-dashboard">
         <i class="fa-solid fa-gauge-high"></i>
       </div>
-      <span>Accueil</span>
+      <span>Cockpit</span>
     </button>
 
     <!-- 2. Budget Studio -->
@@ -6454,12 +6485,12 @@
       <span>FIRE</span>
     </button>
 
-    <!-- 4. Patrimoine -->
-    <button onclick="switchTab('tab-portfolio')" id="mobile-dock-tab-portfolio" class="mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400 hover:text-white font-medium text-[10px] transition-all">
-      <div class="w-8 h-8 rounded-xl bg-transparent flex items-center justify-center text-sm" id="mobile-icon-tab-portfolio">
-        <i class="fa-solid fa-coins"></i>
+    <!-- 4. Enveloppes & Taux -->
+    <button onclick="switchTab('tab-envelopes')" id="mobile-dock-tab-envelopes" class="mobile-dock-btn flex-1 py-1.5 px-1 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400 hover:text-white font-medium text-[10px] transition-all">
+      <div class="w-8 h-8 rounded-xl bg-transparent flex items-center justify-center text-sm" id="mobile-icon-tab-envelopes">
+        <i class="fa-solid fa-vault"></i>
       </div>
-      <span>Patrimoine</span>
+      <span>Enveloppes</span>
     </button>
 
     <!-- 5. Plus / Menu Sheet Trigger -->
@@ -6479,52 +6510,52 @@
       
       <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
         <h3 class="font-black text-white text-base flex items-center gap-2">
-          <i class="fa-solid fa-compass text-amber-400"></i> Modules & Outils Avancés
+          <i class="fa-solid fa-compass text-amber-400"></i> Tous les Onglets & Outils
         </h3>
         <button onclick="toggleMobileMenuSheet()" class="text-slate-400 hover:text-white p-1">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <!-- Quick Action Grid -->
+      <!-- Quick Action Grid with EXACT container IDs -->
       <div class="grid grid-cols-2 gap-3 text-xs">
-        <button onclick="switchTab('tab-tax'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
-          <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-landmark"></i>
+        <button onclick="switchTab('tab-timeline'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
+          <div class="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-timeline"></i>
           </div>
           <div>
-            <span class="font-bold text-white block">Fiscalité Belge</span>
-            <span class="text-[10px] text-slate-400">Pensions & TACT</span>
+            <span class="font-bold text-white block">Trajectoire</span>
+            <span class="text-[10px] text-slate-400">Jalons & Prêts</span>
           </div>
         </button>
 
-        <button onclick="switchTab('tab-montecarlo'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
+        <button onclick="switchTab('tab-import'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
           <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-brain"></i>
+            <i class="fa-solid fa-database"></i>
           </div>
           <div>
-            <span class="font-bold text-white block">Rapport IA</span>
-            <span class="text-[10px] text-slate-400">Audit & Risques</span>
+            <span class="font-bold text-white block">Données & Plans</span>
+            <span class="text-[10px] text-slate-400">Sauvegarde Cloud</span>
           </div>
         </button>
 
-        <button onclick="switchTab('tab-scenarios'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
-          <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-chart-pie"></i>
+        <button onclick="switchTab('tab-academy'); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
+          <div class="w-8 h-8 rounded-xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
-            <span class="font-bold text-white block">Scénarios Stress</span>
-            <span class="text-[10px] text-slate-400">Krach & Inflation</span>
+            <span class="font-bold text-white block">Académie FIRE</span>
+            <span class="text-[10px] text-slate-400">Guides & Règles</span>
           </div>
         </button>
 
         <button onclick="openGuideModal(); toggleMobileMenuSheet();" class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] hover:border-amber-500 flex items-center gap-2.5 text-left">
-          <div class="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
+          <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-book-open"></i>
           </div>
           <div>
-            <span class="font-bold text-white block">Guide & Lexique</span>
-            <span class="text-[10px] text-slate-400">Règles FIRE</span>
+            <span class="font-bold text-white block">Mode d'Emploi</span>
+            <span class="text-[10px] text-slate-400">Documentation</span>
           </div>
         </button>
       </div>
@@ -6542,6 +6573,5 @@
       </div>
     </div>
   </div>
-
 </body>
 </html>

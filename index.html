@@ -770,14 +770,14 @@
 
     </div>
 
-    <!-- MODAL: AJOUTER / MODIFIER UNE LIGNE (AVEC CALCULATEUR ANNUEL / MENSUEL) -->
+        <!-- MODAL: AJOUTER / MODIFIER UNE LIGNE AVEC GESTION DE SAISONNALITÉ & 12 MOIS RÉELS -->
     <div id="budget-item-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div class="fin-card w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-amber-500/40 animate-slide-up sm:animate-scale-up max-h-[90vh] overflow-y-auto">
+      <div class="fin-card w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-amber-500/40 animate-slide-up sm:animate-scale-up max-h-[92vh] overflow-y-auto">
         <div class="w-12 h-1.5 bg-slate-500/40 rounded-full mx-auto sm:hidden cursor-pointer" onclick="closeBudgetItemModal()"></div>
         
         <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
           <h3 class="font-black text-white text-base flex items-center gap-2" id="modal-budget-title">
-            <i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne
+            <i class="fa-solid fa-plus-circle text-amber-400"></i> Éditer le Poste Budgétaire
           </h3>
           <button onclick="closeBudgetItemModal()" class="text-slate-400 hover:text-white transition">
             <i class="fa-solid fa-xmark text-lg"></i>
@@ -786,9 +786,10 @@
 
         <input type="hidden" id="modal-budget-id" value="">
         <input type="hidden" id="modal-budget-type" value="expense">
+        <input type="hidden" id="modal-budget-schedule-type" value="monthly">
 
         <div class="space-y-4 text-xs">
-          <!-- Type selector -->
+          <!-- 1. Type selector -->
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Type de Flux</label>
             <div class="grid grid-cols-3 gap-2">
@@ -804,71 +805,118 @@
             </div>
           </div>
 
-          <!-- Beneficiary -->
-          <div>
-            <label class="text-slate-400 font-semibold block mb-1">Bénéficiaire / Membre</label>
-            <select id="modal-budget-user" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-amber-500">
-              <option value="Joachim">👨‍💼 Joachim</option>
-              <option value="Pauline">👩‍💼 Pauline</option>
-              <option value="Famille" selected>👨‍👩‍👧‍👦 Famille & Maison (Commun)</option>
-            </select>
+          <!-- 2. Beneficiary & Category -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Bénéficiaire / Membre</label>
+              <select id="modal-budget-user" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-amber-500">
+                <option value="Joachim">👨‍💼 Joachim</option>
+                <option value="Pauline">👩‍💼 Pauline</option>
+                <option value="Famille" selected>👨‍👩‍👧‍👦 Famille & Maison (Commun)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-slate-400 font-semibold block mb-1">Catégorie</label>
+              <select id="modal-budget-category" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
+                <option value="Prêt immo">🏠 Prêt immo</option>
+                <option value="Habitation">⚡ Habitation & Énergie</option>
+                <option value="Chauffage">🔥 Chauffage & Mazout</option>
+                <option value="Assurances">🛡️ Assurances & Mutuelles</option>
+                <option value="Frais Voitures">🚗 Frais Voitures & Transports</option>
+                <option value="Taxes">🏛️ Taxes & Précomptes</option>
+                <option value="Loisirs">🎉 Loisirs, Resto & Sorties</option>
+                <option value="Enfants">👶 Enfants</option>
+                <option value="Autres">📦 Autres Dépenses</option>
+                <option value="Revenus">💼 Revenus CDI</option>
+                <option value="Vouchers">🎟️ Vouchers & Tickets Resto</option>
+                <option value="Bonus">🌟 Bonus MBO / CCT90</option>
+                <option value="Loyer">🔑 Loyer Garage</option>
+                <option value="Allocations">🍼 Allocations Familiales</option>
+                <option value="Dividendes">📈 Dividendes Bourse</option>
+                <option value="Epargne Pension">🏦 Épargne Pension</option>
+                <option value="Investissement">📊 Investissement Bourse / ETF</option>
+              </select>
+            </div>
           </div>
 
-          <!-- Category -->
+          <!-- 3. Name -->
           <div>
-            <label class="text-slate-400 font-semibold block mb-1">Catégorie</label>
-            <select id="modal-budget-category" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
-              <option value="Prêt immo">🏠 Prêt immo</option>
-              <option value="Habitation">⚡ Habitation & Énergie</option>
-              <option value="Assurances">🛡️ Assurances & Mutuelles</option>
-              <option value="Frais Voitures">🚗 Frais Voitures & Transports</option>
-              <option value="Taxes">🏛️ Taxes & Précomptes</option>
-              <option value="Chauffage">🔥 Chauffage & Mazout</option>
-              <option value="Loisirs">🎉 Loisirs, Resto & Sorties</option>
-              <option value="Enfants">👶 Enfants</option>
-              <option value="Autres">📦 Autres Dépenses</option>
-              <option value="Revenus">💼 Revenus CDI</option>
-              <option value="Vouchers">🎟️ Vouchers & Tickets Resto</option>
-              <option value="Bonus">🌟 Bonus MBO / CCT90</option>
-              <option value="Loyer">🔑 Loyer Garage</option>
-              <option value="Allocations">🍼 Allocations Familiales</option>
-              <option value="Dividendes">📈 Dividendes Bourse</option>
-              <option value="Epargne Pension">🏦 Épargne Pension</option>
-              <option value="Investissement">📊 Investissement Bourse / ETF</option>
-            </select>
+            <label class="text-slate-400 font-semibold block mb-1">Libellé du Poste</label>
+            <input type="text" id="modal-budget-name" placeholder="Ex: Double Pécule de Vacances (DPV), Mazout..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
           </div>
 
-          <!-- Name -->
-          <div>
-            <label class="text-slate-400 font-semibold block mb-1">Libellé / Détail du Poste</label>
-            <input type="text" id="modal-budget-name" placeholder="Ex: Assurance SrD Maison, Salaire CDI..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
-          </div>
-
-          <!-- DUAL AMOUNT CALCULATOR: Monthly <-> Annual Conversion -->
-          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-2.5">
+          <!-- 4. RECURRENCE & SEASONAL PATTERN SELECTOR -->
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
             <div class="flex justify-between items-center">
               <span class="text-slate-300 font-bold text-xs flex items-center gap-1.5">
-                <i class="fa-solid fa-calculator text-amber-400"></i> Montant & Périodicité
+                <i class="fa-solid fa-calendar-days text-amber-400"></i> Périodicité & Saisonnalité Réelle
               </span>
-              <span class="text-[11px] text-slate-500 font-mono">Conversion Auto ÷ 12</span>
+              <span class="text-[11px] text-amber-300 font-mono font-bold" id="modal-schedule-summary-badge">12x / an</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
+            <!-- Pattern Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              <button type="button" onclick="setSchedulePattern('monthly')" id="btn-pat-monthly" class="py-1.5 px-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-[11px] transition shadow-sm">
+                🔄 Mensuel (12x)
+              </button>
+              <button type="button" onclick="setSchedulePattern('quarterly')" id="btn-pat-quarterly" class="py-1.5 px-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B] text-slate-300 hover:text-white font-semibold text-[11px] transition">
+                ⏳ Trimestriel (4x)
+              </button>
+              <button type="button" onclick="setSchedulePattern('semiannual')" id="btn-pat-semiannual" class="py-1.5 px-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B] text-slate-300 hover:text-white font-semibold text-[11px] transition">
+                📅 Semestriel (2x)
+              </button>
+              <button type="button" onclick="setSchedulePattern('annual')" id="btn-pat-annual" class="py-1.5 px-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B] text-slate-300 hover:text-white font-semibold text-[11px] transition">
+                🎯 Ponctuel (1x)
+              </button>
+            </div>
+
+            <!-- Quick Month Presets (For bonuses, holidays, taxes) -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
+              <span class="text-[10px] text-slate-500 uppercase font-bold shrink-0">Raccourcis :</span>
+              <button type="button" onclick="applyMonthPreset('mai')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-sky-400 hover:border-sky-500 shrink-0">☀️ Mai (DPV)</button>
+              <button type="button" onclick="applyMonthPreset('mars')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-emerald-400 hover:border-emerald-500 shrink-0">🏆 Mars (MBO)</button>
+              <button type="button" onclick="applyMonthPreset('juin')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-yellow-400 hover:border-yellow-500 shrink-0">⭐ Juin (CCT90)</button>
+              <button type="button" onclick="applyMonthPreset('octobre')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-rose-400 hover:border-rose-500 shrink-0">🏛️ Oct (Précompte/Mazout)</button>
+              <button type="button" onclick="applyMonthPreset('decembre')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-purple-400 hover:border-purple-500 shrink-0">🎁 Déc (13e/Fêtes)</button>
+              <button type="button" onclick="applyMonthPreset('ete')" class="px-2 py-0.5 rounded-lg bg-[#0A0F1D] border border-[#1B263B] text-[10px] text-amber-400 hover:border-amber-500 shrink-0">🏖️ Juil/Août (Vacances)</button>
+            </div>
+
+            <!-- Amount Inputs -->
+            <div class="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Montant Mensuel (€/m)</label>
-                <input type="number" step="0.01" id="modal-budget-monthly-amount" oninput="onModalMonthlyInput(this.value)" placeholder="0.00" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-amber-500">
+                <label class="text-slate-400 text-[11px] block mb-1">Montant par occurrence (€)</label>
+                <input type="number" step="0.01" id="modal-budget-raw-amount" oninput="onModalRawAmountInput(this.value)" placeholder="0.00" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-amber-500">
               </div>
               <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Montant Annuel (€/an)</label>
-                <input type="number" step="0.01" id="modal-budget-annual-amount" oninput="onModalAnnualInput(this.value)" placeholder="0.00" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-amber-300 font-mono font-bold text-sm focus:outline-none focus:border-amber-500">
+                <label class="text-slate-400 text-[11px] block mb-1">Total Annuel Calculé (€/an)</label>
+                <input type="number" step="0.01" id="modal-budget-annual-total" readonly class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-amber-300 font-mono font-bold text-sm focus:outline-none opacity-90 cursor-not-allowed">
+              </div>
+            </div>
+
+            <!-- Interactive 12-Month Checkbox / Allocation Grid -->
+            <div class="pt-2 space-y-1.5">
+              <div class="flex justify-between items-center text-[10px] text-slate-400">
+                <span>Mois d'application (cochez les mois concernés ou modifiez les montants) :</span>
+                <button type="button" onclick="toggleCustomMonthsView()" class="text-amber-400 hover:underline font-bold" id="btn-toggle-custom-12m">✏️ Éditer par mois</button>
+              </div>
+
+              <!-- 12-Month Pills Container -->
+              <div class="grid grid-cols-6 sm:grid-cols-12 gap-1" id="modal-months-selector-grid">
+                <!-- 12 month buttons Jan -> Dec -->
+              </div>
+
+              <!-- Detailed 12-Month Inputs (Collapsible) -->
+              <div id="modal-custom-12m-inputs-container" class="hidden grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2 border-t border-[#1B263B]/60">
+                <!-- 12 numeric inputs -->
               </div>
             </div>
           </div>
 
-          <!-- Note -->
+          <!-- 5. Note -->
           <div>
             <label class="text-slate-400 font-semibold block mb-1">Commentaire / Notes (optionnel)</label>
-            <input type="text" id="modal-budget-note" placeholder="Ex: Taux fixe < 2%, voiture de société..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-slate-300 focus:outline-none focus:border-amber-500">
+            <input type="text" id="modal-budget-note" placeholder="Ex: Payé en 1x en mai, prime annuelle non récurrente..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-slate-300 focus:outline-none focus:border-amber-500">
           </div>
         </div>
 
@@ -5295,17 +5343,7 @@
     }
 
     // Modal Real-Time Conversion
-    function onModalMonthlyInput(val) {
-      const num = parseFloat(val) || 0;
-      const annualEl = document.getElementById('modal-budget-annual-amount');
-      if (annualEl) annualEl.value = round2(num * 12);
-    }
-
-    function onModalAnnualInput(val) {
-      const num = parseFloat(val) || 0;
-      const monthlyEl = document.getElementById('modal-budget-monthly-amount');
-      if (monthlyEl) monthlyEl.value = round2(num / 12);
-    }
+    
 
     // --- SYNTHETIC CATEGORY-FIRST 12-MONTH MATRIX TABLE ---
     function renderBudgetMatrix(section = 'expenses') {
@@ -5452,16 +5490,180 @@
       }
     }
 
-    // --- COMPLETE MODAL & BUDGET ITEM HANDLERS ---
+    // --- SMART SEASONAL RECURRENCE & 12-MONTH SCHEDULER ENGINE ---
+    let modal12MonthsState = Array(12).fill(0);
+    let currentSchedulePattern = 'monthly';
+
+    function initModal12MonthPickers() {
+      const grid = document.getElementById('modal-months-selector-grid');
+      const inputsContainer = document.getElementById('modal-custom-12m-inputs-container');
+      if (!grid || !inputsContainer) return;
+
+      grid.innerHTML = '';
+      inputsContainer.innerHTML = '';
+
+      MONTH_SHORT_FR.forEach((mName, mIdx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = `modal-month-pill-${mIdx}`;
+        btn.className = "py-1 rounded-lg text-[10px] font-bold transition border border-[#1B263B] bg-[#0A0F1D] text-slate-400";
+        btn.innerText = mName;
+        btn.onclick = () => toggleModalMonth(mIdx);
+        grid.appendChild(btn);
+
+        const div = document.createElement('div');
+        div.className = "space-y-0.5";
+        div.innerHTML = `
+          <span class="text-[9px] text-slate-500 uppercase font-bold">${mName}</span>
+          <input type="number" step="1" id="modal-month-input-${mIdx}" oninput="onCustomMonthInput(${mIdx}, this.value)" class="w-full bg-[#05070E] border border-[#1B263B] rounded-lg px-1.5 py-1 text-right font-mono text-[11px] text-white focus:outline-none focus:border-amber-400">
+        `;
+        inputsContainer.appendChild(div);
+      });
+    }
+
+    function toggleCustomMonthsView() {
+      const container = document.getElementById('modal-custom-12m-inputs-container');
+      const btn = document.getElementById('btn-toggle-custom-12m');
+      if (!container || !btn) return;
+
+      const isHidden = container.classList.contains('hidden');
+      if (isHidden) {
+        container.classList.remove('hidden');
+        btn.innerText = "✖ Fermer l'édition par mois";
+      } else {
+        container.classList.add('hidden');
+        btn.innerText = "✏️ Éditer par mois";
+      }
+    }
+
+    function updateModal12MonthsUI() {
+      MONTH_SHORT_FR.forEach((_, mIdx) => {
+        const btn = document.getElementById(`modal-month-pill-${mIdx}`);
+        const inp = document.getElementById(`modal-month-input-${mIdx}`);
+        const amt = modal12MonthsState[mIdx] || 0;
+
+        if (btn) {
+          if (amt > 0) {
+            btn.className = "py-1 rounded-lg text-[10px] font-bold transition border border-amber-500 bg-amber-500/20 text-amber-300 shadow-sm";
+          } else {
+            btn.className = "py-1 rounded-lg text-[10px] font-semibold transition border border-[#1B263B] bg-[#0A0F1D] text-slate-500 hover:text-slate-300";
+          }
+        }
+        if (inp) {
+          inp.value = amt > 0 ? Math.round(amt) : '';
+        }
+      });
+
+      const annTotal = modal12MonthsState.reduce((a, b) => a + (b || 0), 0);
+      const annEl = document.getElementById('modal-budget-annual-total');
+      if (annEl) annEl.value = round2(annTotal);
+
+      const countActive = modal12MonthsState.filter(v => v > 0).length;
+      const badge = document.getElementById('modal-schedule-summary-badge');
+      if (badge) {
+        if (countActive === 12) badge.innerText = "12x / an (Mensuel)";
+        else if (countActive === 4) badge.innerText = "4x / an (Trimestriel)";
+        else if (countActive === 2) badge.innerText = "2x / an (Semestriel)";
+        else if (countActive === 1) badge.innerText = "1x / an (Ponctuel)";
+        else badge.innerText = `${countActive}x / an (Personnalisé)`;
+      }
+    }
+
+    function toggleModalMonth(mIdx) {
+      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0;
+      if (modal12MonthsState[mIdx] > 0) {
+        modal12MonthsState[mIdx] = 0;
+      } else {
+        modal12MonthsState[mIdx] = rawAmt > 0 ? rawAmt : 100;
+        if (rawAmt === 0) document.getElementById('modal-budget-raw-amount').value = 100;
+      }
+      updateModal12MonthsUI();
+    }
+
+    function onCustomMonthInput(mIdx, val) {
+      const amt = Math.max(0, parseFloat(val) || 0);
+      modal12MonthsState[mIdx] = amt;
+      updateModal12MonthsUI();
+    }
+
+    function onModalRawAmountInput(val) {
+      const amt = Math.max(0, parseFloat(val) || 0);
+      setSchedulePattern(currentSchedulePattern, amt);
+    }
+
+    function setSchedulePattern(pattern, overrideAmt = null) {
+      currentSchedulePattern = pattern;
+      const rawAmt = overrideAmt !== null ? overrideAmt : (parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0);
+
+      ['monthly', 'quarterly', 'semiannual', 'annual'].forEach(p => {
+        const btn = document.getElementById(`btn-pat-${p}`);
+        if (!btn) return;
+        if (p === pattern) {
+          btn.className = "py-1.5 px-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-[11px] transition shadow-sm";
+        } else {
+          btn.className = "py-1.5 px-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B] text-slate-300 hover:text-white font-semibold text-[11px] transition";
+        }
+      });
+
+      if (pattern === 'monthly') {
+        modal12MonthsState = Array(12).fill(rawAmt);
+      } else if (pattern === 'quarterly') {
+        modal12MonthsState = Array(12).fill(0);
+        [0, 3, 6, 9].forEach(m => { modal12MonthsState[m] = rawAmt; });
+      } else if (pattern === 'semiannual') {
+        modal12MonthsState = Array(12).fill(0);
+        [5, 11].forEach(m => { modal12MonthsState[m] = rawAmt; });
+      } else if (pattern === 'annual') {
+        modal12MonthsState = Array(12).fill(0);
+        modal12MonthsState[4] = rawAmt;
+      }
+
+      updateModal12MonthsUI();
+    }
+
+    function applyMonthPreset(preset) {
+      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 1000;
+      if (!document.getElementById('modal-budget-raw-amount').value) {
+        document.getElementById('modal-budget-raw-amount').value = rawAmt;
+      }
+
+      modal12MonthsState = Array(12).fill(0);
+
+      if (preset === 'mai') {
+        modal12MonthsState[4] = rawAmt;
+        setSchedulePattern('annual', rawAmt);
+      } else if (preset === 'mars') {
+        modal12MonthsState[2] = rawAmt;
+        setSchedulePattern('annual', rawAmt);
+      } else if (preset === 'juin') {
+        modal12MonthsState[5] = rawAmt;
+        setSchedulePattern('annual', rawAmt);
+      } else if (preset === 'octobre') {
+        modal12MonthsState[9] = rawAmt;
+        setSchedulePattern('annual', rawAmt);
+      } else if (preset === 'decembre') {
+        modal12MonthsState[11] = rawAmt;
+        setSchedulePattern('annual', rawAmt);
+      } else if (preset === 'ete') {
+        modal12MonthsState[6] = round2(rawAmt * 0.6);
+        modal12MonthsState[7] = round2(rawAmt * 0.4);
+      }
+
+      updateModal12MonthsUI();
+    }
+
+    // Modal Handlers with Auto-Conversion & 12-Month Array
     function openAddBudgetItemModal(type = 'expense') {
       try {
+        initModal12MonthPickers();
         document.getElementById('modal-budget-id').value = '';
         document.getElementById('modal-budget-name').value = '';
-        document.getElementById('modal-budget-monthly-amount').value = '';
-        document.getElementById('modal-budget-annual-amount').value = '';
+        document.getElementById('modal-budget-raw-amount').value = '';
+        document.getElementById('modal-budget-annual-total').value = '0';
         document.getElementById('modal-budget-note').value = '';
         document.getElementById('modal-budget-user').value = 'Famille';
         setModalBudgetType(type);
+        setSchedulePattern('monthly', 0);
         document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne`;
         document.getElementById('budget-item-modal').classList.remove('hidden');
       } catch (err) {
@@ -5500,6 +5702,7 @@
 
     function editBudgetItem(id, type) {
       try {
+        initModal12MonthPickers();
         console.log("editBudgetItem called with id:", id, "type:", type);
         const list = type === 'expenses' ? appState.budget.expenses : (type === 'incomes' ? appState.budget.incomes : appState.budget.investments);
         if (!list) {
@@ -5518,11 +5721,20 @@
         document.getElementById('modal-budget-category').value = item.category || '';
         document.getElementById('modal-budget-user').value = item.user || 'Famille';
         document.getElementById('modal-budget-name').value = item.name || '';
-        
-        const monthlyVal = round2(item.amount || 0);
-        document.getElementById('modal-budget-monthly-amount').value = monthlyVal;
-        document.getElementById('modal-budget-annual-amount').value = round2(monthlyVal * 12);
         document.getElementById('modal-budget-note').value = item.note || '';
+
+        // Load 12-month array
+        if (Array.isArray(item.months) && item.months.length === 12) {
+          modal12MonthsState = [...item.months];
+        } else {
+          modal12MonthsState = Array(12).fill(item.amount || 0);
+        }
+
+        const activeMonths = modal12MonthsState.filter(v => v > 0);
+        const primaryAmt = activeMonths.length > 0 ? activeMonths[0] : (item.amount || 0);
+        document.getElementById('modal-budget-raw-amount').value = Math.round(primaryAmt);
+
+        updateModal12MonthsUI();
         
         document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier la Ligne`;
         document.getElementById('budget-item-modal').classList.remove('hidden');
@@ -5539,8 +5751,11 @@
         const cat = document.getElementById('modal-budget-category').value || 'Divers';
         const user = document.getElementById('modal-budget-user').value || 'Famille';
         const name = document.getElementById('modal-budget-name').value.trim() || 'Sans titre';
-        const rawAmt = parseFloat(document.getElementById('modal-budget-monthly-amount').value) || 0;
         const note = document.getElementById('modal-budget-note').value.trim();
+
+        // Calculate average monthly from 12-month array
+        const annualTotal = modal12MonthsState.reduce((a, b) => a + (b || 0), 0);
+        const avgMonthly = round2(annualTotal / 12);
 
         if (!appState.budget) appState.budget = { expenses: [], incomes: [], investments: [] };
         const targetList = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
@@ -5548,7 +5763,15 @@
         if (id) {
           const idx = targetList.findIndex(x => String(x.id) === String(id));
           if (idx !== -1) {
-            targetList[idx] = { ...targetList[idx], category: cat, user: user, name: name, amount: round2(rawAmt), months: Array(12).fill(round2(rawAmt)), note: note };
+            targetList[idx] = { 
+              ...targetList[idx], 
+              category: cat, 
+              user: user, 
+              name: name, 
+              amount: avgMonthly, 
+              months: [...modal12MonthsState], 
+              note: note 
+            };
           }
         } else {
           targetList.push({
@@ -5556,15 +5779,15 @@
             category: cat,
             user: user,
             name: name,
-            amount: round2(rawAmt),
-            months: Array(12).fill(round2(rawAmt)),
+            amount: avgMonthly,
+            months: [...modal12MonthsState],
             note: note,
             essential: ['Assurances', 'Habitation', 'Taxes', 'Chauffage', 'Prêt immo', 'Prt immo', 'Enfants', 'Frais Voitures'].includes(cat)
           });
         }
 
-        const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
+        const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
+        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(e), 0) / 12;
         appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
 
         closeBudgetItemModal();
@@ -5572,7 +5795,7 @@
         renderBudgetView();
         renderOverviewCharts();
         updateSimulatorView();
-        showToast("Ligne enregistrée avec succès !", "success");
+        showToast("Ligne enregistrée avec sa saisonnalité 12 mois !", "success");
       } catch (err) {
         console.error("saveBudgetItemModal error:", err);
       }
@@ -5590,8 +5813,8 @@
           appState.budget.investments = (appState.budget.investments || []).filter(x => String(x.id) !== String(id));
         }
         
-        const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
+        const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
+        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(e), 0) / 12;
         appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
 
         saveCurrentPlan();

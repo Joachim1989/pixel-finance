@@ -358,209 +358,253 @@
     <!-- ========================================================================= -->
     <!-- TAB 1: COCKPIT DE LIBERTÉ FINANCIÈRE (EXECUTIVE WEALTH ANALYST EDITION) -->
     <!-- ========================================================================= -->
-    <div id="tab-dashboard" class="tab-content space-y-5 animate-fade-in">
+    <!-- ========================================================================= -->
+    <!-- TAB 1: COCKPIT DE LIBERTÉ FINANCIÈRE (MULTI-NIVEAUX & PÉDAGOGIQUE) -->
+    <!-- ========================================================================= -->
+    <div id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
       
-      <!-- HERO 1: FREEDOM BAROMETER & FIRE COUNTDOWN BANNER -->
-      <div class="fin-card p-5 sm:p-7 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-5 shadow-2xl relative overflow-hidden">
+      <!-- NIVEAU 1 : LE VERDICT GLOBAL EN GRAND (L'ESSENTIEL EN 3 SECONDES) -->
+      <div class="fin-card p-6 sm:p-8 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-6 shadow-2xl relative overflow-hidden">
         
-        <!-- Glow Effect Background -->
-        <div class="absolute -right-20 -top-20 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Ambient Glow -->
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 relative z-10">
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-black border border-amber-500/30 flex items-center gap-1.5 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> COCKPIT FIRE 2026-2042
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> COCKPIT DE LIBERTÉ FINANCIÈRE
               </span>
-              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800" id="cockpit-coast-status-pill">
-                🛡️ Coast FIRE : Débloqué
+              <span class="text-xs px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800" id="cockpit-coast-status-pill">
+                🛡️ Coast FIRE Débloqué (Retraite garantie)
               </span>
             </div>
-            <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight mt-2 flex items-center gap-2.5">
-              <i class="fa-solid fa-compass text-amber-400"></i> Trajectoire d'Indépendance Financière
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight mt-2 flex items-center gap-3">
+              Votre Date de Liberté : <span class="text-amber-400 font-mono" id="hero-target-year">2042</span> <span class="text-base sm:text-lg text-slate-400 font-normal">(à 53 ans)</span>
             </h1>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1">
-              Capacité d'émancipation financière du foyer Janowski • Horizon cible : <span class="font-bold text-amber-300" id="hero-target-year">2042 (53 ans)</span>.
+            <p class="text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
+              À ce rythme d'épargne (<span class="text-emerald-400 font-bold" id="hero-savings-rate-txt">52.2%</span> de vos revenus), vous n'aurez plus besoin de travailler dans <span class="text-amber-300 font-bold font-mono" id="hero-years-left-txt">15 ans et 6 mois</span>. Vos rentes passives paieront 100% de votre vie de famille.
             </p>
           </div>
 
-          <!-- Quick Scenario Selector & Target SWR -->
-          <div class="flex items-center gap-2 flex-wrap bg-[#05070E]/80 backdrop-blur p-1.5 rounded-2xl border border-[#1B263B] shadow-md">
-            <div class="px-3 py-1 text-right">
-              <span class="text-[10px] text-slate-400 uppercase font-bold block">Taux de Retrait (SWR)</span>
-              <span class="text-xs font-mono font-bold text-amber-400" id="cockpit-swr-label">3.50% (Belge Prudent)</span>
-            </div>
-            <button onclick="switchTab('tab-simulator')" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-xs transition shadow-md flex items-center gap-1.5">
-              <i class="fa-solid fa-sliders"></i> <span>Ajuster</span>
+          <!-- Quick Action Buttons -->
+          <div class="flex items-center gap-2 flex-wrap bg-[#05070E]/80 backdrop-blur p-2 rounded-2xl border border-[#1B263B] shadow-md">
+            <button onclick="toggleExplainerCards()" id="btn-toggle-explainers" class="px-3.5 py-2 rounded-xl bg-[#0A0F1D] hover:bg-[#1B263B] border border-[#1B263B] text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-question text-amber-400"></i> <span>Comprendre les calculs</span>
+            </button>
+            <button onclick="switchTab('tab-simulator')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-xs transition shadow-md flex items-center gap-1.5">
+              <i class="fa-solid fa-sliders"></i> <span>Tester un Scénario</span>
             </button>
           </div>
         </div>
 
-        <!-- PROGRESS GAUGE BAR TO FULL FIRE -->
-        <div class="p-4 sm:p-5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
+        <!-- PROGRESS BAR WITH CONCRETE EXPLANATION -->
+        <div class="p-5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
             <div>
-              <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Progression vers l'Objectif Full FIRE</span>
-              <div class="flex items-baseline gap-2 mt-0.5">
-                <span class="text-2xl sm:text-3xl font-black text-white font-mono privacy-blur" id="cockpit-net-worth-display">0 €</span>
+              <span class="text-xs uppercase tracking-wider font-bold text-slate-400 flex items-center gap-2">
+                <span>Réservoir d'Autonomie Financière</span>
+                <span class="text-[10px] text-slate-500">(Patrimoine Net vs Capital Nécessaire)</span>
+              </span>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="text-3xl sm:text-4xl font-black text-white font-mono privacy-blur" id="cockpit-net-worth-display">1 083 487 €</span>
                 <span class="text-xs text-slate-400 font-mono">sur un objectif de</span>
-                <span class="text-sm font-black text-amber-400 font-mono" id="cockpit-fire-target-display">1 240 000 €</span>
+                <span class="text-base sm:text-lg font-black text-amber-400 font-mono" id="cockpit-fire-target-display">1 240 000 €</span>
               </div>
             </div>
             
             <div class="text-right">
-              <span class="text-2xl sm:text-3xl font-black text-amber-400 font-mono" id="cockpit-fire-pct-display">0.0%</span>
-              <span class="text-[11px] text-slate-400 block" id="cockpit-countdown-display">Temps restant estimé : ~16 ans</span>
+              <span class="text-3xl sm:text-4xl font-black text-amber-400 font-mono" id="cockpit-fire-pct-display">87.4%</span>
+              <span class="text-xs text-emerald-400 font-bold block" id="cockpit-countdown-display">Plus que 156 500 € à accumuler !</span>
             </div>
           </div>
 
           <!-- Multi-Milestone Visual Progress Bar -->
-          <div class="relative w-full bg-[#1B263B] h-4 rounded-full overflow-hidden p-0.5 shadow-inner">
-            <div class="bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-700 relative shadow-sm" id="cockpit-fire-progress-bar" style="width: 0%"></div>
+          <div class="relative w-full bg-[#1B263B] h-5 rounded-full overflow-hidden p-0.5 shadow-inner">
+            <div class="bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-700 relative shadow-sm" id="cockpit-fire-progress-bar" style="width: 87.4%"></div>
           </div>
 
-          <!-- Milestone Markers Below Bar -->
-          <div class="grid grid-cols-4 text-center text-[10px] sm:text-xs font-bold pt-1 gap-1 text-slate-400">
-            <div class="text-emerald-400 flex flex-col items-center">
-              <span>● 25%</span>
-              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Matelas & Sécurité</span>
+          <!-- Explanatory Milestone Markers -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 text-center text-xs font-bold pt-1 gap-2 text-slate-400">
+            <div class="p-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
+              <span class="text-emerald-400 block font-mono">1. Matelas de Sécurité</span>
+              <span class="text-[10px] text-slate-400 font-normal">8.4 mois de dépenses en cash ✓</span>
             </div>
-            <div class="text-sky-400 flex flex-col items-center">
-              <span>● 50%</span>
-              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Coast FIRE 🛡️</span>
+            <div class="p-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
+              <span class="text-sky-400 block font-mono">2. Coast FIRE</span>
+              <span class="text-[10px] text-slate-400 font-normal">Retraite 67 ans 100% couverte ✓</span>
             </div>
-            <div class="text-purple-400 flex flex-col items-center">
-              <span>● 75%</span>
-              <span class="text-[9px] sm:text-[10px] text-slate-500 font-normal">Flamingo / Flex</span>
+            <div class="p-2 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
+              <span class="text-purple-400 block font-mono">3. Flamingo (50% Rente)</span>
+              <span class="text-[10px] text-slate-400 font-normal">50% du train de vie couvert ✓</span>
             </div>
-            <div class="text-amber-400 flex flex-col items-center">
-              <span>● 100%</span>
-              <span class="text-[9px] sm:text-[10px] text-amber-300 font-bold">FULL FIRE 🚀</span>
+            <div class="p-2 rounded-xl bg-[#0A0F1D] border border-amber-500/40 bg-amber-500/10">
+              <span class="text-amber-300 block font-mono">4. FULL FIRE (100% Libre)</span>
+              <span class="text-[10px] text-amber-200/80 font-normal">Objectif Mars 2042 🎯</span>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- SECTION 2: THE 4 GOLDEN QUANTITATIVE RATIOS OF FINANCIAL INDEPENDENCE -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        
-        <!-- Ratio 1: Taux d'Épargne Réel (Savings Rate) -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-2.5">
-              <div class="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-piggy-bank"></i>
-              </div>
-              <div>
-                <span class="text-xs font-bold text-white block">Taux d'Épargne</span>
-                <span class="text-[10px] text-slate-400 font-mono">Moteur n°1 du FIRE</span>
-              </div>
-            </div>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold border border-purple-800">Élite</span>
-          </div>
-
-          <div class="space-y-1">
-            <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono" id="kpi-savings-rate">52.2%</div>
-            <p class="text-[11px] text-slate-400 leading-tight">
-              <span class="text-emerald-400 font-bold" id="kpi-savings-amount">+4 730 € / m</span> injectés dans le patrimoine.
-            </p>
-          </div>
-
-          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
-            <span>Seuil d'excellence : > 40%</span>
-            <i class="fa-solid fa-check text-emerald-400"></i>
-          </div>
+      <!-- NIVEAU 2 : D'OÙ SORTENT CES CHIFFRES ? (EXPLICATIONS CLAIRES & EXEMPLES CONCRETS) -->
+      <div id="cockpit-explainers-section" class="space-y-4">
+        <div class="flex justify-between items-center px-1">
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-amber-400"></i> Comprendre vos Chiffres Clés (Formules & Exemples Concrets)
+          </h2>
+          <span class="text-xs text-slate-400">4 Piliers Financiers Déchiffrés</span>
         </div>
 
-        <!-- Ratio 2: Vitesse d'Indépendance (Freedom Velocity) -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-2.5">
-              <div class="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-gauge-high"></i>
-              </div>
-              <div>
-                <span class="text-xs font-bold text-white block">Vélocité FIRE</span>
-                <span class="text-[10px] text-slate-400 font-mono">Temps gagné par mois</span>
-              </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- Carte 1 : Patrimoine Net -->
+          <div class="fin-card p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] space-y-3 shadow-md">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">1. Patrimoine Net Réel</span>
+              <i class="fa-solid fa-vault text-emerald-400 text-sm"></i>
             </div>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800">Accéléré</span>
+
+            <div class="text-2xl sm:text-3xl font-black text-white font-mono privacy-blur" id="kpi-net-worth-val">1 083 487 €</div>
+
+            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
+              <span class="font-bold text-emerald-300 block">💡 En clair :</span>
+              <p>Ce qu'il vous resterait sur votre compte si vous vendiez tous vos biens aujourd'hui et remboursiez la banque.</p>
+            </div>
+
+            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
+              <span>Formule : Actifs (1,45 M€) - Crédits (366 k€)</span>
+            </div>
           </div>
 
-          <div class="space-y-1">
+          <!-- Carte 2 : Objectif FIRE -->
+          <div class="fin-card p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] space-y-3 shadow-md">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-amber-400 uppercase tracking-wider">2. Objectif Full FIRE</span>
+              <i class="fa-solid fa-bullseye text-amber-400 text-sm"></i>
+            </div>
+
+            <div class="text-2xl sm:text-3xl font-black text-amber-300 font-mono" id="kpi-fire-target-val">1 240 000 €</div>
+
+            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
+              <span class="font-bold text-amber-300 block">💡 En clair :</span>
+              <p>La taille du capital pour que les intérêts annuels paient 100% de vos dépenses sans jamais toucher au capital.</p>
+            </div>
+
+            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
+              <span>Formule : Dépenses annuelles ÷ 3.5% (SWR)</span>
+            </div>
+          </div>
+
+          <!-- Carte 3 : Vélocité FIRE -->
+          <div class="fin-card p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] space-y-3 shadow-md">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-sky-400 uppercase tracking-wider">3. Vélocité de Liberté</span>
+              <i class="fa-solid fa-bolt text-sky-400 text-sm"></i>
+            </div>
+
             <div class="text-2xl sm:text-3xl font-black text-sky-300 font-mono" id="kpi-freedom-velocity">+1.85 mo</div>
-            <p class="text-[11px] text-slate-400 leading-tight">
-              Pour 1 mois travaillé, vous achetez <span class="text-white font-bold">1,85 mois de liberté future</span>.
-            </p>
-          </div>
 
-          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
-            <span>Effet levier du taux d'épargne</span>
-            <i class="fa-solid fa-bolt text-sky-400"></i>
-          </div>
-        </div>
-
-        <!-- Ratio 3: Taux de Couverture Passive (Passive Income Coverage) -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-2.5">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-shield-heart"></i>
-              </div>
-              <div>
-                <span class="text-xs font-bold text-white block">Rente Potentielle</span>
-                <span class="text-[10px] text-slate-400 font-mono">À 3.5% SWR viager</span>
-              </div>
+            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
+              <span class="font-bold text-sky-300 block">💡 En clair :</span>
+              <p>Pour 1 mois travaillé, vous mettez de côté de quoi vivre <strong class="text-white">1,85 mois</strong> sans travailler.</p>
             </div>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">Sécurité</span>
-          </div>
 
-          <div class="space-y-1">
-            <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="kpi-passive-annuity">3 160 €</div>
-            <p class="text-[11px] text-slate-400 leading-tight">
-              Couvre <span class="text-emerald-300 font-bold" id="kpi-passive-coverage-pct">72.8%</span> de vos charges mensuelles actuelles.
-            </p>
-          </div>
-
-          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
-            <span>Charges fixes : 4 339 € / m</span>
-            <i class="fa-solid fa-chart-simple text-emerald-400"></i>
-          </div>
-        </div>
-
-        <!-- Ratio 4: Runway & Santé de la Dette (LTV / Liquidités) -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] flex flex-col justify-between space-y-3 shadow-md">
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-2.5">
-              <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-base shadow-sm">
-                <i class="fa-solid fa-scale-balanced"></i>
-              </div>
-              <div>
-                <span class="text-xs font-bold text-white block">Levier & Dettes</span>
-                <span class="text-[10px] text-slate-400 font-mono">Ratio LTV & Solvabilité</span>
-              </div>
+            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
+              <span>Formule : Épargne (4 730 €) ÷ Coût de vie (2 550 €)</span>
             </div>
-            <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800">Sain</span>
           </div>
 
-          <div class="space-y-1">
-            <div class="text-2xl sm:text-3xl font-black text-amber-300 font-mono" id="kpi-ltv-ratio">25.3%</div>
-            <p class="text-[11px] text-slate-400 leading-tight">
-              Dettes : <span class="text-rose-400 font-mono font-bold privacy-blur" id="kpi-total-debt">366 513 €</span> (Prêts immo amortissables).
-            </p>
+          <!-- Carte 4 : Rente Potentielle Immédiate -->
+          <div class="fin-card p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] space-y-3 shadow-md">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-purple-400 uppercase tracking-wider">4. Rente Immédiate</span>
+              <i class="fa-solid fa-hand-holding-dollar text-purple-400 text-sm"></i>
+            </div>
+
+            <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono privacy-blur" id="kpi-passive-annuity">3 160 € / m</div>
+
+            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
+              <span class="font-bold text-purple-300 block">💡 En clair :</span>
+              <p>Ce que votre patrimoine génère déjà par mois en rente sécurisée (couvre <strong class="text-white" id="kpi-passive-coverage-pct">72.8%</strong> de vos dépenses).</p>
+            </div>
+
+            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
+              <span>Formule : Patrimoine (1,08 M€) × 3.5% ÷ 12</span>
+            </div>
           </div>
 
-          <div class="text-[10px] text-slate-500 pt-1.5 border-t border-[#1B263B]/60 flex items-center justify-between">
-            <span>Zone de confort : < 35%</span>
-            <i class="fa-solid fa-lock text-amber-400"></i>
-          </div>
         </div>
-
       </div>
 
-      <!-- SECTION 3: INTERACTIVE WEALTH PROJECTION CHART & MILESTONE TIMELINE -->
+      <!-- NIVEAU 3 : LE SIMULATEUR D'IMPACT DIRECT "ET SI..." (TESTER DIRECTEMENT) -->
+      <div class="fin-card p-5 sm:p-6 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] border border-[#1B263B] space-y-4 shadow-xl">
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3 flex-wrap gap-2">
+          <div>
+            <h3 class="font-black text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Simulateur Interactif "Et Si..." (Impact Direct sur votre Date FIRE)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Bougez les curseurs ci-dessous pour voir immédiatement l'impact d'un changement d'épargne ou de train de vie.</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold border border-amber-500/30">Temps Réel</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <!-- Slider 1 : Épargne Mensuelle -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-piggy-bank text-emerald-400"></i> Votre Capacité d'Épargne Mensuelle :
+              </label>
+              <span class="text-sm font-black text-emerald-400 font-mono" id="slider-savings-val">4 730 € / m</span>
+            </div>
+            <input type="range" min="1500" max="8000" step="100" value="4730" id="cockpit-slider-savings" oninput="onCockpitSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-emerald-500">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>1 500 €/m</span>
+              <span>4 730 € (Actuel)</span>
+              <span>8 000 €/m</span>
+            </div>
+          </div>
+
+          <!-- Slider 2 : Dépenses Cibles en Retraite -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-cart-shopping text-rose-400"></i> Vos Dépenses Mensuelles en Retraite :
+              </label>
+              <span class="text-sm font-black text-rose-400 font-mono" id="slider-expenses-val">3 615 € / m</span>
+            </div>
+            <input type="range" min="2000" max="6000" step="50" value="3615" id="cockpit-slider-expenses" oninput="onCockpitSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-rose-500">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>2 000 €/m (Lean)</span>
+              <span>3 615 € (Sans prêts)</span>
+              <span>6 000 €/m (Fat)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Impact Banner -->
+        <div class="p-4 rounded-2xl bg-[#05070E] border border-amber-500/40 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg shrink-0 shadow-sm">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block font-semibold">Résultat de votre simulation :</span>
+              <span class="text-sm sm:text-base font-black text-white" id="slider-result-sentence">
+                Vous atteignez l'indépendance financière en <strong class="text-amber-400 font-mono">2042</strong> (à <strong class="text-amber-300">53 ans</strong>).
+              </span>
+            </div>
+          </div>
+
+          <button onclick="resetCockpitSliders()" class="px-3.5 py-1.5 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-slate-300 text-xs font-semibold transition shrink-0">
+            Réinitialiser
+          </button>
+        </div>
+      </div>
+
+      <!-- NIVEAU 4 : LA PROJECTION PATRIMONIALE 2026-2060 (CROISSANCE COMPOSÉE) -->
       <div class="fin-card p-5 sm:p-6 space-y-4 shadow-xl">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#1B263B] pb-3">
           <div>
@@ -574,7 +618,7 @@
             <span class="text-xs px-2.5 py-1 rounded-full bg-[#05070E] border border-[#1B263B] text-slate-300 font-mono">
               Hypothèse : 5.0% Net
             </span>
-            <button onclick="switchTab('tab-timeline')" class="px-3 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/30 text-amber-300 text-xs font-bold transition flex items-center gap-1.5">
+            <button onclick="switchTab('tab-timeline')" class="px-3.5 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/30 text-amber-300 text-xs font-bold transition flex items-center gap-1.5">
               <span>Détail Trajectoire</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
             </button>
           </div>
@@ -587,113 +631,35 @@
 
         <!-- Key Financial Timeline Callouts -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-building-user text-sm"></i>
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-building-user text-base"></i>
             </div>
             <div>
               <span class="text-xs font-bold text-white block">2034 • Fin Prêt Appartement</span>
-              <span class="text-[11px] text-emerald-400 font-semibold">+303 € / m d'épargne libre</span>
+              <span class="text-[11px] text-emerald-400 font-semibold">+303 € / m d'épargne supplémentaire</span>
             </div>
           </div>
 
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-house-circle-check text-sm"></i>
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-house-circle-check text-base"></i>
             </div>
             <div>
               <span class="text-xs font-bold text-white block">2038 • Fin Prêt Maison</span>
-              <span class="text-[11px] text-emerald-400 font-semibold">+1 321 € / m d'épargne libre</span>
+              <span class="text-[11px] text-emerald-400 font-semibold">+1 321 € / m d'épargne supplémentaire</span>
             </div>
           </div>
 
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-award text-sm"></i>
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-award text-base"></i>
             </div>
             <div>
               <span class="text-xs font-bold text-white block">2056 • Retraite Légale (67 ans)</span>
-              <span class="text-[11px] text-purple-300 font-semibold">+3 350 € / m de pension nette</span>
+              <span class="text-[11px] text-purple-300 font-semibold">+3 350 € / m de pension nette foyer</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- SECTION 4: THE 4 FIRE MILESTONES LADDER (LES 4 JALONS D'ÉMANCIPATION) -->
-      <div class="space-y-3">
-        <div class="flex justify-between items-center px-1">
-          <h3 class="font-black text-white text-base flex items-center gap-2">
-            <i class="fa-solid fa-stairs text-amber-400"></i> L'Échelle des 4 Jalons d'Indépendance
-          </h3>
-          <span class="text-xs text-slate-400">Progression continue du foyer</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-          
-          <!-- Jalon 1: Coast FIRE -->
-          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] space-y-3">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-white flex items-center gap-1.5">
-                🛡️ 1. Coast FIRE
-              </span>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">100% Validé</span>
-            </div>
-            <p class="text-xs text-slate-300">
-              Le capital actuel composé sans nouvel apport suffit pour garantir une rente confortable à 67 ans.
-            </p>
-            <div class="text-[11px] font-mono text-emerald-400 font-bold">
-              Capital requis : ~450 000 € ✓
-            </div>
-          </div>
-
-          <!-- Jalon 2: Flamingo / Barista FIRE -->
-          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] space-y-3">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-white flex items-center gap-1.5">
-                ⚡ 2. Flamingo FIRE
-              </span>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800" id="cockpit-flamingo-pct">95%</span>
-            </div>
-            <p class="text-xs text-slate-300">
-              50% des charges de vie sont déjà couvertes par la rente passive du portefeuille.
-            </p>
-            <div class="text-[11px] font-mono text-sky-300 font-bold" id="cockpit-flamingo-target">
-              Objectif : 620 000 €
-            </div>
-          </div>
-
-          <!-- Jalon 3: Full FIRE -->
-          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] space-y-3">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-white flex items-center gap-1.5">
-                🚀 3. Full FIRE
-              </span>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800" id="cockpit-full-fire-pill">En Cours</span>
-            </div>
-            <p class="text-xs text-slate-300">
-              100% des dépenses du foyer couvertes à vie (rente viagère SWR 3.5% + fin des prêts).
-            </p>
-            <div class="text-[11px] font-mono text-amber-400 font-bold" id="cockpit-full-fire-target">
-              Objectif : 1 240 000 € (2042)
-            </div>
-          </div>
-
-          <!-- Jalon 4: Fat FIRE / Héritage -->
-          <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] space-y-3">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-white flex items-center gap-1.5">
-                👑 4. Fat FIRE & Dynastie
-              </span>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold border border-purple-800">Horizon 2048</span>
-            </div>
-            <p class="text-xs text-slate-300">
-              Niveau de vie opulent, voyages illimités et transmission patrimoniale aux enfants.
-            </p>
-            <div class="text-[11px] font-mono text-purple-300 font-bold">
-              Objectif : 1 800 000 €
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -3334,13 +3300,13 @@
 
     // --- TAB 1: RENDER OVERVIEW CHARTS ---
     // --- COCKPIT ANALYST ENGINE & WEALTH TRAJECTORY REDRAW ---
+    // --- COCKPIT MULTI-LEVEL ANALYST ENGINE & WEALTH TRAJECTORY ---
     function calculateNetWorth() {
       try {
         const p = appState.portfolio || {};
         let total = 0;
         let liabilities = 0;
 
-        // Assets
         if (p.realEstate) {
           (p.realEstate.properties || []).forEach(prop => {
             total += (prop.value || 0);
@@ -3363,7 +3329,6 @@
           });
         }
 
-        // Fallback default portfolio values if zero
         if (total === 0) {
           total = 1450000;
           liabilities = 366513;
@@ -3375,16 +3340,72 @@
       }
     }
 
+    function toggleExplainerCards() {
+      const sec = document.getElementById('cockpit-explainers-section');
+      const btn = document.getElementById('btn-toggle-explainers');
+      if (!sec) return;
+
+      if (sec.classList.contains('hidden')) {
+        sec.classList.remove('hidden');
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash text-amber-400"></i> <span>Masquer les explications</span>`;
+      } else {
+        sec.classList.add('hidden');
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-circle-question text-amber-400"></i> <span>Comprendre les calculs</span>`;
+      }
+    }
+
+    function onCockpitSliderChange() {
+      const savSlider = document.getElementById('cockpit-slider-savings');
+      const expSlider = document.getElementById('cockpit-slider-expenses');
+      if (!savSlider || !expSlider) return;
+
+      const monthlySav = parseFloat(savSlider.value) || 4730;
+      const targetMonthlyExp = parseFloat(expSlider.value) || 3615;
+
+      document.getElementById('slider-savings-val').innerText = `${formatEur(monthlySav)} / m`;
+      document.getElementById('slider-expenses-val').innerText = `${formatEur(targetMonthlyExp)} / m`;
+
+      // Calculate Target FIRE Capital with SWR 3.5%
+      const annualExp = targetMonthlyExp * 12;
+      const targetCapital = Math.round(annualExp / 0.035);
+
+      const nw = calculateNetWorth();
+      let currentCap = nw.net;
+      const growthRate = 0.05; // 5% net real
+      let yearsNeeded = 0;
+
+      while (currentCap < targetCapital && yearsNeeded < 45) {
+        yearsNeeded++;
+        currentCap = (currentCap + (monthlySav * 12)) * (1 + growthRate);
+      }
+
+      const targetYear = 2026 + yearsNeeded;
+      const targetAge = 37 + yearsNeeded;
+
+      const resultSentence = document.getElementById('slider-result-sentence');
+      if (resultSentence) {
+        resultSentence.innerHTML = `Vous atteignez l'indépendance financière en <strong class="text-amber-400 font-mono">${targetYear}</strong> (à <strong class="text-amber-300 font-bold">${targetAge} ans</strong>) avec un capital de <strong class="text-emerald-400 font-mono">${formatEur(targetCapital)}</strong>.`;
+      }
+
+      renderCockpitTrajectoryChart(nw.net, monthlySav, targetCapital);
+    }
+
+    function resetCockpitSliders() {
+      const savSlider = document.getElementById('cockpit-slider-savings');
+      const expSlider = document.getElementById('cockpit-slider-expenses');
+      if (savSlider) savSlider.value = 4730;
+      if (expSlider) expSlider.value = 3615;
+      onCockpitSliderChange();
+    }
+
     function renderOverviewCharts() {
       try {
         appState = deepMergeState(defaultState, appState);
         const nw = calculateNetWorth();
-        const totalGrossAssets = nw.total;
-        const totalLiabilities = nw.liabilities;
         const netWorthVal = nw.net;
 
         const totalIncAnnual = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0);
-        const totalExpAnnual = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(b), 0);
+        const totalExpAnnual = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(e || b), 0);
         const monthlyInc = totalIncAnnual / 12;
         const monthlyExp = totalExpAnnual / 12;
         const monthlySavings = Math.max(0, monthlyInc - monthlyExp);
@@ -3408,18 +3429,18 @@
         const barEl = document.getElementById('cockpit-fire-progress-bar');
         if (barEl) barEl.style.width = `${Math.min(100, Math.max(5, firePct))}%`;
 
-        const swrLabel = document.getElementById('cockpit-swr-label');
-        if (swrLabel) swrLabel.innerText = `${(swr * 100).toFixed(2)}% (Belge Prudent)`;
+        const heroSr = document.getElementById('hero-savings-rate-txt');
+        if (heroSr) heroSr.innerText = `${savingsRate}%`;
 
-        // Update Ratios
-        const srEl = document.getElementById('kpi-savings-rate');
-        if (srEl) srEl.innerText = `${savingsRate}%`;
+        // Update Explainer Cards
+        const kpiNw = document.getElementById('kpi-net-worth-val');
+        if (kpiNw) kpiNw.innerText = formatEur(netWorthVal);
 
-        const savAmtEl = document.getElementById('kpi-savings-amount');
-        if (savAmtEl) savAmtEl.innerText = `+${formatEur(monthlySavings)} / m`;
+        const kpiFire = document.getElementById('kpi-fire-target-val');
+        if (kpiFire) kpiFire.innerText = formatEur(fireTarget);
 
         // Freedom Velocity = (Savings Rate / (100 - Savings Rate))
-        const velocity = monthlyExp > 0 ? (monthlySavings / monthlyExp).toFixed(2) : '1.00';
+        const velocity = monthlyExp > 0 ? (monthlySavings / monthlyExp).toFixed(2) : '1.85';
         const velEl = document.getElementById('kpi-freedom-velocity');
         if (velEl) velEl.innerText = `+${velocity} mo`;
 
@@ -3431,26 +3452,6 @@
         const covPct = monthlyExp > 0 ? Math.min(100, (passiveMonthly / monthlyExp) * 100).toFixed(1) : 0;
         const covEl = document.getElementById('kpi-passive-coverage-pct');
         if (covEl) covEl.innerText = `${covPct}%`;
-
-        // LTV Ratio
-        const ltv = totalGrossAssets > 0 ? ((totalLiabilities / totalGrossAssets) * 100).toFixed(1) : 0;
-        const ltvEl = document.getElementById('kpi-ltv-ratio');
-        if (ltvEl) ltvEl.innerText = `${ltv}%`;
-
-        const debtEl = document.getElementById('kpi-total-debt');
-        if (debtEl) debtEl.innerText = formatEur(totalLiabilities);
-
-        // Flamingo & Full FIRE Milestones
-        const flamTarget = Math.round(fireTarget * 0.5);
-        const flamEl = document.getElementById('cockpit-flamingo-target');
-        if (flamEl) flamEl.innerText = `Objectif : ${formatEur(flamTarget)}`;
-
-        const flamPct = flamTarget > 0 ? Math.min(100, (netWorthVal / flamTarget) * 100).toFixed(0) : 0;
-        const flamPctEl = document.getElementById('cockpit-flamingo-pct');
-        if (flamPctEl) flamPctEl.innerText = `${flamPct}%`;
-
-        const fullTargetEl = document.getElementById('cockpit-full-fire-target');
-        if (fullTargetEl) fullTargetEl.innerText = `Objectif : ${formatEur(fireTarget)} (2042)`;
 
         // Render Multi-Curve Trajectory Chart
         renderCockpitTrajectoryChart(netWorthVal, monthlySavings, fireTarget);

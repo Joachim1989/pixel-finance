@@ -519,280 +519,174 @@
 
     </div>
 
-                <!-- ========================================================================= -->
-    <!-- TAB 2: BUDGET & COÛT DU TEMPS (STUDIO ANALYTIQUE & GESTION CATÉGORIELLE) -->
+                    <!-- ========================================================================= -->
+    <!-- TAB 2: BUDGET & COÛT DU TEMPS (DESIGNER UI & DRILL-DOWN VISUEL) -->
     <!-- ========================================================================= -->
-    <div id="tab-budget" class="tab-content hidden space-y-6 animate-fade-in">
+    <div id="tab-budget" class="tab-content hidden space-y-5 animate-fade-in">
       
-      <!-- Budget Header & Control Bar -->
-      <div class="fin-card p-5 border-l-4 border-l-amber-500 bg-gradient-to-r from-[#0E1629] via-[#0A0F1D] to-[#05070E] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-mono font-bold">BUDGET ANALYTIQUE 2026</span>
-            <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
-              <i class="fa-solid fa-wallet text-amber-400"></i> Studio Budgétaire & Piliers de Dépenses
-            </h2>
-          </div>
-          <p class="text-xs text-slate-400 mt-1">Regroupement par grandes familles de coûts, édition rapide, ventilation mensuelle et diagnostic 50/30/20.</p>
-        </div>
-        
-        <div class="flex items-center gap-2 flex-wrap">
-          <!-- View Modes -->
-          <div class="bg-[#05070E] p-1 rounded-xl border border-[#1B263B] flex items-center gap-1 text-xs">
-            <button onclick="setBudgetViewMode('pillars')" id="btn-view-pillars" class="px-3 py-1.5 rounded-lg font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group"></i> <span>Par Catégorie</span>
-            </button>
-            <button onclick="setBudgetViewMode('charts')" id="btn-view-charts" class="px-3 py-1.5 rounded-lg font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5">
-              <i class="fa-solid fa-chart-line"></i> <span>Graphiques</span>
-            </button>
-            <button onclick="setBudgetViewMode('matrix')" id="btn-view-matrix" class="px-3 py-1.5 rounded-lg font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5">
-              <i class="fa-solid fa-table-cells"></i> <span>Matrice 12 Mois</span>
-            </button>
-          </div>
-
-          <button onclick="restoreJanowskiBudget()" class="px-3 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm" title="Recharger les 49 dépenses et 16 revenus du fichier BUDGET-2026-JANOWSKI">
-            <i class="fa-solid fa-rotate text-[11px]"></i> <span class="hidden sm:inline">Modèle 2026</span>
-          </button>
-          <button onclick="openAddBudgetItemModal('expense')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
-            <i class="fa-solid fa-plus text-[11px]"></i> <span>Ajouter</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Top Summary KPI Cards -->
-      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        <!-- KPI 1: Revenus Mensuels -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 space-y-1">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Revenus Mensuels</span>
-            <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-xs"></i>
-          </div>
-          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-emerald-400 font-mono privacy-blur" id="budget-total-income">0 €</div>
-          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate" id="budget-annual-income">Total : 108 824 € / an</p>
-        </div>
-
-        <!-- KPI 2: Dépenses Mensuelles -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-rose-500 space-y-1">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Dépenses de Vie & Prêts</span>
-            <i class="fa-solid fa-receipt text-rose-400 text-xs"></i>
-          </div>
-          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-rose-400 font-mono privacy-blur" id="budget-total-expenses">0 €</div>
-          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate" id="budget-annual-expenses">Total : 52 066 € / an</p>
-        </div>
-
-        <!-- KPI 3: Épargne & Investissements Actifs -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 space-y-1">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Épargne & Bourse Active</span>
-            <i class="fa-solid fa-piggy-bank text-sky-400 text-xs"></i>
-          </div>
-          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-sky-300 font-mono privacy-blur" id="budget-total-investments">0 €</div>
-          <p class="text-[10px] sm:text-[11px] text-slate-400 truncate">Pensions, ETF & Enfants</p>
-        </div>
-
-        <!-- KPI 4: Capacité d'Épargne Réelle -->
-        <div class="fin-card p-4 sm:p-5 border-l-4 border-l-purple-500 space-y-1">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] sm:text-[11px] font-semibold uppercase text-slate-400">Capacité d'Épargne Nette</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-950 text-purple-300 font-bold font-mono" id="budget-savings-rate-badge">46.7%</span>
-          </div>
-          <div class="text-xl sm:text-2xl lg:text-3xl font-black text-purple-300 font-mono privacy-blur" id="budget-net-savings">0 €</div>
-          <p class="text-[10px] sm:text-[11px] text-emerald-400 font-semibold truncate" id="budget-annual-savings">Disponibles pour FIRE</p>
-        </div>
-      </section>
-
-      <!-- Financial Health & 50/30/20 Diagnostic Bar -->
-      <div class="fin-card p-4 sm:p-5 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] space-y-3">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+      <!-- HERO CASHFLOW FLOW BANNER (Visual Inflow -> Outflow -> Wealth Creation) -->
+      <div class="fin-card p-5 sm:p-6 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-shield-heart text-emerald-400"></i> Audit & Équilibre Budgétaire (Règle 50 / 30 / 20)
-            </h4>
-            <p class="text-[11px] text-slate-400">Besoins Fixes (Prêts, Factures) ≤ 50% • Plaisirs (Loisirs, Vacances) ≤ 30% • Épargne & Investissements ≥ 20%</p>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold border border-amber-500/30">BUDGET DESIGNER 2026</span>
+              <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-amber-400"></i> Flux & Piliers Budgétaires
+              </h2>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Explorez visuellement vos catégories de dépenses et cliquez sur une carte pour faire un drill-down détaillé.</p>
           </div>
-          <div class="flex items-center gap-3">
-            <div class="text-right">
-              <span class="text-[10px] text-slate-400 block uppercase">Burn Rate Quotidien</span>
-              <span class="text-xs font-mono font-bold text-amber-300" id="budget-daily-burn">144.60 € / jour</span>
+
+          <!-- View Switcher & Action buttons -->
+          <div class="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+            <!-- View Mode Switcher -->
+            <div class="bg-[#05070E] p-1 rounded-xl border border-[#1B263B] flex items-center gap-1 text-xs">
+              <button onclick="setBudgetViewMode('cards')" id="btn-view-cards" class="px-3 py-1.5 rounded-lg font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-layer-group"></i> <span>Cartes</span>
+              </button>
+              <button onclick="setBudgetViewMode('charts')" id="btn-view-charts" class="px-3 py-1.5 rounded-lg font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-chart-pie"></i> <span>Graphiques</span>
+              </button>
+              <button onclick="setBudgetViewMode('matrix')" id="btn-view-matrix" class="px-3 py-1.5 rounded-lg font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-table-cells"></i> <span class="hidden sm:inline">Matrice 12M</span><span class="sm:hidden">12M</span>
+              </button>
             </div>
-            <div class="text-right border-l border-[#1B263B] pl-3">
-              <span class="text-[10px] text-slate-400 block uppercase">Temps de Travail</span>
-              <span class="text-xs font-mono font-bold text-sky-400" id="budget-freedom-time">9.6 j / mois</span>
-            </div>
+
+            <!-- Add Line -->
+            <button onclick="openAddBudgetItemModal('expense')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-plus text-[11px]"></i> <span>Ajouter</span>
+            </button>
           </div>
         </div>
 
-        <!-- Progress Bars 50/30/20 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          <!-- 1. Besoins Essentiels -->
-          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-bold text-slate-300 flex items-center gap-1"><i class="fa-solid fa-house-lock text-rose-400 text-[10px]"></i> Besoins Fixes</span>
-              <span class="font-mono font-bold text-rose-400" id="b-rate-needs">48.2%</span>
+        <!-- 3-Pillar Visual Cashflow Bar (Revenus -> Dépenses -> Épargne Libre) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <!-- 1. Entrées -->
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-emerald-500/30 space-y-1">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold uppercase text-[10px] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Entrées Mensuelles
+              </span>
+              <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-xs"></i>
             </div>
-            <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
-              <div id="b-bar-needs" class="bg-gradient-to-r from-rose-600 to-rose-400 h-full rounded-full" style="width: 48%"></div>
-            </div>
-            <span class="text-[10px] text-slate-400 block" id="b-sub-needs">3 668 €/m (Cible ≤ 50%)</span>
+            <div class="text-xl sm:text-2xl font-black text-emerald-400 font-mono privacy-blur" id="budget-total-income">0 €</div>
+            <span class="text-[10px] text-slate-400 block" id="budget-annual-income">108 824 € / an</span>
           </div>
 
-          <!-- 2. Envies & Loisirs -->
-          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-bold text-slate-300 flex items-center gap-1"><i class="fa-solid fa-umbrella-beach text-purple-400 text-[10px]"></i> Envies & Loisirs</span>
-              <span class="font-mono font-bold text-purple-400" id="b-rate-wants">7.4%</span>
+          <!-- 2. Sorties -->
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-rose-500/30 space-y-1">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold uppercase text-[10px] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span> Charges & Prêts
+              </span>
+              <i class="fa-solid fa-receipt text-rose-400 text-xs"></i>
             </div>
-            <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
-              <div id="b-bar-wants" class="bg-gradient-to-r from-purple-600 to-purple-400 h-full rounded-full" style="width: 8%"></div>
-            </div>
-            <span class="text-[10px] text-slate-400 block" id="b-sub-wants">670 €/m (Cible ≤ 30%)</span>
+            <div class="text-xl sm:text-2xl font-black text-rose-400 font-mono privacy-blur" id="budget-total-expenses">0 €</div>
+            <span class="text-[10px] text-slate-400 block" id="budget-annual-expenses">52 066 € / an</span>
           </div>
 
           <!-- 3. Épargne & FIRE -->
-          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-1.5">
-            <div class="flex justify-between text-xs">
-              <span class="font-bold text-slate-300 flex items-center gap-1"><i class="fa-solid fa-rocket text-emerald-400 text-[10px]"></i> Épargne & Investissement</span>
-              <span class="font-mono font-bold text-emerald-400" id="b-rate-savings">46.7%</span>
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-purple-500/30 space-y-1">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400 font-semibold uppercase text-[10px] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span> Capacité d'Épargne Nette
+              </span>
+              <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-950 text-purple-300 font-bold font-mono" id="budget-savings-rate-badge">46.7%</span>
             </div>
-            <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
-              <div id="b-bar-savings" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full" style="width: 47%"></div>
-            </div>
-            <span class="text-[10px] text-slate-400 block" id="b-sub-savings">4 235 €/m (Cible ≥ 20%)</span>
+            <div class="text-xl sm:text-2xl font-black text-purple-300 font-mono privacy-blur" id="budget-net-savings">0 €</div>
+            <span class="text-[10px] text-emerald-400 font-semibold block" id="budget-annual-savings">Disponibles pour Investir</span>
           </div>
         </div>
-      </div>
 
-      <!-- Filters & Search Toolbar -->
-      <div class="fin-card p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <!-- Beneficiary Filter Pills -->
-        <div class="flex items-center gap-1.5 flex-wrap">
-          <span class="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1">
-            <i class="fa-solid fa-filter text-slate-400"></i> Membre :
+        <!-- Beneficiary Filter Chips -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
+          <span class="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1 shrink-0">
+            <i class="fa-solid fa-filter text-slate-400 text-[10px]"></i> Filtre :
           </span>
-          <button onclick="setBudgetFilter('all')" id="btn-budget-filter-all" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md">
+          <button onclick="setBudgetFilter('all')" id="btn-budget-filter-all" class="px-3 py-1 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md shrink-0">
             Tous (Ménage)
           </button>
-          <button onclick="setBudgetFilter('Joachim')" id="btn-budget-filter-joachim" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-sky-400 hover:border-sky-500">
+          <button onclick="setBudgetFilter('Joachim')" id="btn-budget-filter-joachim" class="px-3 py-1 rounded-xl text-xs font-semibold transition bg-[#05070E] border border-[#1B263B] text-sky-400 hover:border-sky-500 shrink-0">
             👨‍💼 Joachim
           </button>
-          <button onclick="setBudgetFilter('Pauline')" id="btn-budget-filter-pauline" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-rose-400 hover:border-rose-500">
+          <button onclick="setBudgetFilter('Pauline')" id="btn-budget-filter-pauline" class="px-3 py-1 rounded-xl text-xs font-semibold transition bg-[#05070E] border border-[#1B263B] text-rose-400 hover:border-rose-500 shrink-0">
             👩‍💼 Pauline
           </button>
-          <button onclick="setBudgetFilter('Famille')" id="btn-budget-filter-famille" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-amber-400 hover:border-amber-500">
+          <button onclick="setBudgetFilter('Famille')" id="btn-budget-filter-famille" class="px-3 py-1 rounded-xl text-xs font-semibold transition bg-[#05070E] border border-[#1B263B] text-amber-400 hover:border-amber-500 shrink-0">
             👨‍👩‍👧‍👦 Famille & Maison
           </button>
         </div>
-
-        <!-- Search Bar & Month Pill -->
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-          <div class="relative flex-1 sm:w-56">
-            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-            <input type="text" id="budget-search-input" oninput="renderBudgetView()" placeholder="Rechercher un poste..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
-          </div>
-          
-          <button onclick="expandAllCategories()" class="px-2.5 py-1.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-slate-400 hover:text-white text-xs font-semibold" title="Tout Déplier / Replier">
-            <i class="fa-solid fa-up-down text-xs"></i>
-          </button>
-        </div>
       </div>
 
-      <!-- VIEW 1: CATEGORY PILLARS & ACCORDIONS (Recommended) -->
-      <div id="budget-view-pillars-container" class="space-y-4">
-        <!-- Incomes Pillar Accordion -->
-        <div class="fin-card overflow-hidden border-l-4 border-l-emerald-500">
-          <div class="p-4 sm:p-5 bg-gradient-to-r from-emerald-950/20 to-transparent flex justify-between items-center cursor-pointer select-none" onclick="toggleCategoryAccordion('pillar-incomes')">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base">
-                <i class="fa-solid fa-money-bill-wave"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
-                  Revenus du Foyer <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-mono font-bold" id="pillar-incomes-count">16 postes</span>
-                </h3>
-                <p class="text-xs text-slate-400">Salaires CDI Joachim & Pauline, 13e mois, DPV, Vouchers, Allocations, Primes</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-              <div class="text-right">
-                <span class="text-base sm:text-lg font-black text-emerald-400 font-mono privacy-blur" id="pillar-incomes-total">0 € / m</span>
-                <span class="text-[10px] text-slate-400 block">100% des entrées</span>
-              </div>
-              <button onclick="event.stopPropagation(); openAddBudgetItemModal('income')" class="h-8 w-8 rounded-lg bg-emerald-950 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 flex items-center justify-center text-xs transition" title="Ajouter un revenu">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-              <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200" id="chev-pillar-incomes"></i>
+      <!-- VIEW 1: BENTO CATEGORY CARDS GRID & DRILL-DOWN (Default) -->
+      <div id="budget-view-cards-container" class="space-y-4">
+        
+        <!-- Breadcrumb Header (when in drill-down mode) -->
+        <div id="budget-drilldown-header" class="hidden fin-card p-4 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <button onclick="closeBudgetDrillDown()" class="h-9 px-3 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-[#1B263B] text-amber-400 hover:text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-arrow-left"></i> <span>Toutes les catégories</span>
+            </button>
+            <div class="border-l border-[#1B263B] pl-3">
+              <h3 class="font-black text-white text-sm sm:text-base flex items-center gap-2" id="drilldown-category-title">
+                🏠 Logement & Prêts
+              </h3>
+              <span class="text-[11px] text-slate-400" id="drilldown-category-subtitle">Détail des postes et édition directe</span>
             </div>
           </div>
 
-          <div id="pillar-incomes-body" class="p-4 border-t border-[#1B263B] bg-[#05070E]/60 space-y-2">
-            <!-- Dynamic Income Rows -->
+          <div class="text-right">
+            <span class="text-base sm:text-lg font-black text-white font-mono privacy-blur" id="drilldown-category-total">0 € / m</span>
+            <span class="text-[10px] text-slate-400 block" id="drilldown-category-pct">0% du budget</span>
           </div>
         </div>
 
-        <!-- Dynamic Expenses Categories Accordions -->
-        <div id="budget-expense-categories-container" class="space-y-4">
-          <!-- Populated dynamically by pillar (Logement, Véhicules, Assurances, etc.) -->
+        <!-- Level 1: Category Bento Cards Grid (Clean & Glanceable) -->
+        <div id="budget-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+          <!-- Dynamically populated by renderBudgetCardsGrid() -->
         </div>
 
-        <!-- Investments Pillar Accordion -->
-        <div class="fin-card overflow-hidden border-l-4 border-l-sky-500">
-          <div class="p-4 sm:p-5 bg-gradient-to-r from-sky-950/20 to-transparent flex justify-between items-center cursor-pointer select-none" onclick="toggleCategoryAccordion('pillar-investments')">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-base">
-                <i class="fa-solid fa-chart-line"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
-                  Épargne & Investissements Programmés <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-mono font-bold" id="pillar-investments-count">4 postes</span>
-                </h3>
-                <p class="text-xs text-slate-400">Épargne Pension 3e pilier, Versements réguliers ETF Bourse & Comptes Enfants</p>
-              </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-              <div class="text-right">
-                <span class="text-base sm:text-lg font-black text-sky-300 font-mono privacy-blur" id="pillar-investments-total">0 € / m</span>
-                <span class="text-[10px] text-slate-400 block">Investi automatiquement</span>
-              </div>
-              <button onclick="event.stopPropagation(); openAddBudgetItemModal('investment')" class="h-8 w-8 rounded-lg bg-sky-950 hover:bg-sky-900 border border-sky-800 text-sky-300 flex items-center justify-center text-xs transition" title="Ajouter un investissement">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-              <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200" id="chev-pillar-investments"></i>
-            </div>
+        <!-- Level 2: Drill-Down Items List (When a card is clicked) -->
+        <div id="budget-drilldown-content" class="hidden fin-card p-5 space-y-4">
+          <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400" id="drilldown-items-count">Lignes budgétaires</span>
+            <button onclick="openAddBudgetItemForCurrentDrillDown()" class="px-3 py-1.5 rounded-xl bg-[#05070E] hover:bg-[#1B263B] border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus text-[10px]"></i> <span>Ajouter dans cette catégorie</span>
+            </button>
           </div>
 
-          <div id="pillar-investments-body" class="p-4 border-t border-[#1B263B] bg-[#05070E]/60 space-y-2">
-            <!-- Dynamic Investment Rows -->
+          <!-- Items Rows Container -->
+          <div id="drilldown-items-list" class="space-y-2.5">
+            <!-- Dynamic rows -->
           </div>
         </div>
+
       </div>
 
       <!-- VIEW 2: CHARTS & SEASONAL DYNAMICS -->
-      <div id="budget-view-charts-container" class="space-y-6 hidden">
+      <div id="budget-view-charts-container" class="space-y-5 hidden">
         <!-- 12-Month Bar Chart -->
         <div class="fin-card p-5 sm:p-6 space-y-4">
           <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
             <div>
               <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-chart-column text-amber-400"></i> Évolution Mensuelle des Flux sur l'Année 2026 (Jan ➔ Déc)
+                <i class="fa-solid fa-chart-column text-amber-400"></i> Évolution Mensuelle des Flux (Janvier ➔ Décembre 2026)
               </h3>
-              <p class="text-xs text-slate-400 mt-0.5">Mise en évidence des pics de revenus (Mars MBO, Mai DPV, Juin CCT90, Déc 13e) et des charges saisonnières.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Pics de revenus (Mars MBO, Mai DPV, Juin CCT90, Déc 13e) et charges saisonnières.</p>
             </div>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono font-bold">Flux Réels Mensualisés</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono font-bold">12 Mois</span>
           </div>
 
-          <div class="h-72 sm:h-80 relative w-full">
+          <div class="h-64 sm:h-80 relative w-full">
             <canvas id="budgetMonthlyBarChart"></canvas>
           </div>
         </div>
 
         <!-- Sub-Charts -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div class="lg:col-span-6 fin-card p-5 space-y-4">
             <h3 class="font-bold text-white text-xs uppercase tracking-wider border-b border-[#1B263B] pb-2.5 flex items-center gap-2">
-              <i class="fa-solid fa-chart-pie text-purple-400"></i> Répartition Annuelle des Dépenses par Catégorie
+              <i class="fa-solid fa-chart-pie text-purple-400"></i> Répartition des Dépenses par Catégorie
             </h3>
             <div class="h-60 relative w-full flex justify-center items-center">
               <canvas id="budgetDonutChart"></canvas>
@@ -801,7 +695,7 @@
 
           <div class="lg:col-span-6 fin-card p-5 space-y-4">
             <h3 class="font-bold text-white text-xs uppercase tracking-wider border-b border-[#1B263B] pb-2.5 flex items-center gap-2">
-              <i class="fa-solid fa-users text-sky-400"></i> Ventilation Annuelle par Membre du Foyer
+              <i class="fa-solid fa-users text-sky-400"></i> Ventilation par Membre du Foyer
             </h3>
             <div class="h-60 relative w-full flex justify-center items-center">
               <canvas id="budgetMemberChart"></canvas>
@@ -811,30 +705,30 @@
       </div>
 
       <!-- VIEW 3: 12-MONTH MATRIX TABLE -->
-      <div id="budget-view-matrix-container" class="fin-card p-5 sm:p-6 space-y-4 hidden">
+      <div id="budget-view-matrix-container" class="fin-card p-5 space-y-4 hidden">
         <div class="flex justify-between items-center border-b border-[#1B263B] pb-3 flex-wrap gap-2">
           <div>
             <h3 class="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2">
               <i class="fa-solid fa-table-cells text-sky-400"></i> Matrice Budgétaire Complète (12 Mois + Total Annuel)
             </h3>
-            <p class="text-xs text-slate-400 mt-0.5">Tableur interactif complet reprenant l'ensemble des 69 lignes ventilées sur chaque mois de l'année.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Tableur complet reprenant l'ensemble des 69 lignes ventilées sur chaque mois.</p>
           </div>
           
-          <div class="flex items-center gap-2">
+          <div>
             <select id="matrix-section-select" onchange="renderBudgetMatrix(this.value)" class="bg-[#05070E] border border-[#1B263B] text-amber-300 text-xs rounded-xl px-2.5 py-1.5 font-bold focus:outline-none focus:border-amber-400 cursor-pointer">
               <option value="expenses">💸 Dépenses (49 postes)</option>
               <option value="incomes">💰 Revenus (16 postes)</option>
               <option value="investments">📈 Épargne & Investissements (4 postes)</option>
-              <option value="all">📊 Synthèse Complète (Tous les flux)</option>
+              <option value="all">📊 Synthèse Complète</option>
             </select>
           </div>
         </div>
 
-        <div class="overflow-x-auto max-h-[650px] overflow-y-auto">
+        <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
           <table class="w-full text-left text-xs border-collapse font-mono" id="budget-matrix-table">
             <thead>
               <tr class="border-b border-[#1B263B] text-slate-400 text-[11px] uppercase tracking-wider sticky top-0 bg-[#0E1629] z-10">
-                <th class="py-2.5 px-2 font-semibold sticky left-0 bg-[#0E1629] min-w-[200px] z-20">Poste & Bénéficiaire</th>
+                <th class="py-2.5 px-2 font-semibold sticky left-0 bg-[#0E1629] min-w-[180px] z-20">Poste & Bénéficiaire</th>
                 <th class="py-2.5 px-1.5 text-right font-semibold">Jan</th>
                 <th class="py-2.5 px-1.5 text-right font-semibold">Fév</th>
                 <th class="py-2.5 px-1.5 text-right font-semibold">Mar</th>
@@ -863,13 +757,14 @@
 
     </div>
 
-    <!-- MODAL: AJOUTER / MODIFIER UNE LIGNE DU BUDGET -->
+    <!-- MODAL: AJOUTER / MODIFIER UNE LIGNE DU BUDGET (IOS BOTTOM SHEET ON MOBILE) -->
     <div id="budget-item-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div class="fin-card w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-amber-500/40 animate-slide-up sm:animate-scale-up max-h-[85vh] overflow-y-auto">
         <div class="w-12 h-1.5 bg-slate-500/40 rounded-full mx-auto sm:hidden cursor-pointer" onclick="closeBudgetItemModal()"></div>
+        
         <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
           <h3 class="font-black text-white text-base flex items-center gap-2" id="modal-budget-title">
-            <i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne de Budget
+            <i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne
           </h3>
           <button onclick="closeBudgetItemModal()" class="text-slate-400 hover:text-white transition">
             <i class="fa-solid fa-xmark text-lg"></i>
@@ -936,44 +831,10 @@
             <input type="text" id="modal-budget-name" placeholder="Ex: Assurance SrD Maison, Salaire CDI..." class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-semibold focus:outline-none focus:border-amber-500">
           </div>
 
-          <!-- Amount & Frequency -->
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="text-slate-400 font-semibold block mb-1">Montant Moyen (€/m)</label>
-              <input type="number" step="0.01" id="modal-budget-raw-amount" oninput="syncModalMonthlyInputs(this.value)" placeholder="0.00" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-amber-500">
-            </div>
-            <div>
-              <label class="text-slate-400 font-semibold block mb-1">Périodicité</label>
-              <select id="modal-budget-frequency" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500">
-                <option value="1">Mensuel uniforme (12x)</option>
-                <option value="12">Annuel (divisé par 12)</option>
-                <option value="custom">Saisonnier personnalisé</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- 12-Month Custom Inputs Accordion -->
-          <div class="p-3 rounded-xl bg-[#05070E] border border-[#1B263B] space-y-2">
-            <div class="flex justify-between items-center cursor-pointer" onclick="toggleModalMonthlyGrid()">
-              <span class="text-slate-400 font-semibold text-[11px] flex items-center gap-1">
-                <i class="fa-solid fa-sliders text-amber-400"></i> Ventilation personnalisée des 12 mois (€)
-              </span>
-              <i class="fa-solid fa-chevron-down text-slate-500 text-xs" id="modal-chevron-grid"></i>
-            </div>
-            <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 pt-2 hidden" id="modal-monthly-inputs-grid">
-              <div><span class="text-[10px] text-slate-500 block">Jan</span><input type="number" step="0.01" id="m-in-0" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Fév</span><input type="number" step="0.01" id="m-in-1" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Mar</span><input type="number" step="0.01" id="m-in-2" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Avr</span><input type="number" step="0.01" id="m-in-3" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Mai</span><input type="number" step="0.01" id="m-in-4" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Juin</span><input type="number" step="0.01" id="m-in-5" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Juil</span><input type="number" step="0.01" id="m-in-6" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Août</span><input type="number" step="0.01" id="m-in-7" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Sep</span><input type="number" step="0.01" id="m-in-8" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Oct</span><input type="number" step="0.01" id="m-in-9" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Nov</span><input type="number" step="0.01" id="m-in-10" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-              <div><span class="text-[10px] text-slate-500 block">Déc</span><input type="number" step="0.01" id="m-in-11" class="w-full bg-[#0E1629] border border-[#1B263B] rounded p-1 text-white text-[11px] font-mono"></div>
-            </div>
+          <!-- Amount -->
+          <div>
+            <label class="text-slate-400 font-semibold block mb-1">Montant Moyen (€/m)</label>
+            <input type="number" step="0.01" id="modal-budget-raw-amount" placeholder="0.00" class="w-full bg-[#05070E] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold focus:outline-none focus:border-amber-500">
           </div>
 
           <!-- Note -->
@@ -988,7 +849,7 @@
             Annuler
           </button>
           <button onclick="saveBudgetItemModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white font-bold text-xs shadow-md transition">
-            Enregistrer la Ligne
+            Enregistrer
           </button>
         </div>
       </div>
@@ -3385,1767 +3246,28 @@
       if (sheet) sheet.classList.toggle('hidden');
     }
 
-    // --- THEME SWITCHER (DARK / LIGHT) ---
-    function initTheme() {
-      const saved = localStorage.getItem('pixel_finance_theme') || 'dark';
-      setTheme(saved);
-    }
-
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.contains('dark');
-      setTheme(isDark ? 'light' : 'dark');
-    }
-
-    function setTheme(theme) {
-      const icon = document.getElementById('theme-icon');
-      if (theme === 'light') {
-        document.documentElement.classList.remove('dark');
-        if (icon) icon.className = "fa-solid fa-moon text-xs text-indigo-600";
-        localStorage.setItem('pixel_finance_theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        if (icon) icon.className = "fa-solid fa-sun text-xs text-amber-400";
-        localStorage.setItem('pixel_finance_theme', 'dark');
-      }
-      // Refresh charts for theme-aware colors
-      renderOverviewCharts();
-      renderBudgetView();
-    }
-
-    // --- JANOWSKI 2026 RAW BUDGET DATASET (49 Expenses, 16 Incomes, 4 Investments) ---
-    const JANOWSKI_BUDGET_2026 = {
-    "expenses": [
-        {
-            "id": 1,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Maison",
-            "amount": 99.39,
-            "months": [
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39,
-                99.39
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 2,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Auto Van",
-            "amount": 17.95,
-            "months": [
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95,
-                17.95
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 3,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Pauline",
-            "name": "Auto Pauline",
-            "amount": 125.0,
-            "months": [
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0,
-                125.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 4,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Joachim",
-            "name": "Garage Joachim",
-            "amount": 12.67,
-            "months": [
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67,
-                12.67
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 5,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Pauline",
-            "name": "Mutuelle Pauline",
-            "amount": 16.0,
-            "months": [
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 6,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Joachim",
-            "name": "Mutuelle Joachim",
-            "amount": 16.0,
-            "months": [
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0,
-                16.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 7,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Assurance SrD Maison",
-            "amount": 45.33,
-            "months": [
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33,
-                45.33
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 8,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Assurance SrD appartement",
-            "amount": 5.58,
-            "months": [
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58,
-                5.58
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 9,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Protection Juridique Consommateur",
-            "amount": 29.41,
-            "months": [
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41,
-                29.41
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 10,
-            "category": "Assurances",
-            "pillar": "Assurances & Protection",
-            "icon": "fa-shield-halved",
-            "color": "sky",
-            "user": "Famille",
-            "name": "Assurances ambulatoire",
-            "amount": 35.0,
-            "months": [
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0,
-                35.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 11,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Pauline",
-            "name": "Carburant",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 12,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Joachim",
-            "name": "Carburant",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 13,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Pauline",
-            "name": "Taxe Voiture Pauline",
-            "amount": 25.0,
-            "months": [
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 14,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Joachim",
-            "name": "Taxe Voiture Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 15,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Famille",
-            "name": "Taxe Van",
-            "amount": 10.83,
-            "months": [
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83,
-                10.83
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 16,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Famille",
-            "name": "Contrôle technique Van",
-            "amount": 5.42,
-            "months": [
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42,
-                5.42
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 17,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Famille",
-            "name": "Parking",
-            "amount": 4.17,
-            "months": [
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17,
-                4.17
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 18,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Famille",
-            "name": "Réparations Van",
-            "amount": 66.67,
-            "months": [
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 19,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Pauline",
-            "name": "Contrôle annuel Pauline",
-            "amount": 33.33,
-            "months": [
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33,
-                33.33
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 20,
-            "category": "Frais Voitures",
-            "pillar": "Véhicules & Transports",
-            "icon": "fa-car",
-            "color": "cyan",
-            "user": "Pauline",
-            "name": "Contrôle annuel Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "voiture de société",
-            "essential": true
-        },
-        {
-            "id": 21,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Voo Internet",
-            "amount": 42.0,
-            "months": [
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0,
-                42.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 22,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Pauline",
-            "name": "GSM Pauline",
-            "amount": 7.0,
-            "months": [
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0,
-                7.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 23,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Joachim",
-            "name": "GSM Joachim",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "GSM Société",
-            "essential": true
-        },
-        {
-            "id": 24,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Joachim",
-            "name": "Google Gemini",
-            "amount": 25.0,
-            "months": [
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0,
-                25.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 25,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Joachim",
-            "name": "Youtube Premium",
-            "amount": 13.0,
-            "months": [
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0,
-                13.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 26,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Netflix",
-            "amount": 0.0,
-            "months": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 27,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Amazon Prime",
-            "amount": 2.08,
-            "months": [
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08,
-                2.08
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 28,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Acompte électricité",
-            "amount": 85.0,
-            "months": [
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0,
-                85.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 29,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Eau",
-            "amount": 45.0,
-            "months": [
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0,
-                45.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 30,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Nourriture",
-            "amount": 500.0,
-            "months": [
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0,
-                500.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 31,
-            "category": "Habitation",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-bolt",
-            "color": "yellow",
-            "user": "Famille",
-            "name": "Frais Animaux (Nourriture, vétérinaire,etc)",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 32,
-            "category": "Taxes",
-            "pillar": "Taxes & Impôts",
-            "icon": "fa-landmark",
-            "color": "rose",
-            "user": "Famille",
-            "name": "Précompte immobilier Maison",
-            "amount": 82.5,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                693.0,
-                297.0,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 33,
-            "category": "Taxes",
-            "pillar": "Taxes & Impôts",
-            "icon": "fa-landmark",
-            "color": "rose",
-            "user": "Joachim",
-            "name": "Précompte immobilier Garage",
-            "amount": 9.17,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                77.03,
-                33.01,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 34,
-            "category": "Taxes",
-            "pillar": "Taxes & Impôts",
-            "icon": "fa-landmark",
-            "color": "rose",
-            "user": "Famille",
-            "name": "Taxes communales",
-            "amount": 17.42,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                146.33,
-                62.71,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 35,
-            "category": "Dépenses extraordinaires",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-gift",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Préparation anniversaires, nourritures, décoration",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 36,
-            "category": "Dépenses extraordinaires",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-gift",
-            "color": "purple",
-            "user": "Joachim",
-            "name": "Gadgets Joachim",
-            "amount": 12.5,
-            "months": [
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 37,
-            "category": "Dépenses extraordinaires",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-gift",
-            "color": "purple",
-            "user": "Joachim",
-            "name": "Gadgets Pauline",
-            "amount": 12.5,
-            "months": [
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5,
-                12.5
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 38,
-            "category": "Chauffage",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-fire-flame-curved",
-            "color": "orange",
-            "user": "Famille",
-            "name": "Mazout",
-            "amount": 250.0,
-            "months": [
-                1500.0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1500.0,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 39,
-            "category": "Chauffage",
-            "pillar": "Logement & Énergie",
-            "icon": "fa-fire-flame-curved",
-            "color": "orange",
-            "user": "Famille",
-            "name": "Entretien",
-            "amount": 16.67,
-            "months": [
-                100.02,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                100.02,
-                0
-            ],
-            "note": "",
-            "essential": true
-        },
-        {
-            "id": 40,
-            "category": "Prêt immo",
-            "pillar": "Logement & Prêts",
-            "icon": "fa-house-chimney",
-            "color": "amber",
-            "user": "Famille",
-            "name": "Appartement (fin 1/08/2035)",
-            "amount": 302.72,
-            "months": [
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72,
-                302.72
-            ],
-            "note": "Taux fixe moins de 2% - 36000 EUR (pas de valeur de revente - déjà effectué) -fin paiement : 22/01/2036",
-            "essential": true
-        },
-        {
-            "id": 41,
-            "category": "Prêt immo",
-            "pillar": "Logement & Prêts",
-            "icon": "fa-house-chimney",
-            "color": "amber",
-            "user": "Famille",
-            "name": "Maison (Fin 28/05/2043)",
-            "amount": 1321.48,
-            "months": [
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48,
-                1321.48
-            ],
-            "note": "Taux fixe moins de 2% - capital restant dû 258 000 EUR (valeur maison 350 000 EUR) -fin paiement : 28/10/2043",
-            "essential": true
-        },
-        {
-            "id": 42,
-            "category": "Autres",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-bag-shopping",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Cadeaux famille/anniversaires/Noël/enfants/etc",
-            "amount": 141.67,
-            "months": [
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                42.5,
-                1232.54
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 43,
-            "category": "Loisirs",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-champagne-glasses",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Verre",
-            "amount": 30.0,
-            "months": [
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0,
-                30.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 44,
-            "category": "Loisirs",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-champagne-glasses",
-            "color": "purple",
-            "user": "Famille",
-            "name": "sorties/loisirs/activités",
-            "amount": 66.67,
-            "months": [
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67,
-                66.67
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 45,
-            "category": "Loisirs",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-champagne-glasses",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Restaurant",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 46,
-            "category": "Loisirs",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-champagne-glasses",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Vêtements",
-            "amount": 100.0,
-            "months": [
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0,
-                100.0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 47,
-            "category": "Loisirs",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-champagne-glasses",
-            "color": "purple",
-            "user": "Famille",
-            "name": "Vacances",
-            "amount": 333.33,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                2399.98,
-                1599.98,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 48,
-            "category": "Taxe VISA",
-            "pillar": "Loisirs & Vie Quotidienne",
-            "icon": "fa-credit-card",
-            "color": "purple",
-            "user": "Joachim",
-            "name": "Carte Visa Beobank",
-            "amount": 0.42,
-            "months": [
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42,
-                0.42
-            ],
-            "note": "",
-            "essential": false
-        },
-        {
-            "id": 49,
-            "category": "Enfants",
-            "pillar": "Famille & Enfants",
-            "icon": "fa-baby",
-            "color": "emerald",
-            "user": "Famille",
-            "name": "Frais médicaux",
-            "amount": 75.0,
-            "months": [
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0,
-                75.0
-            ],
-            "note": "",
-            "essential": true
-        }
-    ],
-    "incomes": [
-        {
-            "id": 1,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "Revenus CDI",
-            "amount": 4400.0,
-            "months": [
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0,
-                4400.0
-            ],
-            "note": "Salaire à 90%"
-        },
-        {
-            "id": 2,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "Tickets restaurant",
-            "amount": 146.0,
-            "months": [
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0,
-                146.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 3,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "Revenus CDI",
-            "amount": 2688.1,
-            "months": [
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1,
-                2688.1
-            ],
-            "note": "Salaire à 90%"
-        },
-        {
-            "id": 4,
-            "category": "Vouchers",
-            "user": "Pauline",
-            "name": "Tickets restaurant",
-            "amount": 154.0,
-            "months": [
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0,
-                154.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 5,
-            "category": "Loyer",
-            "user": "Joachim",
-            "name": "Loyer garage",
-            "amount": 70.0,
-            "months": [
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0,
-                70.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 6,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "Revenus CDI (13eme mois + DPV)",
-            "amount": 151.16,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                1813.92,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": ""
-        },
-        {
-            "id": 7,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "Revenus CDI (double pécule de vacances)",
-            "amount": 196.23,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                2354.76,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": ""
-        },
-        {
-            "id": 8,
-            "category": "Bonus",
-            "user": "Année complète",
-            "name": "MBO (Bonus)",
-            "amount": 500.0,
-            "months": [
-                0,
-                0,
-                6000.0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "Bonus Variable (50% warrants / 50% plan assurance groupe)"
-        },
-        {
-            "id": 9,
-            "category": "Dividendes",
-            "user": "Famille",
-            "name": "Bourse",
-            "amount": 50.0,
-            "months": [
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0,
-                50.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 10,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "éco-chèques",
-            "amount": 18.75,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                112.5,
-                0,
-                0,
-                0,
-                0,
-                0,
-                112.5
-            ],
-            "note": ""
-        },
-        {
-            "id": 11,
-            "category": "Vouchers",
-            "user": "Pauline",
-            "name": "chèques cadeaux",
-            "amount": 2.92,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52,
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52
-            ],
-            "note": ""
-        },
-        {
-            "id": 12,
-            "category": "Vouchers",
-            "user": "Joachim",
-            "name": "chèques cadeaux",
-            "amount": 2.92,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52,
-                0,
-                0,
-                0,
-                0,
-                0,
-                17.52
-            ],
-            "note": ""
-        },
-        {
-            "id": 13,
-            "category": "Allocations",
-            "user": "Famille",
-            "name": "Allocations bébé",
-            "amount": 377.9,
-            "months": [
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9,
-                377.9
-            ],
-            "note": ""
-        },
-        {
-            "id": 14,
-            "category": "Revenus",
-            "user": "Pauline",
-            "name": "ONEM",
-            "amount": 72.0,
-            "months": [
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0
-            ],
-            "note": "compensation pour temps partiel"
-        },
-        {
-            "id": 15,
-            "category": "Revenus",
-            "user": "Joachim",
-            "name": "ONEM",
-            "amount": 72.0,
-            "months": [
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0,
-                72.0
-            ],
-            "note": "compensation pour temps partiel"
-        },
-        {
-            "id": 16,
-            "category": "Bonus",
-            "user": "Joachim",
-            "name": "CCT90",
-            "amount": 166.67,
-            "months": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                2000.04,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "note": "Bonus Variable"
-        }
-    ],
-    "investments": [
-        {
-            "id": 1,
-            "category": "Epargne Pension",
-            "user": "Joachim",
-            "name": "Epargne pension Joachim",
-            "amount": 82.0,
-            "months": [
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0,
-                82.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 2,
-            "category": "Epargne Pension",
-            "user": "Pauline",
-            "name": "Epargne pension Pauline",
-            "amount": 82.5,
-            "months": [
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5,
-                82.5
-            ],
-            "note": ""
-        },
-        {
-            "id": 3,
-            "category": "Investissement",
-            "user": "Famille",
-            "name": "Investissement (ETFS, ACTIONS, Cryptos)",
-            "amount": 1800.0,
-            "months": [
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0,
-                1800.0
-            ],
-            "note": ""
-        },
-        {
-            "id": 4,
-            "category": "Enfants",
-            "user": "Famille",
-            "name": "Argent compte bancaires enfants",
-            "amount": 330.0,
-            "months": [
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0,
-                330.0
-            ],
-            "note": "Investissement pour nos enfants"
-        }
-    ]
-};
-
-    const MONTH_NAMES_FR = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    const MONTH_SHORT_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-
+    // --- DRILL-DOWN & BENTO CARDS BUDGET ENGINE ---
     let currentBudgetFilter = 'all';
-    let currentBudgetViewMode = 'pillars'; // 'pillars', 'charts', 'matrix'
-    let collapsedPillars = {};
+    let currentBudgetViewMode = 'cards'; // 'cards', 'charts', 'matrix'
+    let activeDrillDownCategory = null; // null for grid, or category name string
+
+    const CATEGORY_METADATA = {
+      'Prêt immo': { icon: 'fa-house-chimney', color: 'amber', title: 'Logement & Prêts', sub: 'Prêt Maison & Appartement' },
+      'Habitation': { icon: 'fa-bolt', color: 'yellow', title: 'Habitation & Énergie', sub: 'Électricité, Eau, Internet, Abonnements' },
+      'Chauffage': { icon: 'fa-fire-flame-curved', color: 'orange', title: 'Chauffage & Mazout', sub: 'Mazout de chauffage & Entretiens' },
+      'Assurances': { icon: 'fa-shield-halved', color: 'sky', title: 'Assurances & Santé', sub: 'Mutuelles, SrD, Ambulatoire, Protection' },
+      'Frais Voitures': { icon: 'fa-car', color: 'cyan', title: 'Véhicules & Transports', sub: 'Van, Auto Pauline, Carburant, Taxes' },
+      'Taxes': { icon: 'fa-landmark', color: 'rose', title: 'Taxes & Précomptes', sub: 'Précomptes immobiliers & Taxes communales' },
+      'Loisirs': { icon: 'fa-champagne-glasses', color: 'purple', title: 'Loisirs & Vacances', sub: 'Vacances, Restaurants, Sorties, Cadeaux' },
+      'Enfants': { icon: 'fa-baby', color: 'emerald', title: 'Famille & Enfants', sub: 'Épargne comptes enfants & Frais médicaux' },
+      'Autres': { icon: 'fa-bag-shopping', color: 'slate', title: 'Autres Dépenses', sub: 'Frais divers & Imprévus' },
+      'Revenus': { icon: 'fa-money-bill-wave', color: 'emerald', title: 'Revenus du Foyer', sub: 'Salaires CDI, Primes, 13e, DPV, Vouchers' },
+      'Investissement': { icon: 'fa-chart-line', color: 'sky', title: 'Épargne & Investissements', sub: 'Épargne Pension, ETF Bourse' }
+    };
 
     function setBudgetViewMode(mode) {
       currentBudgetViewMode = mode;
-      ['pillars', 'charts', 'matrix'].forEach(m => {
+      ['cards', 'charts', 'matrix'].forEach(m => {
         const btn = document.getElementById(`btn-view-${m}`);
         const container = document.getElementById(`budget-view-${m}-container`);
         if (btn) {
@@ -5169,50 +3291,28 @@
         const btn = document.getElementById(`btn-budget-filter-${f}`);
         if (!btn) return;
         if (f.toLowerCase() === filter.toLowerCase()) {
-          btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md";
+          btn.className = "px-3 py-1 rounded-xl text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md shrink-0";
         } else {
-          btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-[#05070E] border border-[#1B263B] text-slate-300 hover:border-amber-500/50";
+          btn.className = "px-3 py-1 rounded-xl text-xs font-semibold transition bg-[#05070E] border border-[#1B263B] text-slate-300 hover:border-amber-500/50 shrink-0";
         }
       });
       renderBudgetView();
     }
 
-    function toggleCategoryAccordion(pillarId) {
-      const body = document.getElementById(`${pillarId}-body`);
-      const chev = document.getElementById(`chev-${pillarId}`);
-      if (body) {
-        body.classList.toggle('hidden');
-        collapsedPillars[pillarId] = body.classList.contains('hidden');
-        if (chev) {
-          chev.style.transform = body.classList.contains('hidden') ? 'rotate(-90deg)' : 'rotate(0deg)';
-        }
-      }
+    function openBudgetDrillDown(catName) {
+      activeDrillDownCategory = catName;
+      document.getElementById('budget-cards-grid').classList.add('hidden');
+      document.getElementById('budget-drilldown-header').classList.remove('hidden');
+      document.getElementById('budget-drilldown-content').classList.remove('hidden');
+      renderBudgetDrillDownDetail();
     }
 
-    function expandAllCategories() {
-      const allBodies = document.querySelectorAll('[id$="-body"]');
-      const anyHidden = Array.from(allBodies).some(b => b.classList.contains('hidden'));
-      allBodies.forEach(b => {
-        if (anyHidden) b.classList.remove('hidden');
-        else b.classList.add('hidden');
-      });
-    }
-
-    function restoreJanowskiBudget() {
-      if (!appState.budget) appState.budget = {};
-      appState.budget.expenses = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.expenses));
-      appState.budget.incomes = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.incomes));
-      appState.budget.investments = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.investments));
-      
-      const totalInc = appState.budget.incomes.reduce((acc, i) => acc + (i.amount || 0), 0);
-      const totalExp = appState.budget.expenses.reduce((acc, e) => acc + (e.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      saveCurrentPlan();
+    function closeBudgetDrillDown() {
+      activeDrillDownCategory = null;
+      document.getElementById('budget-cards-grid').classList.remove('hidden');
+      document.getElementById('budget-drilldown-header').classList.add('hidden');
+      document.getElementById('budget-drilldown-content').classList.add('hidden');
       renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast("🎯 Budget 2026 Janowski rechargé (49 dépenses, 16 revenus, 4 investissements) !", "success");
     }
 
     function getItemAnnualTotal(item) {
@@ -5239,11 +3339,6 @@
         const allIncomes = appState.budget.incomes || [];
         const allInvestments = appState.budget.investments || [];
 
-        // Ensure 12-month arrays
-        allExpenses.forEach(e => { if (!Array.isArray(e.months) || e.months.length !== 12) e.months = Array(12).fill(e.amount || 0); });
-        allIncomes.forEach(i => { if (!Array.isArray(i.months) || i.months.length !== 12) i.months = Array(12).fill(i.amount || 0); });
-        allInvestments.forEach(inv => { if (!Array.isArray(inv.months) || inv.months.length !== 12) inv.months = Array(12).fill(inv.amount || 0); });
-
         // Filter by user
         const filterByUser = (item) => {
           return currentBudgetFilter === 'all' || (item.user && item.user.toLowerCase() === currentBudgetFilter.toLowerCase());
@@ -5253,7 +3348,6 @@
         const activeIncomes = allIncomes.filter(filterByUser);
         const activeInvestments = allInvestments.filter(filterByUser);
 
-        // Compute Annual & Monthly Totals
         const annualIncome = activeIncomes.reduce((acc, i) => acc + getItemAnnualTotal(i), 0);
         const annualExpenses = activeExpenses.reduce((acc, e) => acc + getItemAnnualTotal(e), 0);
         const annualInvestments = activeInvestments.reduce((acc, inv) => acc + getItemAnnualTotal(inv), 0);
@@ -5261,19 +3355,15 @@
 
         const monthlyIncome = annualIncome / 12;
         const monthlyExpenses = annualExpenses / 12;
-        const monthlyInvestments = annualInvestments / 12;
         const monthlySavings = Math.max(0, monthlyIncome - monthlyExpenses);
         const savingsRate = monthlyIncome > 0 ? ((monthlySavings / monthlyIncome) * 100).toFixed(1) : 0;
 
-        // Top KPIs
+        // Update Top Hero KPI Badges
         const incEl = document.getElementById('budget-total-income');
         if (incEl) incEl.innerText = formatEur(monthlyIncome) + " / m";
 
         const expEl = document.getElementById('budget-total-expenses');
         if (expEl) expEl.innerText = formatEur(monthlyExpenses) + " / m";
-
-        const invEl = document.getElementById('budget-total-investments');
-        if (invEl) invEl.innerText = formatEur(monthlyInvestments) + " / m";
 
         const savEl = document.getElementById('budget-net-savings');
         if (savEl) savEl.innerText = formatEur(monthlySavings) + " / m";
@@ -5287,38 +3377,13 @@
         const annExpEl = document.getElementById('budget-annual-expenses');
         if (annExpEl) annExpEl.innerText = `Total : ${formatEur(annualExpenses)} / an`;
 
-        const annSavEl = document.getElementById('budget-annual-savings');
-        if (annSavEl) annSavEl.innerText = `Total : ${formatEur(annualSavings)} / an disponibles`;
+        // Render Bento Cards Grid
+        renderBudgetCardsGrid(activeExpenses, activeIncomes, activeInvestments, monthlyExpenses, monthlyIncome);
 
-        // 50/30/20 Diagnostic
-        const needsTotal = activeExpenses.filter(e => e.essential).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
-        const wantsTotal = activeExpenses.filter(e => !e.essential).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
+        if (activeDrillDownCategory) {
+          renderBudgetDrillDownDetail();
+        }
 
-        const needsPct = monthlyIncome > 0 ? ((needsTotal / monthlyIncome) * 100).toFixed(1) : 0;
-        const wantsPct = monthlyIncome > 0 ? ((wantsTotal / monthlyIncome) * 100).toFixed(1) : 0;
-
-        if (document.getElementById('b-rate-needs')) document.getElementById('b-rate-needs').innerText = `${needsPct}%`;
-        if (document.getElementById('b-bar-needs')) document.getElementById('b-bar-needs').style.width = `${Math.min(100, needsPct)}%`;
-        if (document.getElementById('b-sub-needs')) document.getElementById('b-sub-needs').innerText = `${formatEur(needsTotal)}/m (Cible ≤ 50%)`;
-
-        if (document.getElementById('b-rate-wants')) document.getElementById('b-rate-wants').innerText = `${wantsPct}%`;
-        if (document.getElementById('b-bar-wants')) document.getElementById('b-bar-wants').style.width = `${Math.min(100, wantsPct)}%`;
-        if (document.getElementById('b-sub-wants')) document.getElementById('b-sub-wants').innerText = `${formatEur(wantsTotal)}/m (Cible ≤ 30%)`;
-
-        if (document.getElementById('b-rate-savings')) document.getElementById('b-rate-savings').innerText = `${savingsRate}%`;
-        if (document.getElementById('b-bar-savings')) document.getElementById('b-bar-savings').style.width = `${Math.min(100, savingsRate)}%`;
-        if (document.getElementById('b-sub-savings')) document.getElementById('b-sub-savings').innerText = `${formatEur(monthlySavings)}/m (Cible ≥ 20%)`;
-
-        // Burn Rate & Freedom Time
-        const dailyBurn = monthlyExpenses / 30;
-        if (document.getElementById('budget-daily-burn')) document.getElementById('budget-daily-burn').innerText = `${dailyBurn.toFixed(2)} € / jour`;
-
-        const hourlyRate = (monthlyIncome / (20 * 8)) || 25;
-        const daysToPayExpenses = (monthlyExpenses / (hourlyRate * 8)).toFixed(1);
-        if (document.getElementById('budget-freedom-time')) document.getElementById('budget-freedom-time').innerText = `${daysToPayExpenses} j / mois`;
-
-        // Render Active Views
-        renderBudgetPillarsView(activeExpenses, activeIncomes, activeInvestments, monthlyExpenses);
         renderBudgetCharts(activeExpenses, activeIncomes, activeInvestments);
         renderBudgetMatrix(document.getElementById('matrix-section-select') ? document.getElementById('matrix-section-select').value : 'expenses');
 
@@ -5327,529 +3392,193 @@
       }
     }
 
-    function renderBudgetPillarsView(expenses, incomes, investments, totalExpenses) {
-      const searchInput = document.getElementById('budget-search-input');
-      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    function renderBudgetCardsGrid(expenses, incomes, investments, totalExpenses, totalIncome) {
+      const grid = document.getElementById('budget-cards-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
 
-      // 1. Render Incomes Body
-      const incBody = document.getElementById('pillar-incomes-body');
-      const incTotalEl = document.getElementById('pillar-incomes-total');
-      const incCountEl = document.getElementById('pillar-incomes-count');
+      // 1. Incomes Card (Special First Card)
+      const incTotal = incomes.reduce((a, b) => a + (b.amount || 0), 0);
+      const incCard = document.createElement('div');
+      incCard.className = "fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/25 to-[#0A0F1D] cursor-pointer hover:border-emerald-400 transition-all duration-200 group flex flex-col justify-between space-y-3";
+      incCard.onclick = () => openBudgetDrillDown('Revenus');
 
-      const filteredIncomes = incomes.filter(i => !query || i.name.toLowerCase().includes(query) || i.category.toLowerCase().includes(query) || (i.note && i.note.toLowerCase().includes(query)));
-      const incTotal = filteredIncomes.reduce((a, b) => a + (b.amount || 0), 0);
-
-      if (incTotalEl) incTotalEl.innerText = formatEur(incTotal) + " / m";
-      if (incCountEl) incCountEl.innerText = `${filteredIncomes.length} postes`;
-
-      if (incBody) {
-        incBody.innerHTML = '';
-        filteredIncomes.forEach(item => {
-          incBody.appendChild(createBudgetItemRow(item, 'income'));
-        });
-      }
-
-      // 2. Render Expense Pillar Accordions
-      const expContainer = document.getElementById('budget-expense-categories-container');
-      if (expContainer) {
-        expContainer.innerHTML = '';
-
-        // Group expenses by category
-        const catGroups = {};
-        expenses.forEach(e => {
-          if (!catGroups[e.category]) catGroups[e.category] = [];
-          catGroups[e.category].push(e);
-        });
-
-        Object.keys(catGroups).forEach(cat => {
-          const items = catGroups[cat].filter(e => !query || e.name.toLowerCase().includes(query) || e.category.toLowerCase().includes(query) || (e.note && e.note.toLowerCase().includes(query)));
-          if (items.length === 0 && query) return;
-
-          const catTotal = items.reduce((a, b) => a + (b.amount || 0), 0);
-          const catPct = totalExpenses > 0 ? ((catTotal / totalExpenses) * 100).toFixed(1) : 0;
-          const firstItem = items[0] || {};
-          const icon = firstItem.icon || 'fa-folder';
-          const color = firstItem.color || 'amber';
-          const safeCatId = 'cat-' + cat.replace(/[^a-zA-Z0-9]/g, '_');
-
-          const isCollapsed = !!collapsedPillars[safeCatId];
-
-          const accordion = document.createElement('div');
-          accordion.className = `fin-card overflow-hidden border-l-4 border-l-${color}-500`;
-
-          accordion.innerHTML = `
-            <div class="p-4 bg-gradient-to-r from-${color}-950/15 to-transparent flex justify-between items-center cursor-pointer select-none" onclick="toggleCategoryAccordion('${safeCatId}')">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-${color}-500/10 text-${color}-400 flex items-center justify-center text-sm">
-                  <i class="fa-solid ${icon}"></i>
-                </div>
-                <div>
-                  <h4 class="font-bold text-white text-sm flex items-center gap-2">
-                    ${cat} <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#05070E] text-slate-300 font-mono font-bold">${items.length} postes</span>
-                  </h4>
-                  <div class="w-28 sm:w-40 bg-[#1B263B] h-1.5 rounded-full overflow-hidden mt-1.5">
-                    <div class="bg-gradient-to-r from-${color}-600 to-${color}-400 h-full rounded-full" style="width: ${Math.min(100, catPct)}%"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-3.5">
-                <div class="text-right">
-                  <span class="text-sm sm:text-base font-black text-white font-mono privacy-blur">${formatEur(catTotal)} / m</span>
-                  <span class="text-[10px] text-slate-400 block">${catPct}% du budget</span>
-                </div>
-                <button onclick="event.stopPropagation(); openAddBudgetItemModalForCategory('${cat}')" class="h-7 w-7 rounded-lg bg-[#05070E] hover:bg-[#1B263B] border border-[#1B263B] text-slate-300 hover:text-white flex items-center justify-center text-xs transition" title="Ajouter dans ${cat}">
-                  <i class="fa-solid fa-plus"></i>
-                </button>
-                <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200" id="chev-${safeCatId}" style="transform: ${isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)'}"></i>
-              </div>
+      incCard.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-money-bill-wave"></i>
             </div>
-
-            <div id="${safeCatId}-body" class="p-4 border-t border-[#1B263B] bg-[#05070E]/50 space-y-2 ${isCollapsed ? 'hidden' : ''}">
-              <!-- Rows -->
+            <div>
+              <h4 class="font-black text-white text-sm sm:text-base group-hover:text-emerald-300 transition">Revenus du Foyer</h4>
+              <span class="text-[11px] text-slate-400 font-mono">${incomes.length} postes de revenus</span>
             </div>
-          `;
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">100% Entrées</span>
+        </div>
 
-          const bodyEl = accordion.querySelector(`#${safeCatId}-body`);
-          items.forEach(item => {
-            bodyEl.appendChild(createBudgetItemRow(item, 'expense'));
-          });
-
-          expContainer.appendChild(accordion);
-        });
-      }
-
-      // 3. Render Investments Body
-      const invBody = document.getElementById('pillar-investments-body');
-      const invTotalEl = document.getElementById('pillar-investments-total');
-      const invCountEl = document.getElementById('pillar-investments-count');
-
-      const filteredInvestments = investments.filter(inv => !query || inv.name.toLowerCase().includes(query) || inv.category.toLowerCase().includes(query) || (inv.note && inv.note.toLowerCase().includes(query)));
-      const invTotal = filteredInvestments.reduce((a, b) => a + (b.amount || 0), 0);
-
-      if (invTotalEl) invTotalEl.innerText = formatEur(invTotal) + " / m";
-      if (invCountEl) invCountEl.innerText = `${filteredInvestments.length} postes`;
-
-      if (invBody) {
-        invBody.innerHTML = '';
-        filteredInvestments.forEach(item => {
-          invBody.appendChild(createBudgetItemRow(item, 'investment'));
-        });
-      }
-    }
-
-        function createBudgetItemRow(item, type) {
-      const row = document.createElement('div');
-      row.className = "flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60 hover:border-[#1B263B] transition group";
-
-      const userBadge = item.user === 'Joachim' ? 
-        '<span class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-bold">👨‍💼 Joachim</span>' :
-        (item.user === 'Pauline' ? 
-          '<span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">👩‍💼 Pauline</span>' :
-          '<span class="px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold">👨‍👩‍👧‍👦 Famille</span>');
-
-      const amountColor = type === 'expense' ? 'text-rose-400' : (type === 'income' ? 'text-emerald-400' : 'text-sky-300');
-      const noteHtml = item.note ? `<span class="text-[10px] text-slate-500 italic block truncate">${item.note}</span>` : '';
-
-      row.innerHTML = `
-        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-          <div class="shrink-0">${userBadge}</div>
-          <div class="min-w-0 flex-1">
-            <span class="font-bold text-white text-xs block truncate">${item.name}</span>
-            ${noteHtml}
+        <div class="space-y-1.5 pt-1">
+          <div class="flex justify-between items-end">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Total Mensuel</span>
+            <span class="text-lg sm:text-xl font-black text-emerald-400 font-mono privacy-blur">${formatEur(incTotal)} / m</span>
+          </div>
+          <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
+            <div class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full" style="width: 100%"></div>
           </div>
         </div>
 
-        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-[#1B263B]/40">
-          <!-- Fast Inline Editor -->
-          <div class="flex items-center gap-1.5">
-            <input type="number" step="1" value="${Math.round(item.amount)}" onchange="updateItemAmountInline(${item.id}, '${type}', this.value)" class="w-24 sm:w-20 bg-[#05070E] border border-[#1B263B] rounded-lg px-2 py-1.5 text-right font-mono font-bold ${amountColor} text-xs focus:outline-none focus:border-amber-400">
-            <span class="text-[11px] text-slate-400 font-mono">€/m</span>
-          </div>
-
-          <div class="space-x-1.5">
-            <button onclick="editBudgetItem(${item.id}, '${type}s')" class="p-1.5 rounded-lg bg-[#05070E] sm:bg-transparent border border-[#1B263B] sm:border-0 text-slate-400 hover:text-amber-400 transition" title="Éditer détails">
-              <i class="fa-solid fa-pen-to-square text-xs"></i>
-            </button>
-            <button onclick="deleteBudgetItem(${item.id}, '${type}s')" class="p-1.5 rounded-lg bg-[#05070E] sm:bg-transparent border border-[#1B263B] sm:border-0 text-slate-400 hover:text-rose-400 transition" title="Supprimer">
-              <i class="fa-solid fa-trash text-xs"></i>
-            </button>
-          </div>
+        <div class="flex justify-between items-center text-[11px] text-slate-400 pt-1 border-t border-[#1B263B]/60">
+          <span>Salaires, Primes, Vouchers</span>
+          <span class="text-emerald-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">Explorer <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
         </div>
       `;
-      return row;
+      grid.appendChild(incCard);
+
+      // 2. Group expenses by category
+      const catGroups = {};
+      expenses.forEach(e => {
+        if (!catGroups[e.category]) catGroups[e.category] = [];
+        catGroups[e.category].push(e);
+      });
+
+      Object.keys(catGroups).forEach(cat => {
+        const items = catGroups[cat];
+        const catTotal = items.reduce((a, b) => a + (b.amount || 0), 0);
+        const catPct = totalExpenses > 0 ? ((catTotal / totalExpenses) * 100).toFixed(1) : 0;
+        const meta = CATEGORY_METADATA[cat] || { icon: 'fa-folder', color: 'slate', title: cat, sub: `${items.length} lignes` };
+
+        const card = document.createElement('div');
+        card.className = `fin-card p-4 sm:p-5 border-l-4 border-l-${meta.color}-500 bg-gradient-to-br from-${meta.color}-950/20 to-[#0A0F1D] cursor-pointer hover:border-${meta.color}-400 transition-all duration-200 group flex flex-col justify-between space-y-3`;
+        card.onclick = () => openBudgetDrillDown(cat);
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-${meta.color}-500/15 text-${meta.color}-400 flex items-center justify-center text-base shadow-sm">
+                <i class="fa-solid ${meta.icon}"></i>
+              </div>
+              <div>
+                <h4 class="font-black text-white text-sm sm:text-base group-hover:text-${meta.color}-300 transition">${meta.title}</h4>
+                <span class="text-[11px] text-slate-400 font-mono">${items.length} postes</span>
+              </div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-[#05070E] text-slate-300 font-bold font-mono border border-[#1B263B]">${catPct}%</span>
+          </div>
+
+          <div class="space-y-1.5 pt-1">
+            <div class="flex justify-between items-end">
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider">Total Mensuel</span>
+              <span class="text-lg sm:text-xl font-black text-white font-mono privacy-blur">${formatEur(catTotal)} / m</span>
+            </div>
+            <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-${meta.color}-600 to-${meta.color}-400 h-full rounded-full" style="width: ${Math.min(100, catPct)}%"></div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center text-[11px] text-slate-400 pt-1 border-t border-[#1B263B]/60">
+            <span class="truncate max-w-[170px]">${meta.sub}</span>
+            <span class="text-${meta.color}-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">Explorer <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // 3. Investments Card (Special Last Card)
+      const invTotal = investments.reduce((a, b) => a + (b.amount || 0), 0);
+      const invCard = document.createElement('div');
+      invCard.className = "fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/25 to-[#0A0F1D] cursor-pointer hover:border-sky-400 transition-all duration-200 group flex flex-col justify-between space-y-3";
+      invCard.onclick = () => openBudgetDrillDown('Investissement');
+
+      invCard.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+              <h4 class="font-black text-white text-sm sm:text-base group-hover:text-sky-300 transition">Épargne & Bourse Active</h4>
+              <span class="text-[11px] text-slate-400 font-mono">${investments.length} postes</span>
+            </div>
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800">Auto</span>
+        </div>
+
+        <div class="space-y-1.5 pt-1">
+          <div class="flex justify-between items-end">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider">Total Mensuel</span>
+            <span class="text-lg sm:text-xl font-black text-sky-300 font-mono privacy-blur">${formatEur(invTotal)} / m</span>
+          </div>
+          <div class="w-full bg-[#1B263B] h-2 rounded-full overflow-hidden">
+            <div class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center text-[11px] text-slate-400 pt-1 border-t border-[#1B263B]/60">
+          <span>Pensions, ETF & Enfants</span>
+          <span class="text-sky-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">Explorer <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+        </div>
+      `;
+      grid.appendChild(invCard);
     }
 
-    function updateItemAmountInline(id, type, newAmount) {
-      const val = Math.max(0, parseFloat(newAmount) || 0);
-      const list = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
-      const item = list.find(x => x.id === id);
-      if (!item) return;
+    function renderBudgetDrillDownDetail() {
+      if (!activeDrillDownCategory) return;
 
-      item.amount = val;
-      item.months = Array(12).fill(val);
-
-      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      saveCurrentPlan();
-      renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast(`Montant mis à jour : ${formatEur(val)}/m`, "info");
-    }
-
-    function openAddBudgetItemModalForCategory(category) {
-      openAddBudgetItemModal('expense');
-      const catSelect = document.getElementById('modal-budget-category');
-      if (catSelect) catSelect.value = category;
-    }
-
-    function renderBudgetMatrix(section = 'expenses') {
-      const tbody = document.getElementById('budget-matrix-tbody');
-      const tfoot = document.getElementById('budget-matrix-tfoot');
-      if (!tbody) return;
-
-      const allExpenses = (appState.budget.expenses || []).filter(e => currentBudgetFilter === 'all' || (e.user && e.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
-      const allIncomes = (appState.budget.incomes || []).filter(i => currentBudgetFilter === 'all' || (i.user && i.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
-      const allInvestments = (appState.budget.investments || []).filter(inv => currentBudgetFilter === 'all' || (inv.user && inv.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+      const titleEl = document.getElementById('drilldown-category-title');
+      const subEl = document.getElementById('drilldown-category-subtitle');
+      const totalEl = document.getElementById('drilldown-category-total');
+      const countEl = document.getElementById('drilldown-items-count');
+      const listEl = document.getElementById('drilldown-items-list');
 
       let items = [];
-      if (section === 'expenses') items = allExpenses;
-      else if (section === 'incomes') items = allIncomes;
-      else if (section === 'investments') items = allInvestments;
-      else items = [...allIncomes.map(i => ({...i, _type: 'inc'})), ...allExpenses.map(e => ({...e, _type: 'exp'})), ...allInvestments.map(inv => ({...inv, _type: 'inv'}))];
+      let type = 'expense';
 
-      tbody.innerHTML = '';
-
-      items.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-[#1B263B]/40 transition";
-
-        const typeColor = item._type === 'inc' || section === 'incomes' ? 'text-emerald-400' : 
-                          (item._type === 'inv' || section === 'investments' ? 'text-sky-300' : 'text-slate-300');
-
-        let cellsHtml = `
-          <td class="py-2 px-2 sticky left-0 bg-[#0E1629] font-sans z-10">
-            <span class="font-bold text-white block truncate max-w-[190px]">${item.name}</span>
-            <span class="text-[10px] text-slate-500">${item.category} • ${item.user}</span>
-          </td>
-        `;
-
-        for (let m = 0; m < 12; m++) {
-          const val = getItemAmountForMonth(item, m);
-          const cellColor = val > 0 ? typeColor : 'text-slate-600';
-          cellsHtml += `<td class="py-2 px-1.5 text-right ${cellColor} privacy-blur">${val > 0 ? Math.round(val).toLocaleString('fr-FR') : '-'}</td>`;
-        }
-
-        const annTotal = getItemAnnualTotal(item);
-        const avgMonthly = annTotal / 12;
-
-        cellsHtml += `
-          <td class="py-2 px-2 text-right font-bold text-amber-300 bg-[#05070E] privacy-blur">${formatEur(annTotal)}</td>
-          <td class="py-2 px-2 text-right font-bold text-sky-300 bg-[#05070E] privacy-blur">${formatEur(avgMonthly)}</td>
-        `;
-
-        tr.innerHTML = cellsHtml;
-        tbody.appendChild(tr);
-      });
-
-      // Matrix Footer Totals
-      if (tfoot) {
-        tfoot.innerHTML = '';
-        const monthIncTotals = Array(12).fill(0);
-        const monthExpTotals = Array(12).fill(0);
-        const monthNetTotals = Array(12).fill(0);
-
-        for (let m = 0; m < 12; m++) {
-          monthIncTotals[m] = allIncomes.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
-          monthExpTotals[m] = allExpenses.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
-          monthNetTotals[m] = monthIncTotals[m] - monthExpTotals[m];
-        }
-
-        const totalAnnInc = monthIncTotals.reduce((a, b) => a + b, 0);
-        const totalAnnExp = monthExpTotals.reduce((a, b) => a + b, 0);
-        const totalAnnNet = totalAnnInc - totalAnnExp;
-
-        let footHtml = `
-          <tr class="border-t border-[#1B263B]">
-            <td class="py-2.5 px-2 sticky left-0 bg-[#0A0F1D] font-sans text-amber-400 font-bold z-10">SOLDE NET MENSUEL</td>
-        `;
-
-        for (let m = 0; m < 12; m++) {
-          const net = monthNetTotals[m];
-          const color = net >= 0 ? 'text-purple-300' : 'text-rose-400';
-          footHtml += `<td class="py-2.5 px-1.5 text-right ${color} font-mono font-bold privacy-blur">${net >= 0 ? '+' : ''}${Math.round(net).toLocaleString('fr-FR')}</td>`;
-        }
-
-        footHtml += `
-            <td class="py-2.5 px-2 text-right font-bold text-purple-300 bg-[#05070E] font-mono privacy-blur">+${formatEur(totalAnnNet)}</td>
-            <td class="py-2.5 px-2 text-right font-bold text-purple-300 bg-[#05070E] font-mono privacy-blur">+${formatEur(totalAnnNet / 12)}</td>
-          </tr>
-        `;
-
-        tfoot.innerHTML = footHtml;
-      }
-    }
-
-    function renderBudgetCharts(expenses, incomes, investments) {
-      const isDark = document.documentElement.classList.contains('dark');
-      const textColor = isDark ? '#94A3B8' : '#475569';
-      const gridColor = isDark ? '#1B263B' : '#E2E8F0';
-
-      // 1. Monthly 12-Month Bar Chart
-      const barCtx = document.getElementById('budgetMonthlyBarChart');
-      if (barCtx) {
-        const monthIncomes = Array(12).fill(0);
-        const monthExpenses = Array(12).fill(0);
-        const monthSavings = Array(12).fill(0);
-
-        for (let m = 0; m < 12; m++) {
-          monthIncomes[m] = incomes.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
-          monthExpenses[m] = expenses.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
-          monthSavings[m] = Math.max(0, monthIncomes[m] - monthExpenses[m]);
-        }
-
-        if (charts.budgetMonthlyBar) charts.budgetMonthlyBar.destroy();
-        charts.budgetMonthlyBar = new Chart(barCtx, {
-          type: 'bar',
-          data: {
-            labels: MONTH_SHORT_FR,
-            datasets: [
-              { label: 'Revenus (€)', data: monthIncomes, backgroundColor: '#10B981', borderRadius: 4 },
-              { label: 'Dépenses (€)', data: monthExpenses, backgroundColor: '#F43F5E', borderRadius: 4 },
-              { label: 'Épargne Nette (€)', data: monthSavings, backgroundColor: '#A855F7', borderRadius: 4 }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'top', labels: { color: textColor, font: { size: 11 }, boxWidth: 12 } },
-              tooltip: {
-                callbacks: {
-                  label: (ctx) => ` ${ctx.dataset.label}: ${Math.round(ctx.parsed.y).toLocaleString('fr-FR')} €`
-                }
-              }
-            },
-            scales: {
-              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 11, weight: 'bold' } } },
-              y: { grid: { color: gridColor }, ticks: { color: textColor, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
-            }
-          }
-        });
-      }
-
-      // 2. Donut Categories Chart
-      const catCtx = document.getElementById('budgetDonutChart');
-      if (catCtx) {
-        const catMap = {};
-        expenses.forEach(e => {
-          catMap[e.category] = (catMap[e.category] || 0) + getItemAnnualTotal(e);
-        });
-
-        const labels = Object.keys(catMap);
-        const data = Object.values(catMap);
-
-        if (charts.budgetDonut) charts.budgetDonut.destroy();
-        charts.budgetDonut = new Chart(catCtx, {
-          type: 'doughnut',
-          data: {
-            labels: labels,
-            datasets: [{
-              data: data,
-              backgroundColor: ['#F59E0B', '#38BDF8', '#10B981', '#F43F5E', '#A855F7', '#EC4899', '#6366F1', '#14B8A6', '#64748B', '#84CC16'],
-              borderWidth: 1,
-              borderColor: isDark ? '#05070E' : '#FFFFFF'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'bottom', labels: { color: textColor, font: { size: 10 }, boxWidth: 10 } }
-            },
-            cutout: '65%'
-          }
-        });
-      }
-
-      // 3. Bar Chart per Member
-      const memCtx = document.getElementById('budgetMemberChart');
-      if (memCtx) {
-        const users = ['Joachim', 'Pauline', 'Famille'];
-        const userIncomes = users.map(u => incomes.filter(i => (i.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + getItemAnnualTotal(b), 0));
-        const userExpenses = users.map(u => expenses.filter(e => (e.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + getItemAnnualTotal(b), 0));
-
-        if (charts.budgetMember) charts.budgetMember.destroy();
-        charts.budgetMember = new Chart(memCtx, {
-          type: 'bar',
-          data: {
-            labels: ['Joachim', 'Pauline', 'Famille'],
-            datasets: [
-              { label: 'Revenus Annuels (€)', data: userIncomes, backgroundColor: '#10B981', borderRadius: 6 },
-              { label: 'Dépenses Annuelles (€)', data: userExpenses, backgroundColor: '#F43F5E', borderRadius: 6 }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'bottom', labels: { color: textColor, font: { size: 10 }, boxWidth: 10 } }
-            },
-            scales: {
-              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 } } },
-              y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 }, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
-            }
-          }
-        });
-      }
-    }
-
-    // --- MODAL ITEM HANDLERS ---
-    function toggleModalMonthlyGrid() {
-      const grid = document.getElementById('modal-monthly-inputs-grid');
-      const chev = document.getElementById('modal-chevron-grid');
-      if (grid) {
-        grid.classList.toggle('hidden');
-        if (chev) chev.className = grid.classList.contains('hidden') ? "fa-solid fa-chevron-down text-slate-500 text-xs" : "fa-solid fa-chevron-up text-amber-400 text-xs";
-      }
-    }
-
-    function syncModalMonthlyInputs(val) {
-      const amt = parseFloat(val) || 0;
-      for (let i = 0; i < 12; i++) {
-        const inp = document.getElementById(`m-in-${i}`);
-        if (inp) inp.value = amt;
-      }
-    }
-
-    function openAddBudgetItemModal(type = 'expense') {
-      document.getElementById('modal-budget-id').value = '';
-      document.getElementById('modal-budget-name').value = '';
-      document.getElementById('modal-budget-raw-amount').value = '';
-      document.getElementById('modal-budget-frequency').value = '1';
-      document.getElementById('modal-budget-note').value = '';
-      document.getElementById('modal-budget-user').value = 'Famille';
-      setModalBudgetType(type);
-      syncModalMonthlyInputs(0);
-      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne`;
-      document.getElementById('budget-item-modal').classList.remove('hidden');
-    }
-
-    function closeBudgetItemModal() {
-      document.getElementById('budget-item-modal').classList.add('hidden');
-    }
-
-    function setModalBudgetType(type) {
-      document.getElementById('modal-budget-type').value = type;
-      ['expense', 'income', 'investment'].forEach(t => {
-        const btn = document.getElementById(`modal-type-btn-${t}`);
-        if (!btn) return;
-        if (t === type) {
-          const color = t === 'expense' ? 'border-rose-500 bg-rose-950/40 text-rose-300' : (t === 'income' ? 'border-emerald-500 bg-emerald-950/40 text-emerald-300' : 'border-sky-500 bg-sky-950/40 text-sky-300');
-          btn.className = `py-2 rounded-xl border ${color} font-bold text-xs`;
-        } else {
-          btn.className = "py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs";
-        }
-      });
-    }
-
-    function editBudgetItem(id, type) {
-      const list = type === 'expenses' ? appState.budget.expenses : (type === 'incomes' ? appState.budget.incomes : appState.budget.investments);
-      const item = list.find(x => x.id === id);
-      if (!item) return;
-
-      document.getElementById('modal-budget-id').value = item.id;
-      setModalBudgetType(type === 'expenses' ? 'expense' : (type === 'incomes' ? 'income' : 'investment'));
-      document.getElementById('modal-budget-category').value = item.category || '';
-      document.getElementById('modal-budget-user').value = item.user || 'Famille';
-      document.getElementById('modal-budget-name').value = item.name || '';
-      document.getElementById('modal-budget-raw-amount').value = item.amount || '';
-      document.getElementById('modal-budget-frequency').value = '1';
-      document.getElementById('modal-budget-note').value = item.note || '';
-
-      const months = Array.isArray(item.months) && item.months.length === 12 ? item.months : Array(12).fill(item.amount || 0);
-      for (let i = 0; i < 12; i++) {
-        const inp = document.getElementById(`m-in-${i}`);
-        if (inp) inp.value = months[i];
-      }
-      
-      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier la Ligne`;
-      document.getElementById('budget-item-modal').classList.remove('hidden');
-    }
-
-    function saveBudgetItemModal() {
-      const id = document.getElementById('modal-budget-id').value;
-      const type = document.getElementById('modal-budget-type').value;
-      const cat = document.getElementById('modal-budget-category').value || 'Divers';
-      const user = document.getElementById('modal-budget-user').value || 'Famille';
-      const name = document.getElementById('modal-budget-name').value.trim() || 'Sans titre';
-      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0;
-      const note = document.getElementById('modal-budget-note').value.trim();
-
-      let monthsArr = [];
-      for (let i = 0; i < 12; i++) {
-        const inp = document.getElementById(`m-in-${i}`);
-        monthsArr.push(inp ? parseFloat(inp.value) || 0 : rawAmt);
-      }
-
-      const avgAmount = monthsArr.reduce((a, b) => a + b, 0) / 12;
-
-      if (!appState.budget) appState.budget = { expenses: [], incomes: [], investments: [] };
-      const targetList = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
-
-      if (id) {
-        const idx = targetList.findIndex(x => x.id === parseInt(id));
-        if (idx !== -1) {
-          targetList[idx] = { ...targetList[idx], category: cat, user: user, name: name, amount: round2(avgAmount), months: monthsArr.map(round2), note: note };
-        }
+      if (activeDrillDownCategory === 'Revenus') {
+        items = (appState.budget.incomes || []).filter(i => currentBudgetFilter === 'all' || (i.user && i.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+        type = 'income';
+      } else if (activeDrillDownCategory === 'Investissement') {
+        items = (appState.budget.investments || []).filter(inv => currentBudgetFilter === 'all' || (inv.user && inv.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+        type = 'investment';
       } else {
-        targetList.push({
-          id: Date.now(),
-          category: cat,
-          user: user,
-          name: name,
-          amount: round2(avgAmount),
-          months: monthsArr.map(round2),
-          note: note,
-          essential: cat in ['Assurances', 'Habitation', 'Taxes', 'Chauffage', 'Prêt immo', 'Enfants', 'Frais Voitures']
+        items = (appState.budget.expenses || []).filter(e => e.category === activeDrillDownCategory && (currentBudgetFilter === 'all' || (e.user && e.user.toLowerCase() === currentBudgetFilter.toLowerCase())));
+        type = 'expense';
+      }
+
+      const totalAmt = items.reduce((a, b) => a + (b.amount || 0), 0);
+      const meta = CATEGORY_METADATA[activeDrillDownCategory] || { icon: 'fa-folder', title: activeDrillDownCategory, sub: 'Détail des postes' };
+
+      if (titleEl) titleEl.innerHTML = `<i class="fa-solid ${meta.icon} text-amber-400"></i> ${meta.title}`;
+      if (subEl) subEl.innerText = meta.sub;
+      if (totalEl) totalEl.innerText = `${formatEur(totalAmt)} / m`;
+      if (countEl) countEl.innerText = `${items.length} lignes budgétaires dans ${meta.title}`;
+
+      if (listEl) {
+        listEl.innerHTML = '';
+        if (items.length === 0) {
+          listEl.innerHTML = `<div class="py-8 text-center text-slate-500 italic">Aucune ligne trouvée pour ce filtre.</div>`;
+          return;
+        }
+
+        items.forEach(item => {
+          listEl.appendChild(createBudgetItemRow(item, type));
         });
       }
-
-      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      closeBudgetItemModal();
-      saveCurrentPlan();
-      renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast("Ligne de budget enregistrée !", "success");
     }
 
-    function deleteBudgetItem(id, type) {
-      if (!confirm("Voulez-vous supprimer cette ligne de budget ?")) return;
-      if (!appState.budget) return;
-      if (type === 'expenses') {
-        appState.budget.expenses = (appState.budget.expenses || []).filter(x => x.id !== id);
-      } else if (type === 'incomes') {
-        appState.budget.incomes = (appState.budget.incomes || []).filter(x => x.id !== id);
-      } else {
-        appState.budget.investments = (appState.budget.investments || []).filter(x => x.id !== id);
+    function openAddBudgetItemForCurrentDrillDown() {
+      if (!activeDrillDownCategory) {
+        openAddBudgetItemModal('expense');
+        return;
       }
-      
-      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
-      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
-      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
-
-      saveCurrentPlan();
-      renderBudgetView();
-      renderOverviewCharts();
-      updateSimulatorView();
-      showToast("Ligne supprimée.", "info");
+      if (activeDrillDownCategory === 'Revenus') {
+        openAddBudgetItemModal('income');
+      } else if (activeDrillDownCategory === 'Investissement') {
+        openAddBudgetItemModal('investment');
+      } else {
+        openAddBudgetItemModal('expense');
+        const catSelect = document.getElementById('modal-budget-category');
+        if (catSelect) catSelect.value = activeDrillDownCategory;
+      }
     }
 
     function round2(v) {

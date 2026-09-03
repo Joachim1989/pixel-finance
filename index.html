@@ -762,6 +762,79 @@
 
     </div>
 
+    <!-- MODAL: ÉDITION DU BILAN PATRIMONIAL 2026 -->
+    <div id="assets-edit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="fin-card w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-sky-500/40 animate-slide-up sm:animate-scale-up max-h-[92vh] overflow-y-auto">
+        <div class="w-12 h-1.5 bg-slate-500/40 rounded-full mx-auto sm:hidden cursor-pointer" onclick="closeAssetsEditModal()"></div>
+        
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+          <h3 class="font-black text-white text-base flex items-center gap-2">
+            <i class="fa-solid fa-vault text-sky-400"></i> Modifier mon Bilan Patrimonial 2026
+          </h3>
+          <button onclick="closeAssetsEditModal()" class="text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4 text-xs">
+          <!-- 1. Immobilier & Crédits -->
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
+            <span class="font-bold text-sky-400 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-house"></i> 1. Immobilier (Valeur Estimée & Solde Crédit)
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Maison Principale (€)</label>
+                <input type="number" id="inp-asset-house-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
+              </div>
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Maison Restant (€)</label>
+                <input type="number" id="inp-debt-house" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
+              </div>
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Appartement Locatif (€)</label>
+                <input type="number" id="inp-asset-appt-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
+              </div>
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Appt Restant (€)</label>
+                <input type="number" id="inp-debt-appt" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Portefeuille Financier Productif (Moteur FIRE) -->
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-amber-500/30 space-y-3">
+            <span class="font-bold text-amber-400 text-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-line"></i> 2. Capital Financier Productif (Générateur de Rente FIRE)
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Bourse & ETF (€)</label>
+                <input type="number" id="inp-asset-stocks" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-amber-300 font-mono font-bold text-sm focus:outline-none focus:border-amber-500">
+              </div>
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Cash & Épargne (€)</label>
+                <input type="number" id="inp-asset-cash" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono font-bold text-sm focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="text-slate-400 text-[11px] block mb-1">Ass. Groupe / Pensions (€)</label>
+                <input type="number" id="inp-asset-pension" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-purple-300 font-mono font-bold text-sm focus:outline-none focus:border-purple-500">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2.5 pt-3 border-t border-[#1B263B]">
+          <button onclick="closeAssetsEditModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-slate-300 font-semibold text-xs transition">
+            Annuler
+          </button>
+          <button onclick="saveAssetsEditModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition">
+            Enregistrer le Patrimoine
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- ========================================================================= -->
     <div id="tab-budget" class="tab-content hidden space-y-5 animate-fade-in">
       
@@ -2921,8 +2994,8 @@
         }
 
         updatePlansDropdown();
-        document.getElementById('header-subtitle').innerText = appState.planName;
-        document.getElementById('country-selector').value = appState.country || 'BE';
+        (function(){ const el = document.getElementById('header-subtitle'); if(el) el.innerText = appState.planName; })();
+        (function(){ const el = document.getElementById('country-selector'); if(el) el.value = appState.country || 'BE'; })();
         renderOverviewCharts();
         renderBudgetView();
         renderEnvelopesView();
@@ -3013,7 +3086,7 @@
         else appState = savedPlansList[0];
 
         updatePlansDropdown();
-        document.getElementById('header-subtitle').innerText = appState.planName || "Mon Plan Principal";
+        (function(){ const el = document.getElementById('header-subtitle'); if(el) el.innerText = appState.planName || "Mon Plan Principal"; })();
       } catch (e) {
         console.error(e);
         appState = JSON.parse(JSON.stringify(defaultState));
@@ -3029,7 +3102,7 @@
         localStorage.setItem('pixelpapa_saved_plans_v8', JSON.stringify(savedPlansList));
         localStorage.setItem('pixelpapa_active_plan_id', appState.planId);
         updatePlansDropdown();
-        document.getElementById('header-subtitle').innerText = appState.planName;
+        (function(){ const el = document.getElementById('header-subtitle'); if(el) el.innerText = appState.planName; })();
 
         // Debounced Cloud Sync
         if (currentUser && supabaseClient) {
@@ -3060,8 +3133,8 @@
       if (target) {
         appState = target;
         localStorage.setItem('pixelpapa_active_plan_id', appState.planId);
-        document.getElementById('header-subtitle').innerText = appState.planName;
-        document.getElementById('country-selector').value = appState.country || 'BE';
+        (function(){ const el = document.getElementById('header-subtitle'); if(el) el.innerText = appState.planName; })();
+        (function(){ const el = document.getElementById('country-selector'); if(el) el.value = appState.country || 'BE'; })();
         renderOverviewCharts();
         renderBudgetView();
         renderEnvelopesView();
@@ -3176,7 +3249,7 @@
 
     function changeCountry(countryCode) {
       appState.country = countryCode;
-      document.getElementById('country-selector').value = countryCode;
+      (function(){ const el = document.getElementById('country-selector'); if(el) el.value = countryCode; })();
       saveCurrentPlan();
       renderOverviewCharts();
       renderEnvelopesView();
@@ -5248,7 +5321,7 @@
       closeOnboardingScreen();
       saveCurrentPlan();
 
-      document.getElementById('country-selector').value = appState.country;
+      (function(){ const el = document.getElementById('country-selector'); if(el) el.value = appState.country; })();
       renderOverviewCharts();
       renderBudgetView();
       renderEnvelopesView();
@@ -5265,7 +5338,7 @@
       closeOnboardingScreen();
       saveCurrentPlan();
       if (document.getElementById('country-selector')) {
-        document.getElementById('country-selector').value = appState.country || 'BE';
+        (function(){ const el = document.getElementById('country-selector'); if(el) el.value = appState.country || 'BE'; })();
       }
       renderOverviewCharts();
       renderBudgetView();
@@ -5456,7 +5529,7 @@
       if (!appState.hasCompletedOnboarding) {
         openOnboardingDirectly();
       } else {
-        document.getElementById('country-selector').value = appState.country || 'BE';
+        (function(){ const el = document.getElementById('country-selector'); if(el) el.value = appState.country || 'BE'; })();
         renderOverviewCharts();
         renderBudgetView();
         renderEnvelopesView();

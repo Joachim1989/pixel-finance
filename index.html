@@ -364,9 +364,12 @@
     <!-- ========================================================================= -->
     <!-- TAB 1: COCKPIT DE LIBERTÉ FINANCIÈRE (MULTI-NIVEAUX & CAPITAL PRODUCTIF FIRE) -->
     <!-- ========================================================================= -->
+    <!-- ========================================================================= -->
+    <!-- TAB 1: COCKPIT DE LIBERTÉ FINANCIÈRE (MODÈLE PONT 53-67 ANS & RENTE VIAGÈRE) -->
+    <!-- ========================================================================= -->
     <div id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
       
-      <!-- NIVEAU 1 : LE VERDICT GLOBAL EN GRAND (IMPACT EN 3 SECONDES) -->
+      <!-- HERO 1: VERDICT & STRATÉGIE PONT VERS LA RETRAITE -->
       <div class="fin-card p-6 sm:p-8 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-6 shadow-2xl relative overflow-hidden">
         
         <!-- Ambient Glow -->
@@ -377,32 +380,40 @@
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-black border border-amber-500/30 flex items-center gap-1.5 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> COCKPIT DE LIBERTÉ FINANCIÈRE
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> COCKPIT JANOWSKI 2026-2056
               </span>
-              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800" id="cockpit-coast-status-pill">
-                🛡️ Coast FIRE Débloqué (Retraite garantie)
+              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">
+                🌉 Stratégie Pont vers la Pension (53 ➔ 67 ans)
               </span>
             </div>
+            
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight mt-2 flex items-center gap-3">
-              Votre Date de Liberté : <span class="text-amber-400 font-mono" id="hero-target-year">2042</span> <span class="text-base sm:text-lg text-slate-400 font-normal">(à 53 ans)</span>
+              Départ Possible à <span class="text-amber-400 font-mono" id="hero-target-age-display">53 ans</span> <span class="text-base sm:text-xl text-slate-400 font-normal">(en 2042 ou plus tôt !)</span>
             </h1>
+
             <p class="text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
-              À votre rythme d'épargne (<span class="text-emerald-400 font-bold" id="hero-savings-rate-txt">52.2%</span>), votre <strong class="text-white font-semibold">capital financier productif (hors maison)</strong> couvrira 100% de vos dépenses dans <span class="text-amber-300 font-bold font-mono" id="hero-years-left-txt">15 ans et 6 mois</span>.
+              À 53 ans, vos crédits sont remboursés (charges = 2 715 €/m). Il vous faut seulement financer le <strong class="text-amber-300 font-semibold">« Pont de 14 ans »</strong> jusqu'à vos 67 ans, où la pension légale belge (<strong class="text-emerald-400 font-semibold">+3 350 €/m</strong>) prendra 100% du relais !
             </p>
           </div>
 
-          <!-- Quick Action Buttons -->
-          <div class="flex items-center gap-2 flex-wrap bg-[#05070E]/80 backdrop-blur p-2 rounded-2xl border border-[#1B263B] shadow-md">
-            <button onclick="openAssetsEditModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
-              <i class="fa-solid fa-pen-to-square"></i> <span>Modifier mon Patrimoine</span>
-            </button>
-            <button onclick="toggleExplainerCards()" id="btn-toggle-explainers" class="px-3.5 py-2 rounded-xl bg-[#0A0F1D] hover:bg-[#1B263B] border border-[#1B263B] text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-question text-amber-400"></i> <span>Explications</span>
+          <!-- Strategy Model Switcher -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-[#05070E]/90 backdrop-blur p-2 rounded-2xl border border-[#1B263B] shadow-md">
+            <div class="flex items-center gap-1 bg-[#0A0F1D] p-1 rounded-xl border border-[#1B263B]">
+              <button onclick="setCockpitStrategyMode('bridge')" id="btn-strat-bridge" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-bridge"></i> <span>1. Pont Pension (53-67a)</span>
+              </button>
+              <button onclick="setCockpitStrategyMode('perpetual')" id="btn-strat-perpetual" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-infinity"></i> <span>2. Rente Perpétuelle (SWR)</span>
+              </button>
+            </div>
+
+            <button onclick="openAssetsEditModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shrink-0">
+              <i class="fa-solid fa-pen-to-square"></i> <span>Modifier Patrimoine</span>
             </button>
           </div>
         </div>
 
-        <!-- PROGRESS BAR WITH DUAL PATRIMOINE VIEW (TOTAL vs PRODUCTIF RENTE) -->
+        <!-- DUAL CAPITAL DISPLAY (GLOBAL NET WORTH VS PRODUCTIVE FIRE CAPITAL) -->
         <div class="p-5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-[#1B263B] pb-4">
             
@@ -415,20 +426,20 @@
                 <span class="text-[10px] text-slate-500">Maison + Bourse + Cash - Dettes</span>
               </div>
               <div class="text-2xl sm:text-3xl font-black text-white font-mono privacy-blur" id="cockpit-net-worth-display">1 083 487 €</div>
-              <span class="text-[11px] text-slate-400 block">Valeur nette totale de l'ensemble de vos actifs</span>
+              <span class="text-xs text-slate-400 block">Valeur nette totale de l'ensemble de vos actifs</span>
             </div>
 
             <!-- 2. Capital Productif de Rente FIRE (Hors Résidence Principale) -->
             <div class="space-y-1">
               <div class="flex items-center justify-between text-xs text-slate-400">
                 <span class="font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                  <i class="fa-solid fa-chart-line text-amber-400"></i> Capital Productif Rente FIRE (Hors Maison)
+                  <i class="fa-solid fa-chart-line text-amber-400"></i> Capital Productif Rente (Bourse + Cash + Pensions)
                 </span>
-                <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 font-mono font-bold" id="cockpit-fire-pct-display">40.3%</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-mono font-bold" id="cockpit-fire-pct-display">111.1%</span>
               </div>
               <div class="text-2xl sm:text-3xl font-black text-amber-400 font-mono privacy-blur" id="cockpit-productive-capital-display">500 000 €</div>
-              <span class="text-[11px] text-slate-400 block">
-                Cible Rente à 3.5% SWR : <strong class="text-white font-mono" id="cockpit-fire-target-display">1 240 000 €</strong> (Reste à accumuler : <strong class="text-emerald-400 font-mono" id="cockpit-fire-gap-display">740 000 €</strong>)
+              <span class="text-xs text-slate-400 block" id="cockpit-fire-target-subtext">
+                Capital Pont requis (14 ans sans prêts) : <strong class="text-white font-mono" id="cockpit-fire-target-display">450 000 €</strong> (Objectif <strong class="text-emerald-400">Atteint !</strong>)
               </span>
             </div>
 
@@ -437,11 +448,11 @@
           <!-- Multi-Milestone Visual Progress Bar for Productive Capital -->
           <div class="space-y-2">
             <div class="flex justify-between text-xs font-bold text-slate-400">
-              <span>Progression du Capital Productif de Rente (Portefeuille Bourse + Cash + Pensions)</span>
-              <span class="text-amber-300 font-mono" id="cockpit-progress-ratio-txt">500 000 € / 1 240 000 €</span>
+              <span id="cockpit-progress-label">Progression du Capital Pont vers la Pension</span>
+              <span class="text-amber-300 font-mono" id="cockpit-progress-ratio-txt">500 000 € / 450 000 € (111%)</span>
             </div>
             <div class="relative w-full bg-[#1B263B] h-5 rounded-full overflow-hidden p-0.5 shadow-inner">
-              <div class="bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-700 relative shadow-sm" id="cockpit-fire-progress-bar" style="width: 40.3%"></div>
+              <div class="bg-gradient-to-r from-emerald-600 via-amber-400 to-yellow-300 h-full rounded-full transition-all duration-700 relative shadow-sm" id="cockpit-fire-progress-bar" style="width: 100%"></div>
             </div>
           </div>
 
@@ -449,123 +460,106 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 text-center text-xs font-bold pt-1 gap-2 text-slate-400">
             <div class="p-2.5 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
               <span class="text-emerald-400 block font-mono">1. Matelas Sécurité</span>
-              <span class="text-[10px] text-slate-400 font-normal">80k€ en liquidités ✓</span>
+              <span class="text-[10px] text-slate-400 font-normal">80 000 € de Cash ✓</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-[#0A0F1D] border border-emerald-500/40 bg-emerald-500/10">
+              <span class="text-emerald-300 block font-mono">2. Capital Pont (53-67a)</span>
+              <span class="text-[10px] text-emerald-200/80 font-normal">450 000 € Requis ✓ ATTEINT</span>
             </div>
             <div class="p-2.5 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
-              <span class="text-sky-400 block font-mono">2. Coast FIRE</span>
-              <span class="text-[10px] text-slate-400 font-normal">Retraite 67 ans couverte ✓</span>
+              <span class="text-sky-400 block font-mono">3. Fin Prêts (2038)</span>
+              <span class="text-[10px] text-slate-400 font-normal">Charges tombent à 2 715 €/m</span>
             </div>
             <div class="p-2.5 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60">
-              <span class="text-purple-400 block font-mono">3. Flamingo (50% Rente)</span>
-              <span class="text-[10px] text-slate-400 font-normal">620 000 € en Bourse (2030)</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-[#0A0F1D] border border-amber-500/40 bg-amber-500/10">
-              <span class="text-amber-300 block font-mono">4. FULL FIRE (100% Libre)</span>
-              <span class="text-[10px] text-amber-200/80 font-normal">1,24 M€ en 2042 🎯</span>
+              <span class="text-purple-400 block font-mono">4. Pension 67 ans (2056)</span>
+              <span class="text-[10px] text-purple-300 font-normal">+3 350 €/m Net Garanti ✓</span>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- NIVEAU 2 : D'OÙ SORTENT CES CHIFFRES ? (EXPLICATIONS CLAIRES & EXEMPLES CONCRETS) -->
-      <div id="cockpit-explainers-section" class="space-y-4">
-        <div class="flex justify-between items-center px-1">
-          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
-            <i class="fa-solid fa-graduation-cap text-amber-400"></i> Comprendre vos Chiffres Clés (Formules & Exemples Concrets)
-          </h2>
-          <span class="text-xs text-slate-400">4 Piliers Financiers Déchiffrés</span>
+      <!-- NIVEAU 2 : LE COMPARATIF DES DEUX MODÈLES FINANCIERS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        
+        <!-- Modèle A : Le Pont 53 ➔ 67 ans (Votre Réalité Belge) -->
+        <div class="fin-card p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] space-y-3.5 shadow-md">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">Stratégie 1 (Recommandée)</span>
+              <h3 class="text-base font-black text-white mt-1">Le Pont Temporaire (53 ➔ 67 ans)</h3>
+            </div>
+            <i class="fa-solid fa-bridge text-emerald-400 text-lg"></i>
+          </div>
+
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Charges à 53 ans (hors crédits) :</span>
+              <span class="font-bold text-white font-mono">2 715 € / m (32 580 €/an)</span>
+            </div>
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Durée du pont à financer :</span>
+              <span class="font-bold text-amber-300 font-mono">14 ans (2042 ➔ 2056)</span>
+            </div>
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Pension légale nette reçue à 67 ans :</span>
+              <span class="font-bold text-purple-300 font-mono">+3 350 € / mois</span>
+            </div>
+            <div class="flex justify-between pt-1">
+              <span class="text-slate-400 font-bold">Capital requis à 53 ans :</span>
+              <span class="text-base font-black text-emerald-400 font-mono">~450 000 € (Vous avez 500k€ !)</span>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-slate-400 italic bg-[#05070E] p-2.5 rounded-xl border border-[#1B263B]">
+            💡 <strong>Verdict :</strong> Vous n'avez pas besoin d'une rente infinie. Le capital accumulé sert de passerelle jusqu'à 67 ans, où la pension légale dépasse vos dépenses de 635 €/mois !
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <!-- Carte 1 : Patrimoine Net Global -->
-          <div class="fin-card p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/20 to-[#0A0F1D] space-y-3 shadow-md">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">1. Patrimoine Net Global</span>
-              <i class="fa-solid fa-vault text-emerald-400 text-sm"></i>
+        <!-- Modèle B : La Rente Perpétuelle SWR 3.5% (Modèle Classique US) -->
+        <div class="fin-card p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] space-y-3.5 shadow-md">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 font-bold border border-amber-800">Stratégie 2 (Conservatrice)</span>
+              <h3 class="text-base font-black text-white mt-1">La Rente Perpétuelle (SWR 3.5%)</h3>
             </div>
+            <i class="fa-solid fa-infinity text-amber-400 text-lg"></i>
+          </div>
 
-            <div class="text-2xl sm:text-3xl font-black text-white font-mono privacy-blur" id="kpi-net-worth-val">1 083 487 €</div>
-
-            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
-              <span class="font-bold text-emerald-300 block">💡 En clair :</span>
-              <p>Votre valeur nette totale : Maison (700k€) + Appt (250k€) + Bourse (320k€) + Cash (80k€) + Pensions (100k€) MOINS Crédits (366k€).</p>
+          <div class="space-y-2 text-xs text-slate-300">
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Dépenses annuelles totales :</span>
+              <span class="font-bold text-white font-mono">43 388 € / an</span>
             </div>
-
-            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
-              <span>Rôle : Richesse globale de la famille</span>
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Taux de retrait sécurisé :</span>
+              <span class="font-bold text-amber-300 font-mono">3.50% viager</span>
+            </div>
+            <div class="flex justify-between border-b border-[#1B263B]/60 pb-1.5">
+              <span class="text-slate-400">Hypothèse pension légale :</span>
+              <span class="font-bold text-slate-400 font-mono">0 € (ignorée pour prudence)</span>
+            </div>
+            <div class="flex justify-between pt-1">
+              <span class="text-slate-400 font-bold">Capital requis à 53 ans :</span>
+              <span class="text-base font-black text-amber-400 font-mono">1 240 000 €</span>
             </div>
           </div>
 
-          <!-- Carte 2 : Capital Productif Rente -->
-          <div class="fin-card p-5 border-l-4 border-l-amber-500 bg-gradient-to-br from-amber-950/20 to-[#0A0F1D] space-y-3 shadow-md">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-amber-400 uppercase tracking-wider">2. Capital Productif FIRE</span>
-              <i class="fa-solid fa-sack-dollar text-amber-400 text-sm"></i>
-            </div>
-
-            <div class="text-2xl sm:text-3xl font-black text-amber-300 font-mono" id="kpi-productive-cap-val">500 000 €</div>
-
-            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
-              <span class="font-bold text-amber-300 block">💡 Pourquoi HORS Maison ?</span>
-              <p>La maison est un toit, pas une machine à dividendes. Seuls vos 500k€ investis génèrent la rente pour payer les courses.</p>
-            </div>
-
-            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
-              <span>Bourse + Cash + Pensions = 500k€</span>
-            </div>
-          </div>
-
-          <!-- Carte 3 : Objectif de Rente 3.5% -->
-          <div class="fin-card p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/20 to-[#0A0F1D] space-y-3 shadow-md">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-sky-400 uppercase tracking-wider">3. Objectif Rente (1,24 M€)</span>
-              <i class="fa-solid fa-bullseye text-sky-400 text-sm"></i>
-            </div>
-
-            <div class="text-2xl sm:text-3xl font-black text-sky-300 font-mono" id="kpi-fire-target-val">1 240 000 €</div>
-
-            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
-              <span class="font-bold text-sky-300 block">💡 En clair :</span>
-              <p>Capital requis pour générer <strong class="text-white">43 400 € / an</strong> à 3.5% de retrait sûr sans jamais toucher au capital.</p>
-            </div>
-
-            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
-              <span>Formule : 43 400 € ÷ 3.5%</span>
-            </div>
-          </div>
-
-          <!-- Carte 4 : Vélocité FIRE -->
-          <div class="fin-card p-5 border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-950/20 to-[#0A0F1D] space-y-3 shadow-md">
-            <div class="flex justify-between items-start">
-              <span class="text-xs font-black text-purple-400 uppercase tracking-wider">4. Vélocité de Liberté</span>
-              <i class="fa-solid fa-bolt text-purple-400 text-sm"></i>
-            </div>
-
-            <div class="text-2xl sm:text-3xl font-black text-purple-300 font-mono" id="kpi-freedom-velocity">+1.85 mo</div>
-
-            <div class="p-2.5 rounded-xl bg-[#05070E] border border-[#1B263B] text-[11px] text-slate-300 space-y-1">
-              <span class="font-bold text-purple-300 block">💡 En clair :</span>
-              <p>Pour chaque mois travaillé, votre épargne de <strong class="text-white">+4 730 €</strong> finance <strong class="text-white">1,85 mois</strong> de vie future sans travail.</p>
-            </div>
-
-            <div class="text-[10px] text-slate-400 font-mono pt-1 border-t border-[#1B263B]/60">
-              <span>Formule : Épargne ÷ Dépenses mensuelles</span>
-            </div>
-          </div>
-
+          <p class="text-[11px] text-slate-400 italic bg-[#05070E] p-2.5 rounded-xl border border-[#1B263B]">
+            💡 <strong>Verdict :</strong> Modèle ultra-conservateur qui garantit une rente perpétuelle sans jamais toucher au capital et sans compter sur la pension de l'État.
+          </p>
         </div>
+
       </div>
 
-      <!-- NIVEAU 3 : LE SIMULATEUR D'IMPACT DIRECT "ET SI..." (TESTER DIRECTEMENT) -->
+      <!-- NIVEAU 3 : LE SIMULATEUR D'IMPACT DIRECT "ET SI..." -->
       <div class="fin-card p-5 sm:p-6 bg-gradient-to-r from-[#0E1629] to-[#0A0F1D] border border-[#1B263B] space-y-4 shadow-xl">
         <div class="flex justify-between items-center border-b border-[#1B263B] pb-3 flex-wrap gap-2">
           <div>
             <h3 class="font-black text-white text-base flex items-center gap-2">
               <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Simulateur Interactif "Et Si..." (Impact Direct sur votre Date FIRE)
             </h3>
-            <p class="text-xs text-slate-400 mt-0.5">Bougez les curseurs ci-dessous pour voir immédiatement l'impact d'un changement d'épargne ou de train de vie.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Bougez les curseurs pour voir l'impact immédiat sur la durée du Pont et votre capital requis.</p>
           </div>
           <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold border border-amber-500/30">Temps Réel</span>
         </div>
@@ -587,19 +581,19 @@
             </div>
           </div>
 
-          <!-- Slider 2 : Dépenses Cibles en Retraite -->
+          <!-- Slider 2 : Dépenses Mensuelles durant le Pont -->
           <div class="p-4 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
             <div class="flex justify-between items-center">
               <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-cart-shopping text-rose-400"></i> Vos Dépenses Mensuelles en Retraite :
+                <i class="fa-solid fa-cart-shopping text-rose-400"></i> Vos Dépenses Mensuelles durant le Pont :
               </label>
-              <span class="text-sm font-black text-rose-400 font-mono" id="slider-expenses-val">3 615 € / m</span>
+              <span class="text-sm font-black text-rose-400 font-mono" id="slider-expenses-val">2 715 € / m</span>
             </div>
-            <input type="range" min="2000" max="6000" step="50" value="3615" id="cockpit-slider-expenses" oninput="onCockpitSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-rose-500">
+            <input type="range" min="1800" max="5000" step="50" value="2715" id="cockpit-slider-expenses" oninput="onCockpitSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-rose-500">
             <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>2 000 €/m (Lean)</span>
-              <span>3 615 € (Sans prêts)</span>
-              <span>6 000 €/m (Fat)</span>
+              <span>1 800 €/m (Frugal)</span>
+              <span>2 715 € (Sans prêts)</span>
+              <span>5 000 €/m (Confort)</span>
             </div>
           </div>
         </div>
@@ -613,7 +607,7 @@
             <div>
               <span class="text-xs text-slate-400 block font-semibold">Résultat de votre simulation :</span>
               <span class="text-sm sm:text-base font-black text-white" id="slider-result-sentence">
-                Vous atteignez l'indépendance financière en <strong class="text-amber-400 font-mono">2042</strong> (à <strong class="text-amber-300">53 ans</strong>).
+                Votre Capital Pont nécessaire est de <strong class="text-emerald-400 font-mono">450 000 €</strong>. Vous pouvez partir dès <strong class="text-amber-400 font-mono">53 ans (2042)</strong> ou dès la fin des crédits !
               </span>
             </div>
           </div>
@@ -683,81 +677,6 @@
         </div>
       </div>
 
-    </div>
-
-    <!-- MODAL: ÉDITION RAPIDE DU PATRIMOINE & DES ACTIFS (FACILE & INTUITIF) -->
-    <div id="assets-edit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div class="fin-card w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-sky-500/40 animate-slide-up sm:animate-scale-up max-h-[92vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-500/40 rounded-full mx-auto sm:hidden cursor-pointer" onclick="closeAssetsEditModal()"></div>
-        
-        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
-          <h3 class="font-black text-white text-base flex items-center gap-2">
-            <i class="fa-solid fa-vault text-sky-400"></i> Modifier mon Bilan Patrimonial 2026
-          </h3>
-          <button onclick="closeAssetsEditModal()" class="text-slate-400 hover:text-white transition">
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-        </div>
-
-        <div class="space-y-4 text-xs">
-          
-          <!-- 1. Immobilier & Crédits -->
-          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
-            <span class="font-bold text-sky-400 text-xs flex items-center gap-1.5">
-              <i class="fa-solid fa-house"></i> 1. Immobilier (Valeur Estimée & Solde Crédit)
-            </span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Maison Principale (€)</label>
-                <input type="number" id="inp-asset-house-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Maison Restant (€)</label>
-                <input type="number" id="inp-debt-house" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Appartement Locatif (€)</label>
-                <input type="number" id="inp-asset-appt-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Appt Restant (€)</label>
-                <input type="number" id="inp-debt-appt" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. Portefeuille Financier Productif (Moteur FIRE) -->
-          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-amber-500/30 space-y-3">
-            <span class="font-bold text-amber-400 text-xs flex items-center gap-1.5">
-              <i class="fa-solid fa-chart-line"></i> 2. Capital Financier Productif (Générateur de Rente FIRE)
-            </span>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Bourse & ETF (€)</label>
-                <input type="number" id="inp-asset-stocks" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-amber-300 font-mono font-bold text-sm focus:outline-none focus:border-amber-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Cash & Épargne (€)</label>
-                <input type="number" id="inp-asset-cash" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-emerald-400 font-mono font-bold text-sm focus:outline-none focus:border-emerald-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Ass. Groupe / Pensions (€)</label>
-                <input type="number" id="inp-asset-pension" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-purple-300 font-mono font-bold text-sm focus:outline-none focus:border-purple-500">
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="flex justify-end gap-2.5 pt-3 border-t border-[#1B263B]">
-          <button onclick="closeAssetsEditModal()" class="px-4 py-2 rounded-xl bg-[#1B263B] hover:bg-[#24324D] text-slate-300 font-semibold text-xs transition">
-            Annuler
-          </button>
-          <button onclick="saveAssetsEditModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition">
-            Enregistrer le Patrimoine
-          </button>
-        </div>
-      </div>
     </div>
 
     <!-- ========================================================================= -->
@@ -3398,14 +3317,32 @@
     // --- COCKPIT ANALYST ENGINE & WEALTH TRAJECTORY REDRAW ---
     // --- COCKPIT MULTI-LEVEL ANALYST ENGINE & WEALTH TRAJECTORY ---
     // --- COCKPIT MULTI-LEVEL ANALYST ENGINE & WEALTH TRAJECTORY ---
+    // --- COCKPIT STRATEGY & BRIDGE TO PENSION ENGINE ---
+    let currentCockpitStrategy = 'bridge'; // 'bridge' (53-67y) or 'perpetual' (SWR 3.5%)
+
+    function setCockpitStrategyMode(mode) {
+      currentCockpitStrategy = mode;
+      const bBtn = document.getElementById('btn-strat-bridge');
+      const pBtn = document.getElementById('btn-strat-perpetual');
+      if (bBtn && pBtn) {
+        if (mode === 'bridge') {
+          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        } else {
+          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        }
+      }
+      renderOverviewCharts();
+    }
+
     function calculateNetWorth() {
       try {
         const p = appState.portfolio || {};
         let totalGross = 0;
         let totalLiabilities = 0;
-        let productiveFinancial = 0; // Stocks + Cash + Pensions (EXCLUDING Primary Residence)
+        let productiveFinancial = 0;
 
-        // Real Estate
         let houseVal = 700000;
         let houseDebt = 300000;
         let apptVal = 250000;
@@ -3421,7 +3358,6 @@
         totalGross += (houseVal + apptVal);
         totalLiabilities += (houseDebt + apptDebt);
 
-        // Stocks / ETF
         let stocksVal = 320000;
         if (p.stocks && Array.isArray(p.stocks.accounts)) {
           stocksVal = p.stocks.accounts.reduce((a, b) => a + (b.balance || 0), 0);
@@ -3429,7 +3365,6 @@
         totalGross += stocksVal;
         productiveFinancial += stocksVal;
 
-        // Cash
         let cashVal = 80000;
         if (p.cash && Array.isArray(p.cash.accounts)) {
           cashVal = p.cash.accounts.reduce((a, b) => a + (b.balance || 0), 0);
@@ -3437,7 +3372,6 @@
         totalGross += cashVal;
         productiveFinancial += cashVal;
 
-        // Pension / Group Insurance
         let pensionVal = 100000;
         if (p.pension && Array.isArray(p.pension.pillars)) {
           pensionVal = p.pension.pillars.reduce((a, b) => a + (b.balance || 0), 0);
@@ -3477,7 +3411,6 @@
       }
     }
 
-    // Modal Asset Editing Handlers
     function openAssetsEditModal() {
       try {
         const nw = calculateNetWorth();
@@ -3536,36 +3469,23 @@
       }
     }
 
-    function toggleExplainerCards() {
-      const sec = document.getElementById('cockpit-explainers-section');
-      const btn = document.getElementById('btn-toggle-explainers');
-      if (!sec) return;
-
-      if (sec.classList.contains('hidden')) {
-        sec.classList.remove('hidden');
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash text-amber-400"></i> <span>Masquer les explications</span>`;
-      } else {
-        sec.classList.add('hidden');
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-circle-question text-amber-400"></i> <span>Explications</span>`;
-      }
-    }
-
     function onCockpitSliderChange() {
       const savSlider = document.getElementById('cockpit-slider-savings');
       const expSlider = document.getElementById('cockpit-slider-expenses');
       if (!savSlider || !expSlider) return;
 
       const monthlySav = parseFloat(savSlider.value) || 4730;
-      const targetMonthlyExp = parseFloat(expSlider.value) || 3615;
+      const targetMonthlyExp = parseFloat(expSlider.value) || 2715;
 
       document.getElementById('slider-savings-val').innerText = `${formatEur(monthlySav)} / m`;
       document.getElementById('slider-expenses-val').innerText = `${formatEur(targetMonthlyExp)} / m`;
 
       const annualExp = targetMonthlyExp * 12;
-      const targetCapital = Math.round(annualExp / 0.035);
+      const bridgeYears = 14; // 53 to 67
+      const targetCapital = currentCockpitStrategy === 'bridge' ? Math.round(annualExp * bridgeYears * 0.85) : Math.round(annualExp / 0.035);
 
       const nw = calculateNetWorth();
-      let currentCap = nw.productiveFinancial; // Growth measured on productive capital
+      let currentCap = nw.productiveFinancial;
       const growthRate = 0.05;
       let yearsNeeded = 0;
 
@@ -3579,7 +3499,7 @@
 
       const resultSentence = document.getElementById('slider-result-sentence');
       if (resultSentence) {
-        resultSentence.innerHTML = `Vous atteignez l'indépendance financière en <strong class="text-amber-400 font-mono">${targetYear}</strong> (à <strong class="text-amber-300 font-bold">${targetAge} ans</strong>) avec un capital productif de <strong class="text-emerald-400 font-mono">${formatEur(targetCapital)}</strong>.`;
+        resultSentence.innerHTML = `Capital requis : <strong class="text-emerald-400 font-mono">${formatEur(targetCapital)}</strong>. Vous atteignez cet objectif en <strong class="text-amber-400 font-mono">${targetYear}</strong> (à <strong class="text-amber-300 font-bold">${targetAge} ans</strong>).`;
       }
 
       renderCockpitTrajectoryChart(nw.productiveFinancial, monthlySav, targetCapital);
@@ -3589,7 +3509,7 @@
       const savSlider = document.getElementById('cockpit-slider-savings');
       const expSlider = document.getElementById('cockpit-slider-expenses');
       if (savSlider) savSlider.value = 4730;
-      if (expSlider) expSlider.value = 3615;
+      if (expSlider) expSlider.value = 2715;
       onCockpitSliderChange();
     }
 
@@ -3605,14 +3525,14 @@
         const monthlySavings = Math.max(0, monthlyInc - monthlyExp);
         const savingsRate = monthlyInc > 0 ? ((monthlySavings / monthlyInc) * 100).toFixed(1) : 0;
 
-        // Target FIRE Capital based on SWR (3.5% = x28.57 annual expenses)
-        const swr = (appState.assumptions && appState.assumptions.safeWithdrawalRate) ? appState.assumptions.safeWithdrawalRate / 100 : 0.035;
-        const fireTarget = Math.round(totalExpAnnual / swr);
-        
-        // Progress is strictly measured on PRODUCTIVE FINANCIAL CAPITAL (Hors Résidence Principale)
+        // Bridge vs Perpetual Calculation
+        const annualExpNoLoans = 2715 * 12; // 32,580 € / an
+        const bridgeCapitalNeeded = 450000; // 14 years bridge
+        const perpetualCapitalNeeded = Math.round(totalExpAnnual / 0.035); // 1,240,000 €
+
+        const targetCapital = currentCockpitStrategy === 'bridge' ? bridgeCapitalNeeded : perpetualCapitalNeeded;
         const productiveCap = nw.productiveFinancial;
-        const firePct = fireTarget > 0 ? Math.min(100, (productiveCap / fireTarget) * 100).toFixed(1) : 0;
-        const fireGap = Math.max(0, fireTarget - productiveCap);
+        const firePct = targetCapital > 0 ? ((productiveCap / targetCapital) * 100).toFixed(1) : 0;
 
         // Update Hero Displays
         const nwEl = document.getElementById('cockpit-net-worth-display');
@@ -3622,13 +3542,19 @@
         if (prodEl) prodEl.innerText = formatEur(productiveCap);
 
         const targetEl = document.getElementById('cockpit-fire-target-display');
-        if (targetEl) targetEl.innerText = formatEur(fireTarget);
+        if (targetEl) targetEl.innerText = formatEur(targetCapital);
 
-        const gapEl = document.getElementById('cockpit-fire-gap-display');
-        if (gapEl) gapEl.innerText = formatEur(fireGap);
+        const subtextEl = document.getElementById('cockpit-fire-target-subtext');
+        if (subtextEl) {
+          if (currentCockpitStrategy === 'bridge') {
+            subtextEl.innerHTML = `Capital Pont requis (14 ans sans prêts) : <strong class="text-white font-mono">${formatEur(targetCapital)}</strong> (Objectif <strong class="text-emerald-400">Atteint à 111% !</strong>)`;
+          } else {
+            subtextEl.innerHTML = `Capital Rente Perpétuelle à 3.5% : <strong class="text-white font-mono">${formatEur(targetCapital)}</strong> (Avancement : <strong class="text-amber-300">${firePct}%</strong>)`;
+          }
+        }
 
         const ratioTxt = document.getElementById('cockpit-progress-ratio-txt');
-        if (ratioTxt) ratioTxt.innerText = `${formatEur(productiveCap)} / ${formatEur(fireTarget)} (${firePct}%)`;
+        if (ratioTxt) ratioTxt.innerText = `${formatEur(productiveCap)} / ${formatEur(targetCapital)} (${firePct}%)`;
 
         const pctEl = document.getElementById('cockpit-fire-pct-display');
         if (pctEl) pctEl.innerText = `${firePct}%`;
@@ -3636,26 +3562,12 @@
         const barEl = document.getElementById('cockpit-fire-progress-bar');
         if (barEl) barEl.style.width = `${Math.min(100, Math.max(5, firePct))}%`;
 
-        const heroSr = document.getElementById('hero-savings-rate-txt');
-        if (heroSr) heroSr.innerText = `${savingsRate}%`;
+        const progressLbl = document.getElementById('cockpit-progress-label');
+        if (progressLbl) {
+          progressLbl.innerText = currentCockpitStrategy === 'bridge' ? "Progression du Capital Pont (53 ➔ 67 ans)" : "Progression de la Rente Perpétuelle (SWR 3.5%)";
+        }
 
-        // Update Explainer Cards
-        const kpiNw = document.getElementById('kpi-net-worth-val');
-        if (kpiNw) kpiNw.innerText = formatEur(nw.netWorthTotal);
-
-        const kpiProd = document.getElementById('kpi-productive-cap-val');
-        if (kpiProd) kpiProd.innerText = formatEur(productiveCap);
-
-        const kpiFire = document.getElementById('kpi-fire-target-val');
-        if (kpiFire) kpiFire.innerText = formatEur(fireTarget);
-
-        // Freedom Velocity = (Savings Rate / (100 - Savings Rate))
-        const velocity = monthlyExp > 0 ? (monthlySavings / monthlyExp).toFixed(2) : '1.85';
-        const velEl = document.getElementById('kpi-freedom-velocity');
-        if (velEl) velEl.innerText = `+${velocity} mo`;
-
-        // Render Multi-Curve Trajectory Chart (Based on Productive Capital Growth)
-        renderCockpitTrajectoryChart(productiveCap, monthlySavings, fireTarget);
+        renderCockpitTrajectoryChart(productiveCap, monthlySavings, targetCapital);
 
       } catch (err) {
         console.error("renderOverviewCharts error:", err);
@@ -3745,7 +3657,7 @@
               fill: false
             },
             {
-              label: 'Seuil Capital Rente Requis (100% FIRE)',
+              label: currentCockpitStrategy === 'bridge' ? 'Seuil Capital Pont (450k€)' : 'Seuil Rente Perpétuelle (1.24M€)',
               data: targetLineData,
               borderColor: '#EC4899',
               borderWidth: 2,
@@ -4661,7 +4573,7 @@
         }
 
         const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
-        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(e), 0) / 12;
+        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
         appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
 
         closeBudgetItemModal();
@@ -4688,7 +4600,7 @@
         }
         
         const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
-        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(e), 0) / 12;
+        const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + getItemAnnualTotal(b), 0) / 12;
         appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
 
         saveCurrentPlan();

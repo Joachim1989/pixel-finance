@@ -3246,21 +3246,1603 @@
       if (sheet) sheet.classList.toggle('hidden');
     }
 
-    // --- DRILL-DOWN & BENTO CARDS BUDGET ENGINE ---
+    // --- JANOWSKI 2026 RAW BUDGET DATASET (49 Expenses, 16 Incomes, 4 Investments) ---
+    const JANOWSKI_BUDGET_2026 = {
+    "expenses": [
+        {
+            "id": 1,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Maison",
+            "amount": 99.39,
+            "months": [
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39,
+                99.39
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 2,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Auto Van",
+            "amount": 17.95,
+            "months": [
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95,
+                17.95
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 3,
+            "category": "Assurances",
+            "user": "Pauline",
+            "name": "Auto Pauline",
+            "amount": 125.0,
+            "months": [
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0,
+                125.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 4,
+            "category": "Assurances",
+            "user": "Joachim",
+            "name": "Garage Joachim",
+            "amount": 12.67,
+            "months": [
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67,
+                12.67
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 5,
+            "category": "Assurances",
+            "user": "Pauline",
+            "name": "Mutuelle Pauline",
+            "amount": 16.0,
+            "months": [
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 6,
+            "category": "Assurances",
+            "user": "Joachim",
+            "name": "Mutuelle Joachim",
+            "amount": 16.0,
+            "months": [
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0,
+                16.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 7,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurance SrD Maison",
+            "amount": 45.33,
+            "months": [
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33,
+                45.33
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 8,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurance SrD appartement",
+            "amount": 5.58,
+            "months": [
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58,
+                5.58
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 9,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Protection Juridique Consommateur",
+            "amount": 29.41,
+            "months": [
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41,
+                29.41
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 10,
+            "category": "Assurances",
+            "user": "Famille",
+            "name": "Assurances ambulatoire",
+            "amount": 35.0,
+            "months": [
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0,
+                35.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 11,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Carburant",
+            "amount": 100.0,
+            "months": [
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 12,
+            "category": "Frais Voitures",
+            "user": "Joachim",
+            "name": "Carburant",
+            "amount": 0.0,
+            "months": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 13,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Taxe Voiture Pauline",
+            "amount": 25.0,
+            "months": [
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 14,
+            "category": "Frais Voitures",
+            "user": "Joachim",
+            "name": "Taxe Voiture Joachim",
+            "amount": 0.0,
+            "months": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 15,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Taxe Van",
+            "amount": 10.83,
+            "months": [
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83,
+                10.83
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 16,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Contrôle technique Van",
+            "amount": 5.42,
+            "months": [
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42,
+                5.42
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 17,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Parking",
+            "amount": 4.17,
+            "months": [
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17,
+                4.17
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 18,
+            "category": "Frais Voitures",
+            "user": "Famille",
+            "name": "Réparations Van",
+            "amount": 66.67,
+            "months": [
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 19,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Contrôle annuel Pauline",
+            "amount": 33.33,
+            "months": [
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33,
+                33.33
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 20,
+            "category": "Frais Voitures",
+            "user": "Pauline",
+            "name": "Contrôle annuel Joachim",
+            "amount": 0.0,
+            "months": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "note": "voiture de société",
+            "essential": true
+        },
+        {
+            "id": 21,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Voo Internet",
+            "amount": 42.0,
+            "months": [
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0,
+                42.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 22,
+            "category": "Habitation",
+            "user": "Pauline",
+            "name": "GSM Pauline",
+            "amount": 7.0,
+            "months": [
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0,
+                7.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 23,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "GSM Joachim",
+            "amount": 0.0,
+            "months": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "note": "GSM Société",
+            "essential": true
+        },
+        {
+            "id": 24,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "Google Gemini",
+            "amount": 25.0,
+            "months": [
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0,
+                25.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 25,
+            "category": "Habitation",
+            "user": "Joachim",
+            "name": "Youtube Premium",
+            "amount": 13.0,
+            "months": [
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0,
+                13.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 26,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Netflix",
+            "amount": 0.0,
+            "months": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 27,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Amazon Prime",
+            "amount": 2.08,
+            "months": [
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08,
+                2.08
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 28,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Acompte électricité",
+            "amount": 85.0,
+            "months": [
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0,
+                85.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 29,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Eau",
+            "amount": 45.0,
+            "months": [
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0,
+                45.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 30,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Nourriture",
+            "amount": 500.0,
+            "months": [
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0,
+                500.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 31,
+            "category": "Habitation",
+            "user": "Famille",
+            "name": "Frais Animaux (Nourriture, vétérinaire,etc)",
+            "amount": 50.0,
+            "months": [
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 32,
+            "category": "Taxes",
+            "user": "Famille",
+            "name": "Précompte immobilier Maison",
+            "amount": 82.5,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                693.0,
+                297.0,
+                0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 33,
+            "category": "Taxes",
+            "user": "Joachim",
+            "name": "Précompte immobilier Garage",
+            "amount": 9.17,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                77.03,
+                33.01,
+                0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 34,
+            "category": "Taxes",
+            "user": "Famille",
+            "name": "Taxes communales",
+            "amount": 17.42,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                146.33,
+                62.71,
+                0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 35,
+            "category": "Dépenses extraordinaires",
+            "user": "Famille",
+            "name": "Préparation anniversaires, nourritures, décoration",
+            "amount": 50.0,
+            "months": [
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 36,
+            "category": "Dépenses extraordinaires",
+            "user": "Joachim",
+            "name": "Gadgets Joachim",
+            "amount": 12.5,
+            "months": [
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 37,
+            "category": "Dépenses extraordinaires",
+            "user": "Joachim",
+            "name": "Gadgets Pauline",
+            "amount": 12.5,
+            "months": [
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5,
+                12.5
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 38,
+            "category": "Chauffage",
+            "user": "Famille",
+            "name": "Mazout",
+            "amount": 250.0,
+            "months": [
+                1500.0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1500.0,
+                0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 39,
+            "category": "Chauffage",
+            "user": "Famille",
+            "name": "Entretien",
+            "amount": 16.67,
+            "months": [
+                100.02,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                100.02,
+                0
+            ],
+            "note": "",
+            "essential": true
+        },
+        {
+            "id": 40,
+            "category": "Prêt immo",
+            "user": "Famille",
+            "name": "Appartement (fin 1/08/2035)",
+            "amount": 302.72,
+            "months": [
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72,
+                302.72
+            ],
+            "note": "Taux fixe moins de 2% - 36000 EUR (pas de valeur de revente - déjà effectué) -fin paiement : 22/01/2036",
+            "essential": true
+        },
+        {
+            "id": 41,
+            "category": "Prêt immo",
+            "user": "Famille",
+            "name": "Maison (Fin 28/05/2043)",
+            "amount": 1321.48,
+            "months": [
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48,
+                1321.48
+            ],
+            "note": "Taux fixe moins de 2% - capital restant dû 258 000 EUR (valeur maison 350 000 EUR) -fin paiement : 28/10/2043",
+            "essential": true
+        },
+        {
+            "id": 42,
+            "category": "Autres",
+            "user": "Famille",
+            "name": "Cadeaux famille/anniversaires/Noël/enfants/etc",
+            "amount": 141.67,
+            "months": [
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                42.5,
+                1232.54
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 43,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Verre",
+            "amount": 30.0,
+            "months": [
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0,
+                30.0
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 44,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "sorties/loisirs/activités",
+            "amount": 66.67,
+            "months": [
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67,
+                66.67
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 45,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Restaurant",
+            "amount": 100.0,
+            "months": [
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 46,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Vêtements",
+            "amount": 100.0,
+            "months": [
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0,
+                100.0
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 47,
+            "category": "Loisirs",
+            "user": "Famille",
+            "name": "Vacances",
+            "amount": 333.33,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                2399.98,
+                1599.98,
+                0,
+                0,
+                0,
+                0
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 48,
+            "category": "Taxe VISA",
+            "user": "Joachim",
+            "name": "Carte Visa Beobank",
+            "amount": 0.42,
+            "months": [
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42,
+                0.42
+            ],
+            "note": "",
+            "essential": false
+        },
+        {
+            "id": 49,
+            "category": "Enfants",
+            "user": "Famille",
+            "name": "Frais médicaux",
+            "amount": 75.0,
+            "months": [
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0,
+                75.0
+            ],
+            "note": "",
+            "essential": true
+        }
+    ],
+    "incomes": [
+        {
+            "id": 1,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "Revenus CDI",
+            "amount": 4400.0,
+            "months": [
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0,
+                4400.0
+            ],
+            "note": "Salaire à 90%"
+        },
+        {
+            "id": 2,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "Tickets restaurant",
+            "amount": 146.0,
+            "months": [
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0,
+                146.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 3,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "Revenus CDI",
+            "amount": 2688.1,
+            "months": [
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1,
+                2688.1
+            ],
+            "note": "Salaire à 90%"
+        },
+        {
+            "id": 4,
+            "category": "Vouchers",
+            "user": "Pauline",
+            "name": "Tickets restaurant",
+            "amount": 154.0,
+            "months": [
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0,
+                154.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 5,
+            "category": "Loyer",
+            "user": "Joachim",
+            "name": "Loyer garage",
+            "amount": 70.0,
+            "months": [
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0,
+                70.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 6,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "Revenus CDI (13eme mois + DPV)",
+            "amount": 151.16,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                1813.92,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "note": ""
+        },
+        {
+            "id": 7,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "Revenus CDI (double pécule de vacances)",
+            "amount": 196.23,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                2354.76,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "note": ""
+        },
+        {
+            "id": 8,
+            "category": "Bonus",
+            "user": "Année complète",
+            "name": "MBO (Bonus)",
+            "amount": 500.0,
+            "months": [
+                0,
+                0,
+                6000.0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "note": "Bonus Variable (50% warrants / 50% plan assurance groupe)"
+        },
+        {
+            "id": 9,
+            "category": "Dividendes",
+            "user": "Famille",
+            "name": "Bourse",
+            "amount": 50.0,
+            "months": [
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0,
+                50.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 10,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "éco-chèques",
+            "amount": 18.75,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                112.5,
+                0,
+                0,
+                0,
+                0,
+                0,
+                112.5
+            ],
+            "note": ""
+        },
+        {
+            "id": 11,
+            "category": "Vouchers",
+            "user": "Pauline",
+            "name": "chèques cadeaux",
+            "amount": 2.92,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                17.52,
+                0,
+                0,
+                0,
+                0,
+                0,
+                17.52
+            ],
+            "note": ""
+        },
+        {
+            "id": 12,
+            "category": "Vouchers",
+            "user": "Joachim",
+            "name": "chèques cadeaux",
+            "amount": 2.92,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                17.52,
+                0,
+                0,
+                0,
+                0,
+                0,
+                17.52
+            ],
+            "note": ""
+        },
+        {
+            "id": 13,
+            "category": "Allocations",
+            "user": "Famille",
+            "name": "Allocations bébé",
+            "amount": 377.9,
+            "months": [
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9,
+                377.9
+            ],
+            "note": ""
+        },
+        {
+            "id": 14,
+            "category": "Revenus",
+            "user": "Pauline",
+            "name": "ONEM",
+            "amount": 72.0,
+            "months": [
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0
+            ],
+            "note": "compensation pour temps partiel"
+        },
+        {
+            "id": 15,
+            "category": "Revenus",
+            "user": "Joachim",
+            "name": "ONEM",
+            "amount": 72.0,
+            "months": [
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0,
+                72.0
+            ],
+            "note": "compensation pour temps partiel"
+        },
+        {
+            "id": 16,
+            "category": "Bonus",
+            "user": "Joachim",
+            "name": "CCT90",
+            "amount": 166.67,
+            "months": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                2000.04,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "note": "Bonus Variable"
+        }
+    ],
+    "investments": [
+        {
+            "id": 1,
+            "category": "Epargne Pension",
+            "user": "Joachim",
+            "name": "Epargne pension Joachim",
+            "amount": 82.0,
+            "months": [
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0,
+                82.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 2,
+            "category": "Epargne Pension",
+            "user": "Pauline",
+            "name": "Epargne pension Pauline",
+            "amount": 82.5,
+            "months": [
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5,
+                82.5
+            ],
+            "note": ""
+        },
+        {
+            "id": 3,
+            "category": "Investissement",
+            "user": "Famille",
+            "name": "Investissement (ETFS, ACTIONS, Cryptos)",
+            "amount": 1800.0,
+            "months": [
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0,
+                1800.0
+            ],
+            "note": ""
+        },
+        {
+            "id": 4,
+            "category": "Enfants",
+            "user": "Famille",
+            "name": "Argent compte bancaires enfants",
+            "amount": 330.0,
+            "months": [
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0,
+                330.0
+            ],
+            "note": "Investissement pour nos enfants"
+        }
+    ]
+};
+
+    const MONTH_NAMES_FR = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    const MONTH_SHORT_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+
     let currentBudgetFilter = 'all';
     let currentBudgetViewMode = 'cards'; // 'cards', 'charts', 'matrix'
-    let activeDrillDownCategory = null; // null for grid, or category name string
+    let activeDrillDownCategory = null;
 
     const CATEGORY_METADATA = {
       'Prêt immo': { icon: 'fa-house-chimney', color: 'amber', title: 'Logement & Prêts', sub: 'Prêt Maison & Appartement' },
+      'Prt immo': { icon: 'fa-house-chimney', color: 'amber', title: 'Logement & Prêts', sub: 'Prêt Maison & Appartement' },
       'Habitation': { icon: 'fa-bolt', color: 'yellow', title: 'Habitation & Énergie', sub: 'Électricité, Eau, Internet, Abonnements' },
       'Chauffage': { icon: 'fa-fire-flame-curved', color: 'orange', title: 'Chauffage & Mazout', sub: 'Mazout de chauffage & Entretiens' },
       'Assurances': { icon: 'fa-shield-halved', color: 'sky', title: 'Assurances & Santé', sub: 'Mutuelles, SrD, Ambulatoire, Protection' },
       'Frais Voitures': { icon: 'fa-car', color: 'cyan', title: 'Véhicules & Transports', sub: 'Van, Auto Pauline, Carburant, Taxes' },
       'Taxes': { icon: 'fa-landmark', color: 'rose', title: 'Taxes & Précomptes', sub: 'Précomptes immobiliers & Taxes communales' },
       'Loisirs': { icon: 'fa-champagne-glasses', color: 'purple', title: 'Loisirs & Vacances', sub: 'Vacances, Restaurants, Sorties, Cadeaux' },
-      'Enfants': { icon: 'fa-baby', color: 'emerald', title: 'Famille & Enfants', sub: 'Épargne comptes enfants & Frais médicaux' },
+      'Dépenses extraordinaires': { icon: 'fa-gift', color: 'purple', title: 'Loisirs & Vacances', sub: 'Vacances, Restaurants, Sorties, Cadeaux' },
       'Autres': { icon: 'fa-bag-shopping', color: 'slate', title: 'Autres Dépenses', sub: 'Frais divers & Imprévus' },
+      'Taxe VISA': { icon: 'fa-credit-card', color: 'slate', title: 'Autres Dépenses', sub: 'Frais divers & Imprévus' },
+      'Enfants': { icon: 'fa-baby', color: 'emerald', title: 'Famille & Enfants', sub: 'Épargne comptes enfants & Frais médicaux' },
       'Revenus': { icon: 'fa-money-bill-wave', color: 'emerald', title: 'Revenus du Foyer', sub: 'Salaires CDI, Primes, 13e, DPV, Vouchers' },
       'Investissement': { icon: 'fa-chart-line', color: 'sky', title: 'Épargne & Investissements', sub: 'Épargne Pension, ETF Bourse' }
     };
@@ -3301,17 +4883,23 @@
 
     function openBudgetDrillDown(catName) {
       activeDrillDownCategory = catName;
-      document.getElementById('budget-cards-grid').classList.add('hidden');
-      document.getElementById('budget-drilldown-header').classList.remove('hidden');
-      document.getElementById('budget-drilldown-content').classList.remove('hidden');
+      const grid = document.getElementById('budget-cards-grid');
+      const header = document.getElementById('budget-drilldown-header');
+      const content = document.getElementById('budget-drilldown-content');
+      if (grid) grid.classList.add('hidden');
+      if (header) header.classList.remove('hidden');
+      if (content) content.classList.remove('hidden');
       renderBudgetDrillDownDetail();
     }
 
     function closeBudgetDrillDown() {
       activeDrillDownCategory = null;
-      document.getElementById('budget-cards-grid').classList.remove('hidden');
-      document.getElementById('budget-drilldown-header').classList.add('hidden');
-      document.getElementById('budget-drilldown-content').classList.add('hidden');
+      const grid = document.getElementById('budget-cards-grid');
+      const header = document.getElementById('budget-drilldown-header');
+      const content = document.getElementById('budget-drilldown-content');
+      if (grid) grid.classList.remove('hidden');
+      if (header) header.classList.add('hidden');
+      if (content) content.classList.add('hidden');
       renderBudgetView();
     }
 
@@ -3329,6 +4917,23 @@
       return item.amount || 0;
     }
 
+    function restoreJanowskiBudget() {
+      if (!appState.budget) appState.budget = {};
+      appState.budget.expenses = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.expenses));
+      appState.budget.incomes = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.incomes));
+      appState.budget.investments = JSON.parse(JSON.stringify(JANOWSKI_BUDGET_2026.investments));
+      
+      const totalInc = appState.budget.incomes.reduce((acc, i) => acc + (i.amount || 0), 0);
+      const totalExp = appState.budget.expenses.reduce((acc, e) => acc + (e.amount || 0), 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("🎯 Budget 2026 Janowski rechargé avec succès !", "success");
+    }
+
     function renderBudgetView() {
       try {
         appState = deepMergeState(defaultState, appState);
@@ -3338,6 +4943,11 @@
         const allExpenses = appState.budget.expenses || [];
         const allIncomes = appState.budget.incomes || [];
         const allInvestments = appState.budget.investments || [];
+
+        // Ensure 12-month arrays
+        allExpenses.forEach(e => { if (!Array.isArray(e.months) || e.months.length !== 12) e.months = Array(12).fill(e.amount || 0); });
+        allIncomes.forEach(i => { if (!Array.isArray(i.months) || i.months.length !== 12) i.months = Array(12).fill(i.amount || 0); });
+        allInvestments.forEach(inv => { if (!Array.isArray(inv.months) || inv.months.length !== 12) inv.months = Array(12).fill(inv.amount || 0); });
 
         // Filter by user
         const filterByUser = (item) => {
@@ -3355,6 +4965,7 @@
 
         const monthlyIncome = annualIncome / 12;
         const monthlyExpenses = annualExpenses / 12;
+        const monthlyInvestments = annualInvestments / 12;
         const monthlySavings = Math.max(0, monthlyIncome - monthlyExpenses);
         const savingsRate = monthlyIncome > 0 ? ((monthlySavings / monthlyIncome) * 100).toFixed(1) : 0;
 
@@ -3377,7 +4988,7 @@
         const annExpEl = document.getElementById('budget-annual-expenses');
         if (annExpEl) annExpEl.innerText = `Total : ${formatEur(annualExpenses)} / an`;
 
-        // Render Bento Cards Grid
+        // Render Active Views
         renderBudgetCardsGrid(activeExpenses, activeIncomes, activeInvestments, monthlyExpenses, monthlyIncome);
 
         if (activeDrillDownCategory) {
@@ -3397,7 +5008,7 @@
       if (!grid) return;
       grid.innerHTML = '';
 
-      // 1. Incomes Card (Special First Card)
+      // 1. Incomes Card
       const incTotal = incomes.reduce((a, b) => a + (b.amount || 0), 0);
       const incCard = document.createElement('div');
       incCard.className = "fin-card p-4 sm:p-5 border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-950/25 to-[#0A0F1D] cursor-pointer hover:border-emerald-400 transition-all duration-200 group flex flex-col justify-between space-y-3";
@@ -3434,7 +5045,7 @@
       `;
       grid.appendChild(incCard);
 
-      // 2. Group expenses by category
+      // 2. Expenses Categories
       const catGroups = {};
       expenses.forEach(e => {
         if (!catGroups[e.category]) catGroups[e.category] = [];
@@ -3483,7 +5094,7 @@
         grid.appendChild(card);
       });
 
-      // 3. Investments Card (Special Last Card)
+      // 3. Investments Card
       const invTotal = investments.reduce((a, b) => a + (b.amount || 0), 0);
       const invCard = document.createElement('div');
       invCard.className = "fin-card p-4 sm:p-5 border-l-4 border-l-sky-500 bg-gradient-to-br from-sky-950/25 to-[#0A0F1D] cursor-pointer hover:border-sky-400 transition-all duration-200 group flex flex-col justify-between space-y-3";
@@ -3565,6 +5176,68 @@
       }
     }
 
+    function createBudgetItemRow(item, type) {
+      const row = document.createElement('div');
+      row.className = "flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-[#0A0F1D] border border-[#1B263B]/60 hover:border-[#1B263B] transition group";
+
+      const userBadge = item.user === 'Joachim' ? 
+        '<span class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-bold">👨‍💼 Joachim</span>' :
+        (item.user === 'Pauline' ? 
+          '<span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">👩‍💼 Pauline</span>' :
+          '<span class="px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold">👨‍👩‍👧‍👦 Famille</span>');
+
+      const amountColor = type === 'expense' ? 'text-rose-400' : (type === 'income' ? 'text-emerald-400' : 'text-sky-300');
+      const noteHtml = item.note ? `<span class="text-[10px] text-slate-500 italic block truncate">${item.note}</span>` : '';
+
+      row.innerHTML = `
+        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+          <div class="shrink-0">${userBadge}</div>
+          <div class="min-w-0 flex-1">
+            <span class="font-bold text-white text-xs block truncate">${item.name}</span>
+            ${noteHtml}
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-[#1B263B]/40">
+          <!-- Fast Inline Editor -->
+          <div class="flex items-center gap-1.5">
+            <input type="number" step="1" value="${Math.round(item.amount)}" onchange="updateItemAmountInline(${item.id}, '${type}', this.value)" class="w-24 sm:w-20 bg-[#05070E] border border-[#1B263B] rounded-lg px-2 py-1.5 text-right font-mono font-bold ${amountColor} text-xs focus:outline-none focus:border-amber-400">
+            <span class="text-[11px] text-slate-400 font-mono">€/m</span>
+          </div>
+
+          <div class="space-x-1.5">
+            <button onclick="editBudgetItem(${item.id}, '${type}s')" class="p-1.5 rounded-lg bg-[#05070E] sm:bg-transparent border border-[#1B263B] sm:border-0 text-slate-400 hover:text-amber-400 transition" title="Éditer détails">
+              <i class="fa-solid fa-pen-to-square text-xs"></i>
+            </button>
+            <button onclick="deleteBudgetItem(${item.id}, '${type}s')" class="p-1.5 rounded-lg bg-[#05070E] sm:bg-transparent border border-[#1B263B] sm:border-0 text-slate-400 hover:text-rose-400 transition" title="Supprimer">
+              <i class="fa-solid fa-trash text-xs"></i>
+            </button>
+          </div>
+        </div>
+      `;
+      return row;
+    }
+
+    function updateItemAmountInline(id, type, newAmount) {
+      const val = Math.max(0, parseFloat(newAmount) || 0);
+      const list = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      item.amount = val;
+      item.months = Array(12).fill(val);
+
+      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
+      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast(`Montant mis à jour : ${formatEur(val)}/m`, "info");
+    }
+
     function openAddBudgetItemForCurrentDrillDown() {
       if (!activeDrillDownCategory) {
         openAddBudgetItemModal('expense');
@@ -3579,6 +5252,318 @@
         const catSelect = document.getElementById('modal-budget-category');
         if (catSelect) catSelect.value = activeDrillDownCategory;
       }
+    }
+
+    function renderBudgetMatrix(section = 'expenses') {
+      const tbody = document.getElementById('budget-matrix-tbody');
+      const tfoot = document.getElementById('budget-matrix-tfoot');
+      if (!tbody) return;
+
+      const allExpenses = (appState.budget.expenses || []).filter(e => currentBudgetFilter === 'all' || (e.user && e.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+      const allIncomes = (appState.budget.incomes || []).filter(i => currentBudgetFilter === 'all' || (i.user && i.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+      const allInvestments = (appState.budget.investments || []).filter(inv => currentBudgetFilter === 'all' || (inv.user && inv.user.toLowerCase() === currentBudgetFilter.toLowerCase()));
+
+      let items = [];
+      if (section === 'expenses') items = allExpenses;
+      else if (section === 'incomes') items = allIncomes;
+      else if (section === 'investments') items = allInvestments;
+      else items = [...allIncomes.map(i => ({...i, _type: 'inc'})), ...allExpenses.map(e => ({...e, _type: 'exp'})), ...allInvestments.map(inv => ({...inv, _type: 'inv'}))];
+
+      tbody.innerHTML = '';
+
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[#1B263B]/40 transition";
+
+        const typeColor = item._type === 'inc' || section === 'incomes' ? 'text-emerald-400' : 
+                          (item._type === 'inv' || section === 'investments' ? 'text-sky-300' : 'text-slate-300');
+
+        let cellsHtml = `
+          <td class="py-2 px-2 sticky left-0 bg-[#0E1629] font-sans z-10">
+            <span class="font-bold text-white block truncate max-w-[180px]">${item.name}</span>
+            <span class="text-[10px] text-slate-500">${item.category} • ${item.user}</span>
+          </td>
+        `;
+
+        for (let m = 0; m < 12; m++) {
+          const val = getItemAmountForMonth(item, m);
+          const cellColor = val > 0 ? typeColor : 'text-slate-600';
+          cellsHtml += `<td class="py-2 px-1.5 text-right ${cellColor} privacy-blur">${val > 0 ? Math.round(val).toLocaleString('fr-FR') : '-'}</td>`;
+        }
+
+        const annTotal = getItemAnnualTotal(item);
+        const avgMonthly = annTotal / 12;
+
+        cellsHtml += `
+          <td class="py-2 px-2 text-right font-bold text-amber-300 bg-[#05070E] privacy-blur">${formatEur(annTotal)}</td>
+          <td class="py-2 px-2 text-right font-bold text-sky-300 bg-[#05070E] privacy-blur">${formatEur(avgMonthly)}</td>
+        `;
+
+        tr.innerHTML = cellsHtml;
+        tbody.appendChild(tr);
+      });
+
+      // Matrix Footer Totals
+      if (tfoot) {
+        tfoot.innerHTML = '';
+        const monthIncTotals = Array(12).fill(0);
+        const monthExpTotals = Array(12).fill(0);
+        const monthNetTotals = Array(12).fill(0);
+
+        for (let m = 0; m < 12; m++) {
+          monthIncTotals[m] = allIncomes.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
+          monthExpTotals[m] = allExpenses.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
+          monthNetTotals[m] = monthIncTotals[m] - monthExpTotals[m];
+        }
+
+        const totalAnnInc = monthIncTotals.reduce((a, b) => a + b, 0);
+        const totalAnnExp = monthExpTotals.reduce((a, b) => a + b, 0);
+        const totalAnnNet = totalAnnInc - totalAnnExp;
+
+        let footHtml = `
+          <tr class="border-t border-[#1B263B]">
+            <td class="py-2.5 px-2 sticky left-0 bg-[#0A0F1D] font-sans text-amber-400 font-bold z-10">SOLDE NET MENSUEL</td>
+        `;
+
+        for (let m = 0; m < 12; m++) {
+          const net = monthNetTotals[m];
+          const color = net >= 0 ? 'text-purple-300' : 'text-rose-400';
+          footHtml += `<td class="py-2.5 px-1.5 text-right ${color} font-mono font-bold privacy-blur">${net >= 0 ? '+' : ''}${Math.round(net).toLocaleString('fr-FR')}</td>`;
+        }
+
+        footHtml += `
+            <td class="py-2.5 px-2 text-right font-bold text-purple-300 bg-[#05070E] font-mono privacy-blur">+${formatEur(totalAnnNet)}</td>
+            <td class="py-2.5 px-2 text-right font-bold text-purple-300 bg-[#05070E] font-mono privacy-blur">+${formatEur(totalAnnNet / 12)}</td>
+          </tr>
+        `;
+
+        tfoot.innerHTML = footHtml;
+      }
+    }
+
+    function renderBudgetCharts(expenses, incomes, investments) {
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#94A3B8' : '#475569';
+      const gridColor = isDark ? '#1B263B' : '#E2E8F0';
+
+      // 1. Monthly 12-Month Bar Chart
+      const barCtx = document.getElementById('budgetMonthlyBarChart');
+      if (barCtx) {
+        const monthIncomes = Array(12).fill(0);
+        const monthExpenses = Array(12).fill(0);
+        const monthSavings = Array(12).fill(0);
+
+        for (let m = 0; m < 12; m++) {
+          monthIncomes[m] = incomes.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
+          monthExpenses[m] = expenses.reduce((a, b) => a + getItemAmountForMonth(b, m), 0);
+          monthSavings[m] = Math.max(0, monthIncomes[m] - monthExpenses[m]);
+        }
+
+        if (charts.budgetMonthlyBar) charts.budgetMonthlyBar.destroy();
+        charts.budgetMonthlyBar = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: MONTH_SHORT_FR,
+            datasets: [
+              { label: 'Revenus (€)', data: monthIncomes, backgroundColor: '#10B981', borderRadius: 4 },
+              { label: 'Dépenses (€)', data: monthExpenses, backgroundColor: '#F43F5E', borderRadius: 4 },
+              { label: 'Épargne Nette (€)', data: monthSavings, backgroundColor: '#A855F7', borderRadius: 4 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top', labels: { color: textColor, font: { size: 11 }, boxWidth: 12 } },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => ` ${ctx.dataset.label}: ${Math.round(ctx.parsed.y).toLocaleString('fr-FR')} €`
+                }
+              }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 11, weight: 'bold' } } },
+              y: { grid: { color: gridColor }, ticks: { color: textColor, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
+            }
+          }
+        });
+      }
+
+      // 2. Donut Categories Chart
+      const catCtx = document.getElementById('budgetDonutChart');
+      if (catCtx) {
+        const catMap = {};
+        expenses.forEach(e => {
+          catMap[e.category] = (catMap[e.category] || 0) + getItemAnnualTotal(e);
+        });
+
+        const labels = Object.keys(catMap);
+        const data = Object.values(catMap);
+
+        if (charts.budgetDonut) charts.budgetDonut.destroy();
+        charts.budgetDonut = new Chart(catCtx, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: ['#F59E0B', '#38BDF8', '#10B981', '#F43F5E', '#A855F7', '#EC4899', '#6366F1', '#14B8A6', '#64748B', '#84CC16'],
+              borderWidth: 1,
+              borderColor: isDark ? '#05070E' : '#FFFFFF'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: textColor, font: { size: 10 }, boxWidth: 10 } }
+            },
+            cutout: '65%'
+          }
+        });
+      }
+
+      // 3. Bar Chart per Member
+      const memCtx = document.getElementById('budgetMemberChart');
+      if (memCtx) {
+        const users = ['Joachim', 'Pauline', 'Famille'];
+        const userIncomes = users.map(u => incomes.filter(i => (i.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + getItemAnnualTotal(b), 0));
+        const userExpenses = users.map(u => expenses.filter(e => (e.user || '').toLowerCase() === u.toLowerCase()).reduce((a, b) => a + getItemAnnualTotal(b), 0));
+
+        if (charts.budgetMember) charts.budgetMember.destroy();
+        charts.budgetMember = new Chart(memCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Joachim', 'Pauline', 'Famille'],
+            datasets: [
+              { label: 'Revenus Annuels (€)', data: userIncomes, backgroundColor: '#10B981', borderRadius: 6 },
+              { label: 'Dépenses Annuelles (€)', data: userExpenses, backgroundColor: '#F43F5E', borderRadius: 6 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: textColor, font: { size: 10 }, boxWidth: 10 } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 } } },
+              y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 }, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
+            }
+          }
+        });
+      }
+    }
+
+    // --- MODAL ITEM HANDLERS ---
+    function openAddBudgetItemModal(type = 'expense') {
+      document.getElementById('modal-budget-id').value = '';
+      document.getElementById('modal-budget-name').value = '';
+      document.getElementById('modal-budget-raw-amount').value = '';
+      document.getElementById('modal-budget-note').value = '';
+      document.getElementById('modal-budget-user').value = 'Famille';
+      setModalBudgetType(type);
+      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> Ajouter une Ligne`;
+      document.getElementById('budget-item-modal').classList.remove('hidden');
+    }
+
+    function closeBudgetItemModal() {
+      document.getElementById('budget-item-modal').classList.add('hidden');
+    }
+
+    function setModalBudgetType(type) {
+      document.getElementById('modal-budget-type').value = type;
+      ['expense', 'income', 'investment'].forEach(t => {
+        const btn = document.getElementById(`modal-type-btn-${t}`);
+        if (!btn) return;
+        if (t === type) {
+          const color = t === 'expense' ? 'border-rose-500 bg-rose-950/40 text-rose-300' : (t === 'income' ? 'border-emerald-500 bg-emerald-950/40 text-emerald-300' : 'border-sky-500 bg-sky-950/40 text-sky-300');
+          btn.className = `py-2 rounded-xl border ${color} font-bold text-xs`;
+        } else {
+          btn.className = "py-2 rounded-xl border border-[#1B263B] bg-[#05070E] text-slate-400 font-bold text-xs";
+        }
+      });
+    }
+
+    function editBudgetItem(id, type) {
+      const list = type === 'expenses' ? appState.budget.expenses : (type === 'incomes' ? appState.budget.incomes : appState.budget.investments);
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('modal-budget-id').value = item.id;
+      setModalBudgetType(type === 'expenses' ? 'expense' : (type === 'incomes' ? 'income' : 'investment'));
+      document.getElementById('modal-budget-category').value = item.category || '';
+      document.getElementById('modal-budget-user').value = item.user || 'Famille';
+      document.getElementById('modal-budget-name').value = item.name || '';
+      document.getElementById('modal-budget-raw-amount').value = item.amount || '';
+      document.getElementById('modal-budget-note').value = item.note || '';
+      
+      document.getElementById('modal-budget-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> Modifier la Ligne`;
+      document.getElementById('budget-item-modal').classList.remove('hidden');
+    }
+
+    function saveBudgetItemModal() {
+      const id = document.getElementById('modal-budget-id').value;
+      const type = document.getElementById('modal-budget-type').value;
+      const cat = document.getElementById('modal-budget-category').value || 'Divers';
+      const user = document.getElementById('modal-budget-user').value || 'Famille';
+      const name = document.getElementById('modal-budget-name').value.trim() || 'Sans titre';
+      const rawAmt = parseFloat(document.getElementById('modal-budget-raw-amount').value) || 0;
+      const note = document.getElementById('modal-budget-note').value.trim();
+
+      if (!appState.budget) appState.budget = { expenses: [], incomes: [], investments: [] };
+      const targetList = type === 'expense' ? appState.budget.expenses : (type === 'income' ? appState.budget.incomes : appState.budget.investments);
+
+      if (id) {
+        const idx = targetList.findIndex(x => x.id === parseInt(id));
+        if (idx !== -1) {
+          targetList[idx] = { ...targetList[idx], category: cat, user: user, name: name, amount: round2(rawAmt), months: Array(12).fill(round2(rawAmt)), note: note };
+        }
+      } else {
+        targetList.push({
+          id: Date.now(),
+          category: cat,
+          user: user,
+          name: name,
+          amount: round2(rawAmt),
+          months: Array(12).fill(round2(rawAmt)),
+          note: note,
+          essential: cat in ['Assurances', 'Habitation', 'Taxes', 'Chauffage', 'Prêt immo', 'Enfants', 'Frais Voitures']
+        });
+      }
+
+      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
+      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      closeBudgetItemModal();
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("Ligne de budget enregistrée !", "success");
+    }
+
+    function deleteBudgetItem(id, type) {
+      if (!confirm("Voulez-vous supprimer cette ligne de budget ?")) return;
+      if (!appState.budget) return;
+      if (type === 'expenses') {
+        appState.budget.expenses = (appState.budget.expenses || []).filter(x => x.id !== id);
+      } else if (type === 'incomes') {
+        appState.budget.incomes = (appState.budget.incomes || []).filter(x => x.id !== id);
+      } else {
+        appState.budget.investments = (appState.budget.investments || []).filter(x => x.id !== id);
+      }
+      
+      const totalInc = (appState.budget.incomes || []).reduce((a, b) => a + (b.amount || 0), 0);
+      const totalExp = (appState.budget.expenses || []).reduce((a, b) => a + (b.amount || 0), 0);
+      appState.cashflow.monthlySavings = Math.max(0, Math.round(totalInc - totalExp));
+
+      saveCurrentPlan();
+      renderBudgetView();
+      renderOverviewCharts();
+      updateSimulatorView();
+      showToast("Ligne supprimée.", "info");
     }
 
     function round2(v) {

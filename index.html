@@ -763,6 +763,7 @@
     </div>
 
     <!-- MODAL: ÉDITION DU BILAN PATRIMONIAL 2026 -->
+    <!-- MODAL: ÉDITION DU BILAN PATRIMONIAL 2026 -->
     <div id="assets-edit-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div class="fin-card w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 space-y-4 border-t-2 sm:border border-sky-500/40 animate-slide-up sm:animate-scale-up max-h-[92vh] overflow-y-auto">
         <div class="w-12 h-1.5 bg-slate-500/40 rounded-full mx-auto sm:hidden cursor-pointer" onclick="closeAssetsEditModal()"></div>
@@ -777,10 +778,10 @@
         </div>
 
         <div class="space-y-4 text-xs">
-          <!-- 1. Immobilier & Crédits -->
+          <!-- 1. Immobilier & Crédits Réels -->
           <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] space-y-3">
             <span class="font-bold text-sky-400 text-xs flex items-center gap-1.5">
-              <i class="fa-solid fa-house"></i> 1. Immobilier (Valeur Estimée & Solde Crédit)
+              <i class="fa-solid fa-house"></i> 1. Immobilier & Dettes d'Emprunts
             </span>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -788,16 +789,12 @@
                 <input type="number" id="inp-asset-house-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
               </div>
               <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Maison Restant (€)</label>
+                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Maison (€)</label>
                 <input type="number" id="inp-debt-house" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
               </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Appartement Locatif (€)</label>
-                <input type="number" id="inp-asset-appt-val" class="w-full bg-[#0A0F1D] border border-[#1B263B] rounded-xl p-2.5 text-white font-mono font-bold text-sm focus:outline-none focus:border-sky-500">
-              </div>
-              <div>
-                <label class="text-slate-400 text-[11px] block mb-1">Solde Prêt Appt Restant (€)</label>
-                <input type="number" id="inp-debt-appt" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
+              <div class="sm:col-span-2">
+                <label class="text-slate-400 text-[11px] block mb-1">Dette Résiduelle Appartement Vendu (€) - 302 €/m jusqu'en 2034</label>
+                <input type="number" id="inp-debt-residual" class="w-full bg-[#0A0F1D] border border-rose-900/60 rounded-xl p-2.5 text-rose-300 font-mono font-bold text-sm focus:outline-none focus:border-rose-500">
               </div>
             </div>
           </div>
@@ -833,7 +830,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div>iv>
 
     <!-- ========================================================================= -->
     <div id="tab-budget" class="tab-content hidden space-y-5 animate-fade-in">
@@ -1305,115 +1302,215 @@
     <!-- ========================================================================= -->
     <!-- TAB 4: SIMULATEUR FIRE INTERACTIF -->
     <!-- ========================================================================= -->
+    <!-- ========================================================================= -->
+    <!-- TAB 4: SIMULATEUR FIRE HAUTE PRÉCISION (3 PHASES DE VIE & PONT 53-67 ANS) -->
+    <!-- ========================================================================= -->
     <div id="tab-simulator" class="tab-content hidden space-y-6 animate-fade-in">
       
-      <div id="simulator-verdict-banner" class="hidden mb-4"></div>
-
-      <!-- Sliders Card -->
-      <section class="fin-card p-6 sm:p-8 bg-gradient-to-r from-[#0E1629] via-[#121B33] to-[#0E1629] border border-sky-500/30 shadow-2xl relative overflow-hidden">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-[#1B263B]">
+      <!-- HERO SIMULATEUR: LES 3 PHASES DE VIE DU FOYER JANOWSKI -->
+      <div class="fin-card p-6 sm:p-7 bg-gradient-to-br from-[#0E1629] via-[#0A0F1D] to-[#05070E] border-l-4 border-l-amber-500 space-y-5 shadow-2xl">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h2 class="text-base sm:text-lg font-black text-white uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-compass text-sky-400"></i> Simulateur Dynamique FIRE
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-mono font-black border border-amber-500/30">
+                SIMULATEUR DE LIBERTÉ FINANCIÈRE
+              </span>
+              <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 font-bold border border-emerald-800">
+                Modèle 3 Phases : Accumulation ➔ Pont ➔ Retraite Légale
+              </span>
+            </div>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight mt-2 flex items-center gap-2.5">
+              <i class="fa-solid fa-calculator text-amber-400"></i> Simulation Dynamique de votre Trajectoire
             </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Ajustez les curseurs pour observer instantanément l'effet de levier sur votre âge de liberté.</p>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1">
+              Modélisez l'impact d'un départ anticipé, l'arrêt des crédits immobiliers et le relais de la pension à 67 ans.
+            </p>
           </div>
-          <div class="flex gap-2">
-            <button onclick="solveAndApplyEarliestAge()" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Arrêt le plus tôt
-            </button>
-            <button onclick="solveAndApplyMinSavings()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
-              <i class="fa-solid fa-coins"></i> Épargne Minimale
-            </button>
+
+          <!-- Target Age Pill Badge -->
+          <div class="p-3 rounded-2xl bg-[#05070E] border border-amber-500/40 text-right shrink-0">
+            <span class="text-[10px] text-slate-400 uppercase font-bold block">Départ simulé</span>
+            <span class="text-xl font-black text-amber-400 font-mono" id="sim-hero-target-age">53 ans (2042)</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- THE 3 PHASES OF LIFE ROADMAP CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
           
-          <!-- Slider 1: Âge Cible -->
-          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-semibold">Âge d'Arrêt (FIRE)</span>
-              <span class="text-sky-400 font-mono font-bold text-sm" id="sim-val-age">50 ans</span>
+          <!-- Phase 1 : Accumulation -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border-l-4 border-l-sky-500 border border-[#1B263B] space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-sky-400 uppercase">1. Accumulation Active</span>
+              <span class="text-[10px] font-mono text-slate-400">37 ➔ 53 ans</span>
             </div>
-            <input type="range" id="sim-input-age" min="40" max="67" step="1" value="50" oninput="onSimSliderChange()" class="w-full accent-sky-500 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>40 ans</span>
-              <span>67 ans</span>
-            </div>
-          </div>
-
-          <!-- Slider 2: Rente Cible -->
-          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-semibold">Rente Mensuelle Nette</span>
-              <span class="text-emerald-400 font-mono font-bold text-sm" id="sim-val-income">3 000 €</span>
-            </div>
-            <input type="range" id="sim-input-income" min="1500" max="10000" step="100" value="3000" oninput="onSimSliderChange()" class="w-full accent-emerald-500 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>1 500 €</span>
-              <span>10 000 €</span>
+            <div class="text-base font-black text-white font-mono" id="sim-phase1-savings">+4 730 € ➔ +6 353 € / m</div>
+            <p class="text-[11px] text-slate-300 leading-tight">
+              Épargne massive boostée par la fin des dettes (302 €/m en 2034 puis 1 321 €/m en 2038).
+            </p>
+            <div class="text-[10px] text-emerald-400 font-bold pt-1 border-t border-[#1B263B]/60" id="sim-phase1-capital-reach">
+              Capital à 53 ans : ~1 450 000 €
             </div>
           </div>
 
-          <!-- Slider 3: Épargne Mensuelle -->
-          <div class="space-y-3 p-4 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-semibold">Épargne Mensuelle Investie</span>
-              <span class="text-purple-300 font-mono font-bold text-sm" id="sim-val-savings">2 000 €</span>
+          <!-- Phase 2 : Le Pont 14 ans -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border-l-4 border-l-amber-500 border border-[#1B263B] space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-amber-400 uppercase">2. Le Pont de Liberté</span>
+              <span class="text-[10px] font-mono text-slate-400">53 ➔ 67 ans (14 ans)</span>
             </div>
-            <input type="range" id="sim-input-savings" min="200" max="8000" step="50" value="2000" oninput="onSimSliderChange()" class="w-full accent-purple-500 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>200 €</span>
-              <span>8 000 €</span>
+            <div class="text-base font-black text-amber-300 font-mono" id="sim-phase2-expenses">2 715 € / m (0 € dette)</div>
+            <p class="text-[11px] text-slate-300 leading-tight">
+              Décaissement maîtrisé sur le portefeuille liquide (Bourse/Cash). Piliers 2 & 3 continuent de composer.
+            </p>
+            <div class="text-[10px] text-amber-300 font-bold pt-1 border-t border-[#1B263B]/60" id="sim-phase2-bridge-needed">
+              Capital Pont Requis : ~450 000 €
+            </div>
+          </div>
+
+          <!-- Phase 3 : Retraite Légale & Héritage -->
+          <div class="p-4 rounded-2xl bg-[#05070E] border-l-4 border-l-purple-500 border border-[#1B263B] space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="text-xs font-black text-purple-400 uppercase">3. Retraite Légale & Dynastie</span>
+              <span class="text-[10px] font-mono text-slate-400">67 ans ➔ 90+ ans</span>
+            </div>
+            <div class="text-base font-black text-purple-300 font-mono">+3 350 € / m Net Foyer</div>
+            <p class="text-[11px] text-slate-300 leading-tight">
+              La pension d'État dépasse vos dépenses de +635 €/m. Déblocage Piliers 2 & 3 transmis aux enfants.
+            </p>
+            <div class="text-[10px] text-purple-300 font-bold pt-1 border-t border-[#1B263B]/60">
+              Portefeuille préservé à 100%
             </div>
           </div>
 
         </div>
+      </div>
 
-        <!-- Simulation KPIs Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#1B263B]">
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Capital à la date FIRE</span>
-            <div class="text-xl font-bold text-sky-400 font-mono mt-1 privacy-blur" id="sim-kpi-accumulated">0 M€</div>
-            <span class="text-[10px] text-slate-500" id="sim-month-year">En 2040</span>
+      <!-- SIMULATOR CONTROLS & INTERACTIVE SLIDERS -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        
+        <!-- Controls 1 : Âge de départ -->
+        <div class="fin-card p-5 space-y-3">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-person-walking-luggage text-amber-400"></i> Âge de Départ Anticipé :
+            </label>
+            <span class="text-sm font-black text-amber-400 font-mono" id="sim-slider-age-val">53 ans (2042)</span>
           </div>
-
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Capital Cible Requis</span>
-            <div class="text-xl font-bold text-amber-300 font-mono mt-1 privacy-blur" id="sim-kpi-target">0 M€</div>
-            <span class="text-[10px] text-slate-500">Seuil sécurisé SWR</span>
-          </div>
-
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Marge de Sécurité</span>
-            <div class="text-xl font-bold text-emerald-400 font-mono mt-1 privacy-blur" id="sim-kpi-margin">+0 k€</div>
-            <span class="text-[10px] text-emerald-400 font-semibold" id="sim-kpi-margin-desc">Plan solide</span>
-          </div>
-
-          <div class="p-3 rounded-2xl bg-[#05070E] border border-[#1B263B]">
-            <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Rente Mensuelle Garantie</span>
-            <div class="text-xl font-bold text-white font-mono mt-1 privacy-blur" id="sim-kpi-rente">0 €/m</div>
-            <span class="text-[10px] text-slate-500">Indexée sur l'inflation</span>
+          <input type="range" min="48" max="62" step="1" value="53" id="sim-slider-age" oninput="onSimSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-amber-500">
+          <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <span>48 ans (Tôt)</span>
+            <span>53 ans (Cible)</span>
+            <span>62 ans (Tardif)</span>
           </div>
         </div>
 
-      </section>
+        <!-- Controls 2 : Dépenses de Retraite -->
+        <div class="fin-card p-5 space-y-3">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-cart-shopping text-rose-400"></i> Dépenses durant le Pont :
+            </label>
+            <span class="text-sm font-black text-rose-400 font-mono" id="sim-slider-exp-val">2 715 € / m</span>
+          </div>
+          <input type="range" min="1800" max="4500" step="50" value="2715" id="sim-slider-exp" oninput="onSimSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-rose-500">
+          <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <span>1 800 €/m</span>
+            <span>2 715 € (Sans crédits)</span>
+            <span>4 500 €/m</span>
+          </div>
+        </div>
 
-      <!-- Trajectory Chart in Simulator -->
-      <div class="fin-card p-6 space-y-4">
-        <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-chart-area text-sky-400"></i> Trajectoire Détaillée : Nominal vs Pouvoir d'Achat Réel
-        </h3>
-        <div class="relative h-72 sm:h-96 w-full">
-          <canvas id="simTrajectoryChart"></canvas>
+        <!-- Controls 3 : Rendement Net Réel -->
+        <div class="fin-card p-5 space-y-3">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-line text-emerald-400"></i> Rendement Net Bourse :
+            </label>
+            <span class="text-sm font-black text-emerald-400 font-mono" id="sim-slider-rate-val">5.0% / an</span>
+          </div>
+          <input type="range" min="2.5" max="7.5" step="0.5" value="5.0" id="sim-slider-rate" oninput="onSimSliderChange()" class="w-full h-2 bg-[#1B263B] rounded-lg appearance-none cursor-pointer accent-emerald-500">
+          <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <span>2.5% (Crise)</span>
+            <span>5.0% (Historique)</span>
+            <span>7.5% (Optimiste)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KEY LIFE EVENTS CHECKLIST (ÉVÉNEMENTS DE VIE PROGRAMMÉS) -->
+      <div class="fin-card p-5 sm:p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3 flex-wrap gap-2">
+          <div>
+            <h3 class="font-black text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-calendar-check text-sky-400"></i> Événements de Vie & Dépenses Exceptionnelles Intégrés
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Ces événements sont automatiquement appliqués dans la simulation de trésorerie.</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-sky-950 text-sky-300 font-bold border border-sky-800">Prévoyance Réelle</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-solar-panel"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2030 • Travaux Maison</span>
+              <span class="text-[11px] text-rose-400 font-mono font-semibold">-20 000 € (Rénovation)</span>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-car"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2032 • Véhicule Familial</span>
+              <span class="text-[11px] text-rose-400 font-mono font-semibold">-30 000 € (Renouvellement)</span>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-[#1B263B] flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2036 • Études Enfants</span>
+              <span class="text-[11px] text-rose-400 font-mono font-semibold">-25 000 € (Kots & études)</span>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#05070E] border border-emerald-500/30 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-white block">2056 • Piliers 2 & 3 (67a)</span>
+              <span class="text-[11px] text-emerald-400 font-mono font-semibold">+280 000 € (Net débloqué)</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DETAILED SIMULATOR TRAJECTORY CHART -->
+      <div class="fin-card p-5 sm:p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-[#1B263B] pb-3">
+          <h3 class="font-black text-white text-base flex items-center gap-2">
+            <i class="fa-solid fa-chart-area text-emerald-400"></i> Solde du Portefeuille Financier Année par Année (2026 ➔ 2060)
+          </h3>
+          <span class="text-xs text-slate-400 font-mono">En euros constants</span>
+        </div>
+
+        <div class="h-80 sm:h-96 relative w-full">
+          <canvas id="detailedSimulatorChart"></canvas>
         </div>
       </div>
 
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- TAB 5: TIMELINE DES ÉVÉNEMENTS DE VIE -->
     <!-- ========================================================================= -->
     <div id="tab-timeline" class="tab-content hidden space-y-6 animate-fade-in">
       
@@ -3476,6 +3573,25 @@
     // --- COCKPIT STRATEGY & BRIDGE TO PENSION ENGINE ---
     let currentCockpitStrategy = 'bridge'; // 'bridge' (53-67y) or 'perpetual' (SWR 3.5%)
 
+    // --- EXACT REAL BALANCE SHEET & HIGH PRECISION COCKPIT & SIMULATOR ENGINE ---
+    let currentCockpitStrategy = 'bridge'; // 'bridge' (53-67y) or 'perpetual' (SWR 3.5%)
+
+    function setCockpitStrategyMode(mode) {
+      currentCockpitStrategy = mode;
+      const bBtn = document.getElementById('btn-strat-bridge');
+      const pBtn = document.getElementById('btn-strat-perpetual');
+      if (bBtn && pBtn) {
+        if (mode === 'bridge') {
+          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        } else {
+          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
+          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
+        }
+      }
+      renderOverviewCharts();
+    }
+
     function toggleAgentFaq() {
       const container = document.getElementById('agent-faq-container');
       const btn = document.getElementById('btn-toggle-agent-faq');
@@ -3504,22 +3620,6 @@
       }
     }
 
-    function setCockpitStrategyMode(mode) {
-      currentCockpitStrategy = mode;
-      const bBtn = document.getElementById('btn-strat-bridge');
-      const pBtn = document.getElementById('btn-strat-perpetual');
-      if (bBtn && pBtn) {
-        if (mode === 'bridge') {
-          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
-          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
-        } else {
-          pBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5";
-          bBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white flex items-center gap-1.5";
-        }
-      }
-      renderOverviewCharts();
-    }
-
     function calculateNetWorth() {
       try {
         const p = appState.portfolio || {};
@@ -3527,21 +3627,23 @@
         let totalLiabilities = 0;
         let productiveFinancial = 0;
 
+        // 1. Real Estate (House only 700k, Residual Debt 40k, Sold Appt 0k)
         let houseVal = 700000;
         let houseDebt = 300000;
-        let apptVal = 250000;
-        let apptDebt = 66513;
+        let residualDebt = 40000;
 
-        if (p.realEstate && Array.isArray(p.realEstate.properties) && p.realEstate.properties.length >= 2) {
+        if (p.realEstate && Array.isArray(p.realEstate.properties) && p.realEstate.properties.length > 0) {
           houseVal = p.realEstate.properties[0].value || 700000;
           houseDebt = p.realEstate.properties[0].mortgageBalance || 300000;
-          apptVal = p.realEstate.properties[1].value || 250000;
-          apptDebt = p.realEstate.properties[1].mortgageBalance || 66513;
+          if (p.realEstate.properties.length >= 2) {
+            residualDebt = p.realEstate.properties[1].mortgageBalance || 40000;
+          }
         }
 
-        totalGross += (houseVal + apptVal);
-        totalLiabilities += (houseDebt + apptDebt);
+        totalGross += houseVal;
+        totalLiabilities += (houseDebt + residualDebt);
 
+        // 2. Liquid Productive Portfolio
         let stocksVal = 320000;
         if (p.stocks && Array.isArray(p.stocks.accounts)) {
           stocksVal = p.stocks.accounts.reduce((a, b) => a + (b.balance || 0), 0);
@@ -3572,22 +3674,20 @@
           productiveFinancial,
           houseVal,
           houseDebt,
-          apptVal,
-          apptDebt,
+          residualDebt,
           stocksVal,
           cashVal,
           pensionVal
         };
       } catch (err) {
         return {
-          totalGross: 1450000,
-          totalLiabilities: 366513,
-          netWorthTotal: 1083487,
+          totalGross: 1200000,
+          totalLiabilities: 340000,
+          netWorthTotal: 860000,
           productiveFinancial: 500000,
           houseVal: 700000,
           houseDebt: 300000,
-          apptVal: 250000,
-          apptDebt: 66513,
+          residualDebt: 40000,
           stocksVal: 320000,
           cashVal: 80000,
           pensionVal: 100000
@@ -3598,15 +3698,22 @@
     function openAssetsEditModal() {
       try {
         const nw = calculateNetWorth();
-        document.getElementById('inp-asset-house-val').value = nw.houseVal;
-        document.getElementById('inp-debt-house').value = nw.houseDebt;
-        document.getElementById('inp-asset-appt-val').value = nw.apptVal;
-        document.getElementById('inp-debt-appt').value = nw.apptDebt;
-        document.getElementById('inp-asset-stocks').value = nw.stocksVal;
-        document.getElementById('inp-asset-cash').value = nw.cashVal;
-        document.getElementById('inp-asset-pension').value = nw.pensionVal;
+        const hVal = document.getElementById('inp-asset-house-val');
+        const hDebt = document.getElementById('inp-debt-house');
+        const rDebt = document.getElementById('inp-debt-residual');
+        const stVal = document.getElementById('inp-asset-stocks');
+        const cVal = document.getElementById('inp-asset-cash');
+        const pVal = document.getElementById('inp-asset-pension');
 
-        document.getElementById('assets-edit-modal').classList.remove('hidden');
+        if (hVal) hVal.value = nw.houseVal;
+        if (hDebt) hDebt.value = nw.houseDebt;
+        if (rDebt) rDebt.value = nw.residualDebt;
+        if (stVal) stVal.value = nw.stocksVal;
+        if (cVal) cVal.value = nw.cashVal;
+        if (pVal) pVal.value = nw.pensionVal;
+
+        const modal = document.getElementById('assets-edit-modal');
+        if (modal) modal.classList.remove('hidden');
       } catch (err) {
         console.error("openAssetsEditModal error:", err);
       }
@@ -3625,8 +3732,7 @@
       try {
         const houseVal = parseFloat(document.getElementById('inp-asset-house-val').value) || 0;
         const houseDebt = parseFloat(document.getElementById('inp-debt-house').value) || 0;
-        const apptVal = parseFloat(document.getElementById('inp-asset-appt-val').value) || 0;
-        const apptDebt = parseFloat(document.getElementById('inp-debt-appt').value) || 0;
+        const residualDebt = parseFloat(document.getElementById('inp-debt-residual').value) || 0;
         const stocksVal = parseFloat(document.getElementById('inp-asset-stocks').value) || 0;
         const cashVal = parseFloat(document.getElementById('inp-asset-cash').value) || 0;
         const pensionVal = parseFloat(document.getElementById('inp-asset-pension').value) || 0;
@@ -3635,7 +3741,7 @@
         appState.portfolio.realEstate = {
           properties: [
             { name: "Maison Principale", value: houseVal, mortgageBalance: houseDebt },
-            { name: "Appartement Locatif", value: apptVal, mortgageBalance: apptDebt }
+            { name: "Dette résiduelle (Appartement vendu)", value: 0, mortgageBalance: residualDebt }
           ]
         };
         appState.portfolio.stocks = { accounts: [{ name: "Portefeuille ETF & Actions", balance: stocksVal }] };
@@ -3653,48 +3759,140 @@
       }
     }
 
-    function onCockpitSliderChange() {
-      const savSlider = document.getElementById('cockpit-slider-savings');
-      const expSlider = document.getElementById('cockpit-slider-expenses');
-      if (!savSlider || !expSlider) return;
+    function onSimSliderChange() {
+      const ageSlider = document.getElementById('sim-slider-age');
+      const expSlider = document.getElementById('sim-slider-exp');
+      const rateSlider = document.getElementById('sim-slider-rate');
+      if (!ageSlider || !expSlider || !rateSlider) return;
 
-      const monthlySav = parseFloat(savSlider.value) || 4730;
-      const targetMonthlyExp = parseFloat(expSlider.value) || 2715;
+      const targetAge = parseInt(ageSlider.value) || 53;
+      const bridgeExp = parseFloat(expSlider.value) || 2715;
+      const growthRate = parseFloat(rateSlider.value) || 5.0;
 
-      document.getElementById('slider-savings-val').innerText = `${formatEur(monthlySav)} / m`;
-      document.getElementById('slider-expenses-val').innerText = `${formatEur(targetMonthlyExp)} / m`;
+      const targetYear = 2026 + (targetAge - 37);
 
-      const annualExp = targetMonthlyExp * 12;
-      const bridgeYears = 14; // 53 to 67
-      const targetCapital = currentCockpitStrategy === 'bridge' ? Math.round(annualExp * bridgeYears * 0.85) : Math.round(annualExp / 0.035);
+      const ageValEl = document.getElementById('sim-slider-age-val');
+      if (ageValEl) ageValEl.innerText = `${targetAge} ans (${targetYear})`;
+
+      const heroAgeEl = document.getElementById('sim-hero-target-age');
+      if (heroAgeEl) heroAgeEl.innerText = `${targetAge} ans (${targetYear})`;
+
+      const expValEl = document.getElementById('sim-slider-exp-val');
+      if (expValEl) expValEl.innerText = `${formatEur(bridgeExp)} / m`;
+
+      const rateValEl = document.getElementById('sim-slider-rate-val');
+      if (rateValEl) rateValEl.innerText = `${growthRate.toFixed(1)}% / an`;
+
+      const bridgeYears = Math.max(0, 67 - targetAge);
+      const bridgeCapitalNeeded = Math.round(bridgeExp * 12 * bridgeYears * 0.85);
+
+      const bridgeNeededEl = document.getElementById('sim-phase2-bridge-needed');
+      if (bridgeNeededEl) bridgeNeededEl.innerText = `Capital Pont Requis (${bridgeYears}a) : ${formatEur(bridgeCapitalNeeded)}`;
+
+      renderDetailedSimulatorChart(targetAge, bridgeExp, growthRate / 100);
+    }
+
+    
+    function renderDetailedSimulatorChart(targetAge = 53, bridgeMonthlyExp = 2715, growthRate = 0.05) {
+      const ctx = document.getElementById('detailedSimulatorChart');
+      if (!ctx) return;
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const textColor = isDark ? '#94A3B8' : '#475569';
+      const gridColor = isDark ? '#1B263B' : '#E2E8F0';
 
       const nw = calculateNetWorth();
       let currentCap = nw.productiveFinancial;
-      const growthRate = 0.05;
-      let yearsNeeded = 0;
 
-      while (currentCap < targetCapital && yearsNeeded < 45) {
-        yearsNeeded++;
-        currentCap = (currentCap + (monthlySav * 12)) * (1 + growthRate);
+      const labels = [];
+      const portfolioData = [];
+      const targetBridgeLine = [];
+
+      const startYear = 2026;
+      const retirementYear = 2026 + (targetAge - 37);
+      const legalPensionYear = 2056;
+      const endYear = 2060;
+
+      for (let y = 0; y <= (endYear - startYear); y++) {
+        const year = startYear + y;
+        const age = 37 + y;
+        labels.push(`${year} (${age}a)`);
+
+        if (y === 0) {
+          portfolioData.push(Math.round(currentCap));
+          targetBridgeLine.push(450000);
+          continue;
+        }
+
+        let lifeEventDelta = 0;
+        if (year === 2030) lifeEventDelta -= 20000;
+        if (year === 2032) lifeEventDelta -= 30000;
+        if (year === 2036) lifeEventDelta -= 25000;
+        if (year === 2056) lifeEventDelta += 280000;
+
+        if (year < retirementYear) {
+          let monthlySav = 4730;
+          if (year >= 2034) monthlySav += 302;
+          if (year >= 2038) monthlySav += 1321;
+
+          const annualSav = (monthlySav * 12) + lifeEventDelta;
+          currentCap = (currentCap + annualSav) * (1 + growthRate);
+        } else if (year >= retirementYear && year < legalPensionYear) {
+          const annualDrawdown = (bridgeMonthlyExp * 12) - lifeEventDelta;
+          currentCap = Math.max(0, (currentCap - annualDrawdown) * (1 + growthRate));
+        } else {
+          const annualSurplus = (635 * 12) + lifeEventDelta;
+          currentCap = (currentCap + annualSurplus) * (1 + growthRate);
+        }
+
+        portfolioData.push(Math.round(currentCap));
+        targetBridgeLine.push(450000);
       }
 
-      const targetYear = 2026 + yearsNeeded;
-      const targetAge = 37 + yearsNeeded;
-
-      const resultSentence = document.getElementById('slider-result-sentence');
-      if (resultSentence) {
-        resultSentence.innerHTML = `Capital requis : <strong class="text-emerald-400 font-mono">${formatEur(targetCapital)}</strong>. Vous atteignez cet objectif en <strong class="text-amber-400 font-mono">${targetYear}</strong> (à <strong class="text-amber-300 font-bold">${targetAge} ans</strong>).`;
-      }
-
-      renderCockpitTrajectoryChart(nw.productiveFinancial, monthlySav, targetCapital);
-    }
-
-    function resetCockpitSliders() {
-      const savSlider = document.getElementById('cockpit-slider-savings');
-      const expSlider = document.getElementById('cockpit-slider-expenses');
-      if (savSlider) savSlider.value = 4730;
-      if (expSlider) expSlider.value = 2715;
-      onCockpitSliderChange();
+      if (charts.detailedSimulator) charts.detailedSimulator.destroy();
+      charts.detailedSimulator = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Solde Portefeuille Financier Réel',
+              data: portfolioData,
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 3,
+              pointRadius: 1,
+              fill: true
+            },
+            {
+              label: 'Seuil Capital Pont (450 000 €)',
+              data: targetBridgeLine,
+              borderColor: '#F59E0B',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { position: 'top', labels: { color: textColor, font: { size: 11, weight: 'bold' } } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${Math.round(ctx.parsed.y).toLocaleString('fr-FR')} €`
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 }, maxTicksLimit: 10 } },
+            y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 }, callback: (v) => `${(v/1000).toFixed(0)}k€` } }
+          }
+        }
+      });
     }
 
     function renderOverviewCharts() {
@@ -3709,16 +3907,13 @@
         const monthlySavings = Math.max(0, monthlyInc - monthlyExp);
         const savingsRate = monthlyInc > 0 ? ((monthlySavings / monthlyInc) * 100).toFixed(1) : 0;
 
-        // Bridge vs Perpetual Calculation
-        const annualExpNoLoans = 2715 * 12; // 32,580 € / an
-        const bridgeCapitalNeeded = 450000; // 14 years bridge
-        const perpetualCapitalNeeded = Math.round(totalExpAnnual / 0.035); // 1,240,000 €
+        const bridgeCapitalNeeded = 450000;
+        const perpetualCapitalNeeded = Math.round(totalExpAnnual / 0.035);
 
         const targetCapital = currentCockpitStrategy === 'bridge' ? bridgeCapitalNeeded : perpetualCapitalNeeded;
         const productiveCap = nw.productiveFinancial;
         const firePct = targetCapital > 0 ? ((productiveCap / targetCapital) * 100).toFixed(1) : 0;
 
-        // Update Hero Displays
         const nwEl = document.getElementById('cockpit-net-worth-display');
         if (nwEl) nwEl.innerText = formatEur(nw.netWorthTotal);
 
@@ -3789,7 +3984,7 @@
         labels.push(`${year} (${37 + y}a)`);
 
         let extraMonthly = 0;
-        if (year >= 2034) extraMonthly += 303;
+        if (year >= 2034) extraMonthly += 302;
         if (year >= 2038) extraMonthly += 1321;
 
         const annualSavings = (monthlyContribution + extraMonthly) * 12;
@@ -5129,14 +5324,7 @@
       } catch (e) { console.error('Erreur dans updateSimulatorView:', e); }
     }
 
-    function onSimSliderChange() {
-      appState.cashflow.targetFireAge = parseInt(document.getElementById('sim-input-age').value);
-      appState.cashflow.targetIncomeNet = parseFloat(document.getElementById('sim-input-income').value);
-      appState.cashflow.monthlySavings = parseFloat(document.getElementById('sim-input-savings').value);
-      saveCurrentPlan();
-      updateSimulatorView();
-      renderOverviewCharts();
-    }
+    
 
     function solveAndApplyEarliestAge() {
       for (let a = appState.p1.currentAge + 2; a <= 67; a++) {
